@@ -3,10 +3,15 @@
     public class PersonRole
     {
         public int PersonId { get; set; }
-        public Person Person { get; set; } = null!;
-
         public int RoleId { get; set; }
-        public Role Role { get; set; } = null!;
+
+        public DateTime AssignedDate { get; set; } = DateTime.Now;
+        public bool IsActive { get; set; } = true;
+
+        // Navigation
+        public Person Person { get; set; }
+        public Role Role { get; set; }
+
     }
 }
 

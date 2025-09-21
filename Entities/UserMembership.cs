@@ -1,6 +1,7 @@
 ﻿namespace Entities
 {
-    public class UserMembership
+    //برای نمایش وضعیت اشتراک
+    public class UserMembership : BaseEntity
     {
         public int UserId { get; set; }
         public User User { get; set; } = null!;

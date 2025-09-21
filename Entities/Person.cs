@@ -27,11 +27,20 @@
         public ICollection<Log> Logs { get; set; } = new List<Log>();
         public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
         public ICollection<UserMembership> Memberships { get; set; } = new List<UserMembership>();
+        public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+
 
         // اگر بخوای جدای Coach/Student داشته باشی:
         public Coach? CoachProfile { get; set; }
         public Student? StudentProfile { get; set; }
     }
+    public class PersonType : BaseEntity
+    {
+        public string Title { get; set; } // مثلا "مربی"، "شاگرد"، "ادمین"
+        public ICollection<Person> People { get; set; }
+    }
+
+
 }
 
 

@@ -5,6 +5,10 @@ VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{D4710B45-37F4-428C-8D87-B2A9298E8047}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{10343F5A-6B01-4C52-AC81-8EF29B48F2FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymSite.API", "GymSite.API\GymSite.API.csproj", "{CEE1A33B-95A9-450D-92A0-A8258201A8C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{D4710B45-37F4-428C-8D87-B2A9298E8047}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4710B45-37F4-428C-8D87-B2A9298E8047}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4710B45-37F4-428C-8D87-B2A9298E8047}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10343F5A-6B01-4C52-AC81-8EF29B48F2FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10343F5A-6B01-4C52-AC81-8EF29B48F2FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10343F5A-6B01-4C52-AC81-8EF29B48F2FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10343F5A-6B01-4C52-AC81-8EF29B48F2FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEE1A33B-95A9-450D-92A0-A8258201A8C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEE1A33B-95A9-450D-92A0-A8258201A8C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEE1A33B-95A9-450D-92A0-A8258201A8C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEE1A33B-95A9-450D-92A0-A8258201A8C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
