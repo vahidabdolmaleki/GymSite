@@ -11,7 +11,6 @@ namespace DAL.Context
         {
         }
 
-
         protected override void OnConfiguring(DbContextOptionsBuilder OptionsBuilder)
         {
             string LocalConnection = "Server=.;Database=GymDb;User Id=GymUser;Password=Aa123456;MultipleActiveResultSets=true;Encrypt=False;TrustServerCertificate=True;";
