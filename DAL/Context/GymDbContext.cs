@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 
 
-namespace GymSite.DAL
+namespace DAL.Context
 {
     public class GymDbContext : DbContext
     {
@@ -10,7 +10,7 @@ namespace GymSite.DAL
             : base(options)
         {
         }
-         
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder OptionsBuilder)
         {
@@ -85,6 +85,6 @@ namespace GymSite.DAL
                 .IsUnique();
 
         }
-        
+
     }
 }
