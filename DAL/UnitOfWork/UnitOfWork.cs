@@ -1,6 +1,7 @@
 ﻿using DAL.Context;
-using DAL.Repository.AddressDetailRepository;
-using DAL.Repository.AddressRepository;
+using DAL.Repository;
+using DAL.Repository.GenericRepository;
+using Entities;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -22,22 +23,12 @@ namespace DAL.UnitOfWork
             _gymDbContext = gymDbContext;
         }
 
+        // --- Repositoryها ---
+        public IPersonRepository PersonRepository => new PersonRepository(_gymDbContext);
+        public IGenericRepository<AddressDetail> AddressDetailRepository => new GenericRepository<AddressDetail>(_gymDbContext);
+        public IGenericRepository<Product> ProductRepository => new GenericRepository<Product>(_gymDbContext);
 
-        public IAddressRepository AddressRepository
-        {
-            get 
-            {
-                return new AddressRepository(_gymDbContext);
-            }
-        }
 
-        public IAddressDetailRepository AddressDetailRepository
-        {
-            get
-            { 
-                return new  AddressDetailRepository(_gymDbContext);
-            }
-        }
 
         public void Commit()
         {
@@ -46,7 +37,7 @@ namespace DAL.UnitOfWork
 
         public void Dispose()
         {
-            //throw new NotImplementedException();
+            _gymDbContext.Dispose();
         }
     }
 }

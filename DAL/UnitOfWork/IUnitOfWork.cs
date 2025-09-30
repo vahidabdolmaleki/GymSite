@@ -1,5 +1,7 @@
-﻿using DAL.Repository.AddressDetailRepository;
-using DAL.Repository.AddressRepository;
+﻿
+using DAL.Repository.GenericRepository;
+using DAL.Repository;
+using Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +12,13 @@ namespace DAL.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {
-        IAddressRepository AddressRepository { get; }
-        IAddressDetailRepository AddressDetailRepository { get; }
+        IPersonRepository PersonRepository { get; }
+
+        
+        
+        //---- GenericRepository
+        IGenericRepository<AddressDetail> AddressDetailRepository { get; }
+        IGenericRepository<Product> ProductRepository { get; }
         void Commit();
     }
 }
