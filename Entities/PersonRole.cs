@@ -1,6 +1,6 @@
 ﻿namespace Entities
 {
-    public class PersonRole
+    public class PersonRole:BaseEntity
     {
         public int PersonId { get; set; }
         public int RoleId { get; set; }

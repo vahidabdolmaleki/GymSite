@@ -1,6 +1,6 @@
 ﻿namespace Entities
 {
-    public class UnitCity // نگهداری استان‌ها و شهرستان‌ها
+    public class UnitCity :BaseEntity// نگهداری استان‌ها و شهرستان‌ها
     {
         // می‌تونی از کلید مرکب یا Id واحد استفاده کنی؛ اینجا یک Id تک‌ستونه برای سادگی
         public int Id { get; set; }
