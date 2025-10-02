@@ -27,6 +27,7 @@ namespace DAL.UnitOfWork
         // --- Repositoryها ---
         public IPersonRepository PersonRepository => new PersonRepository(_gymDbContext);
         public IWorkoutRepository WorkoutRepository => new WorkoutRepository(_gymDbContext);
+        public IOrderRepository OrderRepository => new OrderRepository(_gymDbContext);
 
         // --- Generic Repository's
         public IGenericRepository<AddressDetail> AddressDetailRepository => new GenericRepository<AddressDetail>(_gymDbContext);
@@ -78,6 +79,7 @@ namespace DAL.UnitOfWork
         public IGenericRepository<WorkoutPlan> WorkoutPlanRepository =>   new GenericRepository<WorkoutPlan>(_gymDbContext);
 
         public IGenericRepository<WorkoutSubCategory> WorkoutSubCategoryRepository =>   new GenericRepository<WorkoutSubCategory>(_gymDbContext);
+
 
         public void Commit()
         {

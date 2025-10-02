@@ -15,6 +15,7 @@ namespace DAL.UnitOfWork
     {
         IPersonRepository PersonRepository { get; }
         IWorkoutRepository WorkoutRepository { get; }
+        IOrderRepository OrderRepository { get; }
 
 
         //---- GenericRepository
