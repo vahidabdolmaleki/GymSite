@@ -1,12 +1,33 @@
-﻿using System;
+﻿using DAL.Repository.GenericRepository;
+using Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Repository.Payment
+namespace DAL.Repository
 {
-    public interface IpaymentRepository
+    public interface IpaymentRepository:IGenericRepository<Payment> 
     {
+        //همه پرداخت های یک کاربر
+        List<Payment> GetPaymentsByPerson(int personId);
+        Task<List<Payment>> GetPaymentByPersonAsync(int PersonId);
+
+        // پرداخت های موفق
+        List<Payment> GetSuccessfulPayments();
+        Task<List<Payment>> GetSuccessfulPaymentAsync();
+
+        // پرداخت های ناموفق
+        List<Payment> GetFailPayments();
+        Task<List<Payment>> GetFailPaymentsAsync();
+
+        //پرداخت های مرتبط با یک سفارش
+        List<Payment> GetPaymentsByOrder(int orderId);
+        Task<List<Payment>> GetPaymentsByOrderAsync(int orderId);
+
+        //آخرین پرداخت های کاربر
+        Payment? GetLastPayment(int personId);
+        Task<Payment?> GetLastPaymentAsync(int personId);
     }
 }

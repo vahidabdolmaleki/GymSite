@@ -28,6 +28,7 @@ namespace DAL.UnitOfWork
         public IPersonRepository PersonRepository => new PersonRepository(_gymDbContext);
         public IWorkoutRepository WorkoutRepository => new WorkoutRepository(_gymDbContext);
         public IOrderRepository OrderRepository => new OrderRepository(_gymDbContext);
+        public IpaymentRepository PaymentRepository => new PaymentRepostiory(_gymDbContext);
 
         // --- Generic Repository's
         public IGenericRepository<AddressDetail> AddressDetailRepository => new GenericRepository<AddressDetail>(_gymDbContext);
