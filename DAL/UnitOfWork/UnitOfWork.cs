@@ -1,6 +1,7 @@
 ﻿using DAL.Context;
 using DAL.Repository;
 using DAL.Repository.GenericRepository;
+using DAL.Repository.NotificationRepository;
 using DAL.Repository.WorkoutRepository;
 using Entities;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -29,6 +30,8 @@ namespace DAL.UnitOfWork
         public IWorkoutRepository WorkoutRepository => new WorkoutRepository(_gymDbContext);
         public IOrderRepository OrderRepository => new OrderRepository(_gymDbContext);
         public IpaymentRepository PaymentRepository => new PaymentRepostiory(_gymDbContext);
+        public INotificationRepository NotificationRepository => new NotificationRepository(_gymDbContext);
+        public IDeviceRepository DeviceRepository => new DeviceRepository(_gymDbContext);
 
         // --- Generic Repository's
         public IGenericRepository<AddressDetail> AddressDetailRepository => new GenericRepository<AddressDetail>(_gymDbContext);

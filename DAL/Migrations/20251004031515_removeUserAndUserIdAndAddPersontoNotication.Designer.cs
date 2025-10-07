@@ -4,6 +4,7 @@ using DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(GymDbContext))]
-    partial class GymDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251004031515_removeUserAndUserIdAndAddPersontoNotication")]
+    partial class removeUserAndUserIdAndAddPersontoNotication
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -337,17 +340,11 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AttachmentUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("DeviceId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -359,30 +356,12 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PersonId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Priority")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("SentAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Type")
+                    b.Property<int>("personId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DeviceId");
-
-                    b.HasIndex("PersonId");
+                    b.HasIndex("personId");
 
                     b.ToTable("Notifications");
                 });
@@ -1189,19 +1168,13 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Entities.Notification", b =>
                 {
-                    b.HasOne("Entities.Device", "Device")
-                        .WithMany()
-                        .HasForeignKey("DeviceId");
-
-                    b.HasOne("Entities.Person", "Person")
+                    b.HasOne("Entities.Person", "User")
                         .WithMany("Notifications")
-                        .HasForeignKey("PersonId")
+                        .HasForeignKey("personId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Device");
-
-                    b.Navigation("Person");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Entities.Order", b =>

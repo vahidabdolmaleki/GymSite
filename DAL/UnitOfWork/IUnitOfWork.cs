@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DAL.Repository.WorkoutRepository;
+using DAL.Repository.NotificationRepository;
 
 namespace DAL.UnitOfWork
 {
@@ -17,6 +18,8 @@ namespace DAL.UnitOfWork
         IWorkoutRepository WorkoutRepository { get; }
         IOrderRepository OrderRepository { get; }
         IpaymentRepository PaymentRepository { get; }
+        INotificationRepository NotificationRepository { get; }
+        IDeviceRepository DeviceRepository { get; }
 
 
         //---- GenericRepository
