@@ -1,4 +1,5 @@
 ﻿using DAL.Context;
+using DAL.Repositories.Implementations;
 using DAL.Repository;
 using DAL.Repository.GenericRepository;
 using DAL.Repository.NotificationRepository;
@@ -32,6 +33,7 @@ namespace DAL.UnitOfWork
         public IpaymentRepository PaymentRepository => new PaymentRepostiory(_gymDbContext);
         public INotificationRepository NotificationRepository => new NotificationRepository(_gymDbContext);
         public IDeviceRepository DeviceRepository => new DeviceRepository(_gymDbContext);
+        public IMembershipRepository MembershipRepository => new MembershipRepository(_gymDbContext);
 
         // --- Generic Repository's
         public IGenericRepository<AddressDetail> AddressDetailRepository => new GenericRepository<AddressDetail>(_gymDbContext);

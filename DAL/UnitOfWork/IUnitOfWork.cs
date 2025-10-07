@@ -14,12 +14,14 @@ namespace DAL.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {
-        IPersonRepository PersonRepository { get; }
-        IWorkoutRepository WorkoutRepository { get; }
-        IOrderRepository OrderRepository { get; }
-        IpaymentRepository PaymentRepository { get; }
-        INotificationRepository NotificationRepository { get; }
         IDeviceRepository DeviceRepository { get; }
+        IMembershipRepository MembershipRepository { get; }
+        INotificationRepository NotificationRepository { get; }
+        IOrderRepository OrderRepository { get; }
+        IPersonRepository PersonRepository { get; }
+        IpaymentRepository PaymentRepository { get; }
+        IWorkoutRepository WorkoutRepository { get; }
+
 
 
         //---- GenericRepository
