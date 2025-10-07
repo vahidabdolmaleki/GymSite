@@ -1,7 +1,9 @@
 ﻿using DAL.Context;
 using DAL.Repositories.Implementations;
+using DAL.Repositories.Interfaces;
 using DAL.Repository;
 using DAL.Repository.GenericRepository;
+using DAL.Repository.MembershipType;
 using DAL.Repository.NotificationRepository;
 using DAL.Repository.WorkoutRepository;
 using Entities;
@@ -34,6 +36,7 @@ namespace DAL.UnitOfWork
         public INotificationRepository NotificationRepository => new NotificationRepository(_gymDbContext);
         public IDeviceRepository DeviceRepository => new DeviceRepository(_gymDbContext);
         public IMembershipRepository MembershipRepository => new MembershipRepository(_gymDbContext);
+        public IMembershipTypeRepository MembershipTypeRepository => new MembershipTypeRepository(_gymDbContext);
 
         // --- Generic Repository's
         public IGenericRepository<AddressDetail> AddressDetailRepository => new GenericRepository<AddressDetail>(_gymDbContext);

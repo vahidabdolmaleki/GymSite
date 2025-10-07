@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL.Repository.WorkoutRepository;
 using DAL.Repository.NotificationRepository;
+using DAL.Repositories.Interfaces;
 
 namespace DAL.UnitOfWork
 {
@@ -16,6 +17,7 @@ namespace DAL.UnitOfWork
     {
         IDeviceRepository DeviceRepository { get; }
         IMembershipRepository MembershipRepository { get; }
+        IMembershipTypeRepository MembershipTypeRepository { get; }
         INotificationRepository NotificationRepository { get; }
         IOrderRepository OrderRepository { get; }
         IPersonRepository PersonRepository { get; }

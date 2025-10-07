@@ -1,6 +1,6 @@
 ﻿namespace Entities
 {
-    public class Membership
+    public class Membership:BaseEntity
     {
         public int Id { get; set; }
         public string Title { get; set; } = null!;
