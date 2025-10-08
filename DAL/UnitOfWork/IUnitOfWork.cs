@@ -29,6 +29,7 @@ namespace DAL.UnitOfWork
         ISupplementRepository SupplementRepository { get; }
         IWorkoutRepository WorkoutRepository { get; }
         ILogRepository LogRepository { get; }
+        IProductRepository ProductRepository { get; }
 
 
 

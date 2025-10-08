@@ -42,9 +42,18 @@ namespace DAL.UnitOfWork
         public ISupplementRepository SupplementRepository => new SupplementRepository(_gymDbContext);
         public ILogRepository LogRepository => new LogRepository(_gymDbContext);
 
+        private IProductRepository? _productRepository;
+
+        public IProductRepository ProductRepository
+        {
+            get
+            {
+                return _productRepository ??= new ProductRepository(_gymDbContext);
+            }
+        }
+
         // --- Generic Repository's
         public IGenericRepository<AddressDetail> AddressDetailRepository => new GenericRepository<AddressDetail>(_gymDbContext);
-        public IGenericRepository<Product> ProductRepository => new GenericRepository<Product>(_gymDbContext);
         public IGenericRepository<Address> AddressRepository =>   new GenericRepository<Address>(_gymDbContext);
 
         public IGenericRepository<Category> CategoryRepository =>   new GenericRepository<Category>(_gymDbContext);
