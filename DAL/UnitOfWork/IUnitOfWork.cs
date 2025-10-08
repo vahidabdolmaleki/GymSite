@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 using DAL.Repository.WorkoutRepository;
 using DAL.Repository.NotificationRepository;
 using DAL.Repositories.Interfaces;
+using DAL.Repository.SupplementRepository;
+using DAL.Repository.LogRepository;
+using DAL.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.UnitOfWork
 {
@@ -22,7 +26,9 @@ namespace DAL.UnitOfWork
         IOrderRepository OrderRepository { get; }
         IPersonRepository PersonRepository { get; }
         IpaymentRepository PaymentRepository { get; }
+        ISupplementRepository SupplementRepository { get; }
         IWorkoutRepository WorkoutRepository { get; }
+        ILogRepository LogRepository { get; }
 
 
 
@@ -43,7 +49,6 @@ namespace DAL.UnitOfWork
         IGenericRepository<Role> RoleRepository { get; }
         IGenericRepository<RolePermission> RolePermissionRepository { get; }
         IGenericRepository<Student> StudentRepository { get; }
-        IGenericRepository<Supplement> SupplementRepository { get; }
         IGenericRepository<UnitCity> UnitCityRepository { get; }
         IGenericRepository<User> UserRepository { get; }
         IGenericRepository<UserMembership> UserMembershipRepository { get; }
@@ -52,7 +57,8 @@ namespace DAL.UnitOfWork
         IGenericRepository<WorkoutHistory> WorkoutHistoryRepository { get; }
         IGenericRepository<WorkoutLog> WorkoutLogRepository { get; }
         IGenericRepository<WorkoutPlan> WorkoutPlanRepository { get; }
-        IGenericRepository<WorkoutSubCategory> WorkoutSubCategoryRepository { get; }
+        IGenericRepository<WorkoutSubCategory> WorkoutSubCategoryRepository { get; }        
+
         void Commit();
     }
 }

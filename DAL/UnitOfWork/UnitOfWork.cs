@@ -3,8 +3,10 @@ using DAL.Repositories.Implementations;
 using DAL.Repositories.Interfaces;
 using DAL.Repository;
 using DAL.Repository.GenericRepository;
+using DAL.Repository.LogRepository;
 using DAL.Repository.MembershipType;
 using DAL.Repository.NotificationRepository;
+using DAL.Repository.SupplementRepository;
 using DAL.Repository.WorkoutRepository;
 using Entities;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -37,6 +39,8 @@ namespace DAL.UnitOfWork
         public IDeviceRepository DeviceRepository => new DeviceRepository(_gymDbContext);
         public IMembershipRepository MembershipRepository => new MembershipRepository(_gymDbContext);
         public IMembershipTypeRepository MembershipTypeRepository => new MembershipTypeRepository(_gymDbContext);
+        public ISupplementRepository SupplementRepository => new SupplementRepository(_gymDbContext);
+        public ILogRepository LogRepository => new LogRepository(_gymDbContext);
 
         // --- Generic Repository's
         public IGenericRepository<AddressDetail> AddressDetailRepository => new GenericRepository<AddressDetail>(_gymDbContext);
@@ -68,8 +72,6 @@ namespace DAL.UnitOfWork
         public IGenericRepository<RolePermission> RolePermissionRepository =>   new GenericRepository<RolePermission>(_gymDbContext);
 
         public IGenericRepository<Student> StudentRepository =>   new GenericRepository<Student>(_gymDbContext);
-
-        public IGenericRepository<Supplement> SupplementRepository =>   new GenericRepository<Supplement>(_gymDbContext);
 
         public IGenericRepository<UnitCity> UnitCityRepository =>   new GenericRepository<UnitCity>(_gymDbContext);
 

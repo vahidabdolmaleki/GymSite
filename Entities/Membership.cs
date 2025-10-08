@@ -2,7 +2,6 @@
 {
     public class Membership:BaseEntity
     {
-        public int Id { get; set; }
         public string Title { get; set; } = null!;
         public int DurationInDays { get; set; }
         public decimal Price { get; set; }

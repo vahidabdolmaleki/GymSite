@@ -1,8 +1,7 @@
 ﻿namespace Entities
 {
-    public class Log
+    public class Log:BaseEntity
     {
-        public int Id { get; set; }
         public int? UserId { get; set; }
         public User? User { get; set; }
         public string Action { get; set; } = null!; // مثل "Login" یا "FailedPassword"
