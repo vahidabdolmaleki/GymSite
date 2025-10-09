@@ -13,7 +13,11 @@ namespace DAL.Repository
 {
     public class OrderRepository : GenericRepository<Order>, IOrderRepository
     {
-        public OrderRepository(GymDbContext gymDbContext):base(gymDbContext){}
+        private readonly GymDbContext _gymDbContext;
+
+        public OrderRepository(GymDbContext gymDbContext):base(gymDbContext){
+            _gymDbContext = gymDbContext;
+        }
 
         public List<Order> GetOrderByPerson(int personId)
         {

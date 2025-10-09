@@ -12,7 +12,11 @@ namespace DAL.Repository
 {
     public class PersonRepository : GenericRepository<Person>, IPersonRepository
     {
-        public PersonRepository(GymDbContext context) : base(context) { }
+        private readonly GymDbContext _gymDbContext;
+
+        public PersonRepository(GymDbContext gymDbContext) : base(gymDbContext) {
+            _gymDbContext = gymDbContext;
+        }
 
         public Person? FindByUsername(string username) =>
             _dbSet.FirstOrDefault(p => p.Username == username);

@@ -30,6 +30,7 @@ namespace DAL.Context
         public DbSet<UnitCity> UnitCities { get; set; }
         public DbSet<PersonPicture> PersonPictures { get; set; }
         public DbSet<Device> Devices { get; set; }
+        public DbSet<DietPlan> DietPlans { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Membership> Memberships { get; set; }

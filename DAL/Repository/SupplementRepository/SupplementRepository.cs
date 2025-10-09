@@ -12,8 +12,11 @@ namespace DAL.Repository.SupplementRepository
 {
     internal class SupplementRepository : GenericRepository<Supplement>, ISupplementRepository
     {
-        public SupplementRepository(GymDbContext context) : base(context)
+        private readonly GymDbContext _gymDbContext;
+
+        public SupplementRepository(GymDbContext gymDbContext) : base(gymDbContext)
         {
+            _gymDbContext = gymDbContext;
         }
 
         // 🔹 مکمل‌های منقضی شده

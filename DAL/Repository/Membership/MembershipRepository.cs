@@ -12,8 +12,11 @@ namespace DAL.Repositories.Implementations
 {
     public class MembershipRepository : GenericRepository<UserMembership>, IMembershipRepository
     {
-        public MembershipRepository(GymDbContext context) : base(context)
+        private readonly GymDbContext _gymDbContext;
+
+        public MembershipRepository(GymDbContext gymDbContext) : base(gymDbContext)
         {
+            _gymDbContext = gymDbContext;
         }
 
         public bool HasActiveMembership(int userId)

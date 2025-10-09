@@ -13,8 +13,11 @@ namespace DAL.Repository.MembershipType
 {
     public class MembershipTypeRepository : GenericRepository<Membership>, IMembershipTypeRepository
     {
-        public MembershipTypeRepository(GymDbContext context) : base(context)
+        private readonly GymDbContext _gymDbContext;
+
+        public MembershipTypeRepository(GymDbContext gymDbContext) : base(gymDbContext)
         {
+            _gymDbContext = gymDbContext;
         }
 
         public Membership? GetByTitle(string title)

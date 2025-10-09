@@ -41,6 +41,9 @@ namespace DAL.UnitOfWork
         public IMembershipTypeRepository MembershipTypeRepository => new MembershipTypeRepository(_gymDbContext);
         public ISupplementRepository SupplementRepository => new SupplementRepository(_gymDbContext);
         public ILogRepository LogRepository => new LogRepository(_gymDbContext);
+        public IHealthRecordRepository HealthRecordRepository => new HealthRecordRepository(_gymDbContext);
+        public IDietPlanRepository DietPlanRepository => new DietPlanRepository(_gymDbContext);
+
 
         private IProductRepository? _productRepository;
 
@@ -60,13 +63,9 @@ namespace DAL.UnitOfWork
 
         public IGenericRepository<ClassEnrollment> ClassEnrollmentRepository =>   new GenericRepository<ClassEnrollment>(_gymDbContext);
 
-        public IGenericRepository<Coach> CoachRepository =>   new GenericRepository<Coach>(_gymDbContext);
-
-        public IGenericRepository<DietPlan> DietPlanRepository =>   new GenericRepository<DietPlan>(_gymDbContext);
+        public IGenericRepository<Coach> CoachRepository =>   new GenericRepository<Coach>(_gymDbContext);        
 
         public IGenericRepository<GymClass> GymClassRepository =>   new GenericRepository<GymClass>(_gymDbContext);
-
-        public IGenericRepository<HealthRecord> HealthRecordRepository =>   new GenericRepository<HealthRecord>(_gymDbContext);
 
         public IGenericRepository<OrderItem> OrderItemRepository => new GenericRepository<OrderItem>(_gymDbContext);
 

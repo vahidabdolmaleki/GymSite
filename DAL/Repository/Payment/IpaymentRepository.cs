@@ -10,23 +10,23 @@ namespace DAL.Repository
 {
     public interface IpaymentRepository:IGenericRepository<Payment> 
     {
-        //همه پرداخت های یک کاربر
+        // همه پرداخت‌های یک کاربر
         List<Payment> GetPaymentsByPerson(int personId);
-        Task<List<Payment>> GetPaymentByPersonAsync(int PersonId);
+        Task<List<Payment>> GetPaymentsByPersonAsync(int personId);
 
-        // پرداخت های موفق
+        // پرداخت‌های موفق
         List<Payment> GetSuccessfulPayments();
-        Task<List<Payment>> GetSuccessfulPaymentAsync();
+        Task<List<Payment>> GetSuccessfulPaymentsAsync();
 
-        // پرداخت های ناموفق
-        List<Payment> GetFailPayments();
-        Task<List<Payment>> GetFailPaymentsAsync();
+        // پرداخت‌های ناموفق
+        List<Payment> GetFailedPayments();
+        Task<List<Payment>> GetFailedPaymentsAsync();
 
-        //پرداخت های مرتبط با یک سفارش
+        // پرداخت‌های مرتبط با یک سفارش
         List<Payment> GetPaymentsByOrder(int orderId);
         Task<List<Payment>> GetPaymentsByOrderAsync(int orderId);
 
-        //آخرین پرداخت های کاربر
+        // آخرین پرداخت یک کاربر
         Payment? GetLastPayment(int personId);
         Task<Payment?> GetLastPaymentAsync(int personId);
     }

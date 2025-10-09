@@ -12,8 +12,11 @@ namespace DAL.Repository.LogRepository
 {
     public class LogRepository : GenericRepository<Log>, ILogRepository
     {
-        public LogRepository(GymDbContext context) : base(context)
+        private readonly GymDbContext _gymDbContext;
+
+        public LogRepository(GymDbContext gymDbContext) : base(gymDbContext)
         {
+            _gymDbContext = gymDbContext;
         }
 
         // 🔹 لاگ‌های مربوط به یک کاربر خاص

@@ -30,6 +30,8 @@ namespace DAL.UnitOfWork
         IWorkoutRepository WorkoutRepository { get; }
         ILogRepository LogRepository { get; }
         IProductRepository ProductRepository { get; }
+        IHealthRecordRepository HealthRecordRepository { get; }
+        IDietPlanRepository DietPlanRepository { get; }
 
 
 
@@ -38,15 +40,12 @@ namespace DAL.UnitOfWork
         IGenericRepository<AddressDetail> AddressDetailRepository { get; }
         IGenericRepository<Category> CategoryRepository { get; }
         IGenericRepository<ClassEnrollment> ClassEnrollmentRepository { get; }
-        IGenericRepository<Coach> CoachRepository { get; }
-        IGenericRepository<DietPlan> DietPlanRepository { get; }
-        IGenericRepository<GymClass> GymClassRepository { get; }
-        IGenericRepository<HealthRecord> HealthRecordRepository { get; }
+        IGenericRepository<Coach> CoachRepository { get; }        
+        IGenericRepository<GymClass> GymClassRepository { get; }        
         IGenericRepository<OrderItem> OrderItemRepository { get; }
         IGenericRepository<Permission> PermissionRepository { get; }
         IGenericRepository<PersonPicture> PersonPictureRepository { get; }
         IGenericRepository<PersonRole> PersonRoleRepository { get; }
-        IGenericRepository<Product> ProductRepository { get; }
         IGenericRepository<Role> RoleRepository { get; }
         IGenericRepository<RolePermission> RolePermissionRepository { get; }
         IGenericRepository<Student> StudentRepository { get; }

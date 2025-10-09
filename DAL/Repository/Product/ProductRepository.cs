@@ -12,8 +12,11 @@ namespace DAL.Repository
 {
     public class ProductRepository : GenericRepository<Product>, IProductRepository
     {
-        public ProductRepository(GymDbContext context) : base(context)
+        private readonly GymDbContext _gymDbContext;
+
+        public ProductRepository(GymDbContext gymDbContext) : base(gymDbContext)
         {
+            _gymDbContext = gymDbContext;
         }
 
         public IEnumerable<Product> SearchByName(string keyword)

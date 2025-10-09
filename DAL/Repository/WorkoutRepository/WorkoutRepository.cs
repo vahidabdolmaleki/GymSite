@@ -13,7 +13,12 @@ namespace DAL.Repository.WorkoutRepository
 {
     public class WorkoutRepository : GenericRepository<Workout>, IWorkoutRepository
     {
-        public WorkoutRepository(GymDbContext gymDbContext) : base(gymDbContext) { }
+        private readonly GymDbContext _gymDbContext;
+
+        public WorkoutRepository(GymDbContext gymDbContext) : base(gymDbContext) 
+        {
+            _gymDbContext = gymDbContext;
+        }
 
         public List<Workout> GetBySubCategory(int SubCategoryId) => _dbSet.Where(w=> w.WorkoutSubCategoryId == SubCategoryId).ToList();
         public async Task<List<Workout>> GetBySubcategoryAsync(int subCategoryId) => await _dbSet.Where(w => w.WorkoutSubCategoryId == subCategoryId).ToListAsync();

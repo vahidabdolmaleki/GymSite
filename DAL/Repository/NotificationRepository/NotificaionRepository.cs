@@ -12,9 +12,11 @@ namespace DAL.Repository.NotificationRepository
 {
     public class NotificationRepository : GenericRepository<Notification>, INotificationRepository
     {
+        private readonly GymDbContext _gymDbContext;
+
         public NotificationRepository(GymDbContext gymDbContext):base(gymDbContext)
         {
-            
+            _gymDbContext = gymDbContext;
         }
 
         public List<Notification> GetByDevice(int deviceId) => _dbSet.Where(n=> n.DeviceId == deviceId).ToList();
