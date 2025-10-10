@@ -9,13 +9,8 @@ using DAL.Repository.NotificationRepository;
 using DAL.Repository.SupplementRepository;
 using DAL.Repository.WorkoutRepository;
 using Entities;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace DAL.UnitOfWork
 {
@@ -43,7 +38,11 @@ namespace DAL.UnitOfWork
         public ILogRepository LogRepository => new LogRepository(_gymDbContext);
         public IHealthRecordRepository HealthRecordRepository => new HealthRecordRepository(_gymDbContext);
         public IDietPlanRepository DietPlanRepository => new DietPlanRepository(_gymDbContext);
-
+        public ICoachRepository CoachRepository => new CoachRepository(_gymDbContext);
+        public IClassEnrollmentRepository ClassEnrollmentRepository => new ClassEnrollmentRepository(_gymDbContext);
+        public IGymClassRepository GymClassRepository => new GymClassRepository(_gymDbContext);
+        public ICategoryRepository CategoryRepository => new CategoryRepository(_gymDbContext);
+        public IStudentRepository StudentRepository => new StudentRepository(_gymDbContext);
 
         private IProductRepository? _productRepository;
 
@@ -59,13 +58,6 @@ namespace DAL.UnitOfWork
         public IGenericRepository<AddressDetail> AddressDetailRepository => new GenericRepository<AddressDetail>(_gymDbContext);
         public IGenericRepository<Address> AddressRepository =>   new GenericRepository<Address>(_gymDbContext);
 
-        public IGenericRepository<Category> CategoryRepository =>   new GenericRepository<Category>(_gymDbContext);
-
-        public IGenericRepository<ClassEnrollment> ClassEnrollmentRepository =>   new GenericRepository<ClassEnrollment>(_gymDbContext);
-
-        public IGenericRepository<Coach> CoachRepository =>   new GenericRepository<Coach>(_gymDbContext);        
-
-        public IGenericRepository<GymClass> GymClassRepository =>   new GenericRepository<GymClass>(_gymDbContext);
 
         public IGenericRepository<OrderItem> OrderItemRepository => new GenericRepository<OrderItem>(_gymDbContext);
 
@@ -77,9 +69,7 @@ namespace DAL.UnitOfWork
 
         public IGenericRepository<Role> RoleRepository =>   new GenericRepository<Role>(_gymDbContext);
 
-        public IGenericRepository<RolePermission> RolePermissionRepository =>   new GenericRepository<RolePermission>(_gymDbContext);
-
-        public IGenericRepository<Student> StudentRepository =>   new GenericRepository<Student>(_gymDbContext);
+        public IGenericRepository<RolePermission> RolePermissionRepository =>   new GenericRepository<RolePermission>(_gymDbContext);       
 
         public IGenericRepository<UnitCity> UnitCityRepository =>   new GenericRepository<UnitCity>(_gymDbContext);
 

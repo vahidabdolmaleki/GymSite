@@ -32,23 +32,24 @@ namespace DAL.UnitOfWork
         IProductRepository ProductRepository { get; }
         IHealthRecordRepository HealthRecordRepository { get; }
         IDietPlanRepository DietPlanRepository { get; }
-
+        ICoachRepository CoachRepository { get; }
+        IClassEnrollmentRepository ClassEnrollmentRepository { get; }
+        IGymClassRepository GymClassRepository { get; }
+        ICategoryRepository CategoryRepository { get; }
+        IStudentRepository StudentRepository { get; }
 
 
         //---- GenericRepository
         IGenericRepository<Address> AddressRepository { get; }
         IGenericRepository<AddressDetail> AddressDetailRepository { get; }
-        IGenericRepository<Category> CategoryRepository { get; }
-        IGenericRepository<ClassEnrollment> ClassEnrollmentRepository { get; }
-        IGenericRepository<Coach> CoachRepository { get; }        
-        IGenericRepository<GymClass> GymClassRepository { get; }        
+              
+        
         IGenericRepository<OrderItem> OrderItemRepository { get; }
         IGenericRepository<Permission> PermissionRepository { get; }
         IGenericRepository<PersonPicture> PersonPictureRepository { get; }
         IGenericRepository<PersonRole> PersonRoleRepository { get; }
         IGenericRepository<Role> RoleRepository { get; }
         IGenericRepository<RolePermission> RolePermissionRepository { get; }
-        IGenericRepository<Student> StudentRepository { get; }
         IGenericRepository<UnitCity> UnitCityRepository { get; }
         IGenericRepository<User> UserRepository { get; }
         IGenericRepository<UserMembership> UserMembershipRepository { get; }

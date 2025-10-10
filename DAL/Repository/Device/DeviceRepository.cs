@@ -12,8 +12,11 @@ namespace DAL.Repository
 {
     public class DeviceRepository : GenericRepository<Device>, IDeviceRepository
     {
-        public DeviceRepository(GymDbContext context) : base(context)
+        private readonly GymDbContext _gymDbContext;
+
+        public DeviceRepository(GymDbContext gymDbContext) : base(gymDbContext)
         {
+            _gymDbContext = gymDbContext;
         }
 
         public List<Device> GetByPerson(int personId)

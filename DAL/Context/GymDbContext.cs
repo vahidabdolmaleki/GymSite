@@ -27,6 +27,10 @@ namespace DAL.Context
         public DbSet<PersonType> PersonTypes { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<AddressDetail> AddressDetails { get; set; }
+        public DbSet<Coach> Coaches { get; set; }
+        public DbSet<ClassEnrollment> ClassEnrollments { get; set; }
+        public DbSet<GymClass> GymClasses { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<UnitCity> UnitCities { get; set; }
         public DbSet<PersonPicture> PersonPictures { get; set; }
         public DbSet<Device> Devices { get; set; }
@@ -38,6 +42,7 @@ namespace DAL.Context
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<WorkoutCategory> WorkoutCategories { get; set; }
         public DbSet<WorkoutSubCategory> WorkoutSubCategories { get; set; }
+        public DbSet<Student> Students { get; set; }
         public DbSet<Workout> Workouts { get; set; }
         public DbSet<WorkoutLog> WorkoutLogs { get; set; }
         public DbSet<HealthRecord> HealthRecords { get; set; }
