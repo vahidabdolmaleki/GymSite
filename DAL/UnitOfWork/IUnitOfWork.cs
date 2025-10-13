@@ -45,6 +45,7 @@ namespace DAL.UnitOfWork
         IUserMembershipRepository UserMembershipRepository { get; }
         IWorkoutPlanRepository WorkoutPlanRepository { get; }
         IWorkoutLogRepository WorkoutLogRepository { get; }
+        IWorkoutHistoryRepository WorkoutHistoryRepository { get; }
 
         //---- GenericRepository
         IGenericRepository<Address> AddressRepository { get; }
@@ -54,7 +55,6 @@ namespace DAL.UnitOfWork
         IGenericRepository<UnitCity> UnitCityRepository { get; }
         IGenericRepository<User> UserRepository { get; }
         IGenericRepository<WorkoutCategory> WorkoutCategoryRepository { get; }
-        IGenericRepository<WorkoutHistory> WorkoutHistoryRepository { get; }        
         IGenericRepository<WorkoutSubCategory> WorkoutSubCategoryRepository { get; }        
 
         void Commit();

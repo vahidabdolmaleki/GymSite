@@ -54,6 +54,7 @@ namespace DAL.Context
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<UserMembership> UserMemberships { get; set; }
+        public DbSet<WorkoutHistory> WorkoutHistories { get; set; }
         
         public DbSet<RolePermission> RolePermissions{ get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
