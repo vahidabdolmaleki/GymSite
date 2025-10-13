@@ -43,6 +43,8 @@ namespace DAL.UnitOfWork
         public IGymClassRepository GymClassRepository => new GymClassRepository(_gymDbContext);
         public ICategoryRepository CategoryRepository => new CategoryRepository(_gymDbContext);
         public IStudentRepository StudentRepository => new StudentRepository(_gymDbContext);
+        public IRoleRepository RoleRepository => new RoleRepository(_gymDbContext);
+        public IPermissionRepository PermissionRepository => new PermissionRepository(_gymDbContext);
 
         private IProductRepository? _productRepository;
 
@@ -59,15 +61,11 @@ namespace DAL.UnitOfWork
         public IGenericRepository<Address> AddressRepository =>   new GenericRepository<Address>(_gymDbContext);
 
 
-        public IGenericRepository<OrderItem> OrderItemRepository => new GenericRepository<OrderItem>(_gymDbContext);
-
-        public IGenericRepository<Permission> PermissionRepository =>   new GenericRepository<Permission>(_gymDbContext);
+        public IGenericRepository<OrderItem> OrderItemRepository => new GenericRepository<OrderItem>(_gymDbContext);       
 
         public IGenericRepository<PersonPicture> PersonPictureRepository =>   new GenericRepository<PersonPicture>(_gymDbContext);
 
-        public IGenericRepository<PersonRole> PersonRoleRepository =>   new GenericRepository<PersonRole>(_gymDbContext);
-
-        public IGenericRepository<Role> RoleRepository =>   new GenericRepository<Role>(_gymDbContext);
+        public IGenericRepository<PersonRole> PersonRoleRepository =>   new GenericRepository<PersonRole>(_gymDbContext);           
 
         public IGenericRepository<RolePermission> RolePermissionRepository =>   new GenericRepository<RolePermission>(_gymDbContext);       
 
@@ -88,7 +86,6 @@ namespace DAL.UnitOfWork
         public IGenericRepository<WorkoutPlan> WorkoutPlanRepository =>   new GenericRepository<WorkoutPlan>(_gymDbContext);
 
         public IGenericRepository<WorkoutSubCategory> WorkoutSubCategoryRepository =>   new GenericRepository<WorkoutSubCategory>(_gymDbContext);
-
 
         public void Commit()
         {

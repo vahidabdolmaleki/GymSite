@@ -50,6 +50,7 @@ namespace DAL.Context
         public DbSet<Supplement> Supplements { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<RolePermission> RolePermissions{ get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

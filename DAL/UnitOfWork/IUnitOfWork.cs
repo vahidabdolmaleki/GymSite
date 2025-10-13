@@ -37,18 +37,15 @@ namespace DAL.UnitOfWork
         IGymClassRepository GymClassRepository { get; }
         ICategoryRepository CategoryRepository { get; }
         IStudentRepository StudentRepository { get; }
-
+        IRoleRepository RoleRepository { get; }
+        IPermissionRepository PermissionRepository { get; }
 
         //---- GenericRepository
         IGenericRepository<Address> AddressRepository { get; }
-        IGenericRepository<AddressDetail> AddressDetailRepository { get; }
-              
-        
+        IGenericRepository<AddressDetail> AddressDetailRepository { get; }                      
         IGenericRepository<OrderItem> OrderItemRepository { get; }
-        IGenericRepository<Permission> PermissionRepository { get; }
         IGenericRepository<PersonPicture> PersonPictureRepository { get; }
         IGenericRepository<PersonRole> PersonRoleRepository { get; }
-        IGenericRepository<Role> RoleRepository { get; }
         IGenericRepository<RolePermission> RolePermissionRepository { get; }
         IGenericRepository<UnitCity> UnitCityRepository { get; }
         IGenericRepository<User> UserRepository { get; }
