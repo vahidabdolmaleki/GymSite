@@ -21,5 +21,8 @@ namespace DAL.Repository
         // بررسی اینکه آیا این مجوز توسط هیچ نقشی استفاده می‌شود یا نه
         bool IsInUse(int id);
         Task<bool> IsInUseAsync(int id);
+        // اگر خواستی بعداً بر اساس Role یا Action جستجو خاصی بنویسی، می‌تونی اینجا اضافه کنی.
+        Permission? GetByActionName(string actionName);
+        Task<Permission?> GetByActionNameAsync(string actionName);
     }
 }

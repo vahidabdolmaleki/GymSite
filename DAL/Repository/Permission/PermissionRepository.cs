@@ -48,5 +48,10 @@ namespace DAL.Repository
 
         public async Task<bool> IsInUseAsync(int id) =>
             await _context.RolePermissions.AnyAsync(rp => rp.PermissionId == id);
+        public Permission? GetByActionName(string actionName)=> _context.Permissions
+                .FirstOrDefault(p => p.ActionName.ToLower() == actionName.ToLower());
+
+        public async Task<Permission?> GetByActionNameAsync(string actionName)=>await _context.Permissions
+                .FirstOrDefaultAsync(p => p.ActionName.ToLower() == actionName.ToLower());
     }
 }

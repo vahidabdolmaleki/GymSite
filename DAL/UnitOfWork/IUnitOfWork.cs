@@ -39,22 +39,22 @@ namespace DAL.UnitOfWork
         IStudentRepository StudentRepository { get; }
         IRoleRepository RoleRepository { get; }
         IPermissionRepository PermissionRepository { get; }
+        IRolePermissionRepository RolePermissionRepository { get; }
+        IPersonRoleRepostiory PersonRoleRepostiory { get; }
+        IUserRoleRepository UserRoleRepository { get; }
+        IUserMembershipRepository UserMembershipRepository { get; }
+        IWorkoutPlanRepository WorkoutPlanRepository { get; }
+        IWorkoutLogRepository WorkoutLogRepository { get; }
 
         //---- GenericRepository
         IGenericRepository<Address> AddressRepository { get; }
         IGenericRepository<AddressDetail> AddressDetailRepository { get; }                      
         IGenericRepository<OrderItem> OrderItemRepository { get; }
         IGenericRepository<PersonPicture> PersonPictureRepository { get; }
-        IGenericRepository<PersonRole> PersonRoleRepository { get; }
-        IGenericRepository<RolePermission> RolePermissionRepository { get; }
         IGenericRepository<UnitCity> UnitCityRepository { get; }
         IGenericRepository<User> UserRepository { get; }
-        IGenericRepository<UserMembership> UserMembershipRepository { get; }
-        IGenericRepository<UserRole> UserRoleRepository { get; }
         IGenericRepository<WorkoutCategory> WorkoutCategoryRepository { get; }
-        IGenericRepository<WorkoutHistory> WorkoutHistoryRepository { get; }
-        IGenericRepository<WorkoutLog> WorkoutLogRepository { get; }
-        IGenericRepository<WorkoutPlan> WorkoutPlanRepository { get; }
+        IGenericRepository<WorkoutHistory> WorkoutHistoryRepository { get; }        
         IGenericRepository<WorkoutSubCategory> WorkoutSubCategoryRepository { get; }        
 
         void Commit();

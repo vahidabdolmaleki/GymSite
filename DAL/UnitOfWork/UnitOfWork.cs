@@ -45,6 +45,13 @@ namespace DAL.UnitOfWork
         public IStudentRepository StudentRepository => new StudentRepository(_gymDbContext);
         public IRoleRepository RoleRepository => new RoleRepository(_gymDbContext);
         public IPermissionRepository PermissionRepository => new PermissionRepository(_gymDbContext);
+        public IRolePermissionRepository RolePermissionRepository => new RolePermissionRepository(_gymDbContext);
+        public IPersonRoleRepostiory PersonRoleRepostiory => new PersonRoleRepository(_gymDbContext);
+        public IUserRoleRepository UserRoleRepository => new UserRoleRepository(_gymDbContext);
+        public IUserMembershipRepository UserMembershipRepository => new UserMembershipRepository(_gymDbContext);
+        public IWorkoutPlanRepository WorkoutPlanRepository => new WorkoutPlanRepository(_gymDbContext);
+        public IWorkoutLogRepository WorkoutLogRepository => new WorkoutLogRepository(_gymDbContext);
+
 
         private IProductRepository? _productRepository;
 
@@ -59,32 +66,12 @@ namespace DAL.UnitOfWork
         // --- Generic Repository's
         public IGenericRepository<AddressDetail> AddressDetailRepository => new GenericRepository<AddressDetail>(_gymDbContext);
         public IGenericRepository<Address> AddressRepository =>   new GenericRepository<Address>(_gymDbContext);
-
-
-        public IGenericRepository<OrderItem> OrderItemRepository => new GenericRepository<OrderItem>(_gymDbContext);       
-
+        public IGenericRepository<OrderItem> OrderItemRepository => new GenericRepository<OrderItem>(_gymDbContext);
         public IGenericRepository<PersonPicture> PersonPictureRepository =>   new GenericRepository<PersonPicture>(_gymDbContext);
-
-        public IGenericRepository<PersonRole> PersonRoleRepository =>   new GenericRepository<PersonRole>(_gymDbContext);           
-
-        public IGenericRepository<RolePermission> RolePermissionRepository =>   new GenericRepository<RolePermission>(_gymDbContext);       
-
         public IGenericRepository<UnitCity> UnitCityRepository =>   new GenericRepository<UnitCity>(_gymDbContext);
-
-        public IGenericRepository<User> UserRepository =>   new GenericRepository<User>(_gymDbContext);
-
-        public IGenericRepository<UserMembership> UserMembershipRepository =>   new GenericRepository<UserMembership>(_gymDbContext);
-
-        public IGenericRepository<UserRole> UserRoleRepository =>   new GenericRepository<UserRole>(_gymDbContext);
-
+        public IGenericRepository<User> UserRepository =>   new GenericRepository<User>(_gymDbContext);        
         public IGenericRepository<WorkoutCategory> WorkoutCategoryRepository =>   new GenericRepository<WorkoutCategory>(_gymDbContext);
-
-        public IGenericRepository<WorkoutHistory> WorkoutHistoryRepository =>   new GenericRepository<WorkoutHistory>(_gymDbContext);
-
-        public IGenericRepository<WorkoutLog> WorkoutLogRepository =>   new GenericRepository<WorkoutLog>(_gymDbContext);
-
-        public IGenericRepository<WorkoutPlan> WorkoutPlanRepository =>   new GenericRepository<WorkoutPlan>(_gymDbContext);
-
+        public IGenericRepository<WorkoutHistory> WorkoutHistoryRepository =>   new GenericRepository<WorkoutHistory>(_gymDbContext);        
         public IGenericRepository<WorkoutSubCategory> WorkoutSubCategoryRepository =>   new GenericRepository<WorkoutSubCategory>(_gymDbContext);
 
         public void Commit()

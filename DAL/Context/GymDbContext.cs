@@ -25,6 +25,7 @@ namespace DAL.Context
         }
         public DbSet<Person> People { get; set; }
         public DbSet<PersonType> PersonTypes { get; set; }
+        public DbSet<PersonRole> PersonRoles { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<AddressDetail> AddressDetails { get; set; }
         public DbSet<Coach> Coaches { get; set; }
@@ -44,12 +45,16 @@ namespace DAL.Context
         public DbSet<WorkoutSubCategory> WorkoutSubCategories { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Workout> Workouts { get; set; }
+        public DbSet<WorkoutPlan> WorkoutPlans { get; set; }
         public DbSet<WorkoutLog> WorkoutLogs { get; set; }
         public DbSet<HealthRecord> HealthRecords { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Supplement> Supplements { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<UserMembership> UserMemberships { get; set; }
+        
         public DbSet<RolePermission> RolePermissions{ get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
