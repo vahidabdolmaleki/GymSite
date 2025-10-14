@@ -53,7 +53,7 @@ namespace DAL.UnitOfWork
         public IWorkoutLogRepository WorkoutLogRepository => new WorkoutLogRepository(_gymDbContext);
         public IWorkoutHistoryRepository WorkoutHistoryRepository =>  new  WorkoutHistoryRepository(_gymDbContext);
         public IWorkoutCategoryRepository WorkoutCategoryRepository => new WorkoutCategoryRepository(_gymDbContext);
-
+        public IWorkoutSubCategoryRepository WorkoutSubCategoryRepository => new WorkoutSubCategoryRepository(_gymDbContext);
 
         private IProductRepository? _productRepository;
 
@@ -72,7 +72,6 @@ namespace DAL.UnitOfWork
         public IGenericRepository<PersonPicture> PersonPictureRepository =>   new GenericRepository<PersonPicture>(_gymDbContext);
         public IGenericRepository<UnitCity> UnitCityRepository =>   new GenericRepository<UnitCity>(_gymDbContext);
         public IGenericRepository<User> UserRepository =>   new GenericRepository<User>(_gymDbContext);        
-        public IGenericRepository<WorkoutSubCategory> WorkoutSubCategoryRepository =>   new GenericRepository<WorkoutSubCategory>(_gymDbContext);
 
         public void Commit()
         {

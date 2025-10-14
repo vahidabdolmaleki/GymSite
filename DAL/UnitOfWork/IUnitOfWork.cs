@@ -47,15 +47,14 @@ namespace DAL.UnitOfWork
         IWorkoutLogRepository WorkoutLogRepository { get; }
         IWorkoutHistoryRepository WorkoutHistoryRepository { get; }
         IWorkoutCategoryRepository WorkoutCategoryRepository { get; }
-
+        IWorkoutSubCategoryRepository WorkoutSubCategoryRepository { get; }
         //---- GenericRepository
         IGenericRepository<Address> AddressRepository { get; }
         IGenericRepository<AddressDetail> AddressDetailRepository { get; }                      
         IGenericRepository<OrderItem> OrderItemRepository { get; }
         IGenericRepository<PersonPicture> PersonPictureRepository { get; }
         IGenericRepository<UnitCity> UnitCityRepository { get; }
-        IGenericRepository<User> UserRepository { get; }
-        IGenericRepository<WorkoutSubCategory> WorkoutSubCategoryRepository { get; }        
+        IGenericRepository<User> UserRepository { get; }        
 
         void Commit();
     }
