@@ -55,7 +55,10 @@ namespace DAL.UnitOfWork
         public IWorkoutCategoryRepository WorkoutCategoryRepository => new WorkoutCategoryRepository(_gymDbContext);
         public IWorkoutSubCategoryRepository WorkoutSubCategoryRepository => new WorkoutSubCategoryRepository(_gymDbContext);
         public IWorkoutMediaRepository WorkoutMediaRepository => new WorkoutMediaRepository(_gymDbContext);
-
+        public IAddressRepository AddressRepository => new AddressRepository(_gymDbContext);
+        public IAddressDetailRepository AddressDetailRepository => new AddressDetailRepository(_gymDbContext);
+        public IOrderItemRepository OrderItemRepository => new OrderItemRepository(_gymDbContext);
+        
         private IProductRepository? _productRepository;
 
         public IProductRepository ProductRepository
@@ -67,9 +70,6 @@ namespace DAL.UnitOfWork
         }
 
         // --- Generic Repository's
-        public IGenericRepository<AddressDetail> AddressDetailRepository => new GenericRepository<AddressDetail>(_gymDbContext);
-        public IGenericRepository<Address> AddressRepository =>   new GenericRepository<Address>(_gymDbContext);
-        public IGenericRepository<OrderItem> OrderItemRepository => new GenericRepository<OrderItem>(_gymDbContext);
         public IGenericRepository<PersonPicture> PersonPictureRepository =>   new GenericRepository<PersonPicture>(_gymDbContext);
         public IGenericRepository<UnitCity> UnitCityRepository =>   new GenericRepository<UnitCity>(_gymDbContext);
         public IGenericRepository<User> UserRepository =>   new GenericRepository<User>(_gymDbContext);        

@@ -49,10 +49,10 @@ namespace DAL.UnitOfWork
         IWorkoutCategoryRepository WorkoutCategoryRepository { get; }
         IWorkoutSubCategoryRepository WorkoutSubCategoryRepository { get; }
         IWorkoutMediaRepository WorkoutMediaRepository { get; }
+        IAddressRepository AddressRepository { get; }
+        IAddressDetailRepository AddressDetailRepository { get; }                      
+        IOrderItemRepository OrderItemRepository { get; }
         //---- GenericRepository
-        IGenericRepository<Address> AddressRepository { get; }
-        IGenericRepository<AddressDetail> AddressDetailRepository { get; }                      
-        IGenericRepository<OrderItem> OrderItemRepository { get; }
         IGenericRepository<PersonPicture> PersonPictureRepository { get; }
         IGenericRepository<UnitCity> UnitCityRepository { get; }
         IGenericRepository<User> UserRepository { get; }        
