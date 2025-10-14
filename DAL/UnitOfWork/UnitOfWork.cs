@@ -59,6 +59,7 @@ namespace DAL.UnitOfWork
         public IAddressDetailRepository AddressDetailRepository => new AddressDetailRepository(_gymDbContext);
         public IOrderItemRepository OrderItemRepository => new OrderItemRepository(_gymDbContext);
         public IPersonPictureRepository PersonPictureRepository => new PersonPictureRepository(_gymDbContext);
+        public IUnitCityRepository UnitCityRepository => new UnitCityRepository(_gymDbContext);
 
 
         private IProductRepository? _productRepository;
@@ -72,7 +73,7 @@ namespace DAL.UnitOfWork
         }
 
         // --- Generic Repository's
-        public IGenericRepository<UnitCity> UnitCityRepository =>   new GenericRepository<UnitCity>(_gymDbContext);
+        
         public IGenericRepository<User> UserRepository =>   new GenericRepository<User>(_gymDbContext);        
 
         public void Commit()

@@ -53,9 +53,10 @@ namespace DAL.UnitOfWork
         IAddressDetailRepository AddressDetailRepository { get; }                      
         IOrderItemRepository OrderItemRepository { get; }
         IPersonPictureRepository PersonPictureRepository { get; }
+        IUnitCityRepository UnitCityRepository { get; }
 
         //---- GenericRepository
-        IGenericRepository<UnitCity> UnitCityRepository { get; }
+
         IGenericRepository<User> UserRepository { get; }        
 
         void Commit();
