@@ -54,6 +54,7 @@ namespace DAL.UnitOfWork
         public IWorkoutHistoryRepository WorkoutHistoryRepository =>  new  WorkoutHistoryRepository(_gymDbContext);
         public IWorkoutCategoryRepository WorkoutCategoryRepository => new WorkoutCategoryRepository(_gymDbContext);
         public IWorkoutSubCategoryRepository WorkoutSubCategoryRepository => new WorkoutSubCategoryRepository(_gymDbContext);
+        public IWorkoutMediaRepository WorkoutMediaRepository => new WorkoutMediaRepository(_gymDbContext);
 
         private IProductRepository? _productRepository;
 

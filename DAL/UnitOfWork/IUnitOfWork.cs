@@ -48,6 +48,7 @@ namespace DAL.UnitOfWork
         IWorkoutHistoryRepository WorkoutHistoryRepository { get; }
         IWorkoutCategoryRepository WorkoutCategoryRepository { get; }
         IWorkoutSubCategoryRepository WorkoutSubCategoryRepository { get; }
+        IWorkoutMediaRepository WorkoutMediaRepository { get; }
         //---- GenericRepository
         IGenericRepository<Address> AddressRepository { get; }
         IGenericRepository<AddressDetail> AddressDetailRepository { get; }                      
