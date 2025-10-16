@@ -29,6 +29,8 @@ namespace DAL.Repository
 
         public async Task<Person?> FindByNationalCodeAsync(string nationalCode) =>
             await _dbSet.FirstOrDefaultAsync(p => p.NationalCode == nationalCode);
+
+        public async Task<Person?> FindByIdAsync(int Id) => await _dbSet.FirstOrDefaultAsync(p => p.Id == Id);
     }
 
 }

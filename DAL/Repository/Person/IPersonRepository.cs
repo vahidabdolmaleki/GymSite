@@ -15,6 +15,8 @@ namespace DAL.Repository
 
         Person? FindByNationalCode(string nationalCode);
         Task<Person?> FindByNationalCodeAsync(string nationalCode);
+
+        Task<Person?> FindByIdAsync(int Id);
     }
 
 }

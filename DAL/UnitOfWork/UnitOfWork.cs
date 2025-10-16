@@ -80,6 +80,10 @@ namespace DAL.UnitOfWork
         {
             _gymDbContext.SaveChanges();
         }
+        public async Task CommitAsync()
+        {
+            await _gymDbContext.SaveChangesAsync();
+        }
 
         public void Dispose()
         {

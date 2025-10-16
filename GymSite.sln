@@ -3,11 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{D4710B45-37F4-428C-8D87-B2A9298E8047}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{D4710B45-37F4-428C-8D87-B2A9298E8047}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{10343F5A-6B01-4C52-AC81-8EF29B48F2FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{10343F5A-6B01-4C52-AC81-8EF29B48F2FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymSite.API", "GymSite.API\GymSite.API.csproj", "{CEE1A33B-95A9-450D-92A0-A8258201A8C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymSite.API", "GymSite.API\GymSite.API.csproj", "{CEE1A33B-95A9-450D-92A0-A8258201A8C8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationService", "ApplicationService\ApplicationService.csproj", "{13B6E6D0-C0AB-43F6-8DD5-72BE04F2413D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{B4050B7D-2405-403C-9883-D572D98EC83A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{CEE1A33B-95A9-450D-92A0-A8258201A8C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEE1A33B-95A9-450D-92A0-A8258201A8C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEE1A33B-95A9-450D-92A0-A8258201A8C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13B6E6D0-C0AB-43F6-8DD5-72BE04F2413D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13B6E6D0-C0AB-43F6-8DD5-72BE04F2413D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13B6E6D0-C0AB-43F6-8DD5-72BE04F2413D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13B6E6D0-C0AB-43F6-8DD5-72BE04F2413D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4050B7D-2405-403C-9883-D572D98EC83A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4050B7D-2405-403C-9883-D572D98EC83A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4050B7D-2405-403C-9883-D572D98EC83A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4050B7D-2405-403C-9883-D572D98EC83A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

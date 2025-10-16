@@ -60,5 +60,6 @@ namespace DAL.UnitOfWork
         IGenericRepository<User> UserRepository { get; }        
 
         void Commit();
+        Task CommitAsync();
     }
 }
