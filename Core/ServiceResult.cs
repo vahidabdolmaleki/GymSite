@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Core
+﻿namespace Core
 {
-    internal class ServiceResult
+    public class ServiceResult<TDto> : BaseServiceResult where TDto : class, new()
     {
+        public ServiceResult()
+        {
+            Data = new TDto();
+        }
+
+        public TDto Data { get; set; }
     }
+
 }
