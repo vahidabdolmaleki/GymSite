@@ -7,7 +7,7 @@
         public string? IP { get; set; }
         public string? DeviceType { get; set; } // "Android","iOS","Web"
         public string? PushNotificationId { get; set; } // token
-        public DateTime LastSeenAt { get; set; } = DateTime.UtcNow;
+        public DateTime LastSeenAt { get; set; } = DateTime.UtcNow;  // LastActiveDate برای آخرین بازدید و آخرین دستگاه کاربرد داره
     }
 }
 

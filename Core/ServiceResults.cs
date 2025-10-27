@@ -6,7 +6,6 @@
         {
             Data = new List<TDto>();
         }
-
         public IEnumerable<TDto> Data { get; set; }
     }
 

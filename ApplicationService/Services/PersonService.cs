@@ -33,182 +33,20 @@ namespace ApplicationService.Services
             _logger = logger;
             _jwtService = jwtService;
         }
-        public async Task<int> CreateAsync(PersonCreateDto dto)
+
+        public Task<ServiceResults<PersonDto>> GetAllAsync()
         {
-            try
-            {
-                // اعتبارسنجی با FluentValidation فرض می‌کنیم قبل از فراخوانی انجام شده ولی اینجا باز چک می‌کنیم
-                // Unique checks:
-                if (!string.IsNullOrEmpty(dto.Email) && _uow.PersonRepository.GetAllQueryable().Any(p => p.Email == dto.Email))
-                    throw new InvalidOperationException("Email already in use.");
-
-                if (!string.IsNullOrEmpty(dto.Username) && _uow.PersonRepository.GetAllQueryable().Any(p => p.Username == dto.Username))
-                    throw new InvalidOperationException("Username already in use.");
-
-                var person = _mapper.Map<Person>(dto);
-
-                // هش رمز با BCrypt
-                person.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
-
-                _uow.PersonRepository.Save(person);
-                await _uow.CommitAsync();
-
-                // پاک کردن کش
-                _cache.Remove(PERSON_CACHE_KEY);
-
-                return person.Id;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ExceptionMessage.CreateAsyncFailedFor, dto);
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
-        public async Task DeleteAsync(int Id)
+        public Task<ServiceResult<PersonDto>> GetByIdAsync(int id)
         {
-            try
-            {
-                _uow.PersonRoleRepostiory.Remove(Id);
-                await _uow.CommitAsync();
-                _cache.Remove(PERSON_CACHE_KEY);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex,ExceptionMessage.DeleteAsyncFeild + Id);
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<PersonDto>> GetAllAsync()
+        public Task<ServiceResult<PersonDto>> RegisterAsync(PersonCreateDto dto)
         {
-            try
-            {
-                if (_cache.TryGetValue(PERSON_CACHE_KEY, out IEnumerable<PersonDto> cached))
-                    return cached;
-
-                // GetAllQueryable defined in your repo — use it to fetch data
-                var entities = _uow.PersonRepository.GetAllQueryable().ToList();
-                var dtos = _mapper.Map<IEnumerable<PersonDto>>(entities);
-
-                _cache.Set(PERSON_CACHE_KEY, dtos, TimeSpan.FromMinutes(5));
-                return dtos;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ExceptionMessage.GetAllAsyncFailed);
-                throw;
-            }
-        }
-
-        public async Task<PersonDto?> GetByIdAsync(int id)
-        {
-            try
-            {
-                var person = _uow.PersonRepository.Find(id);
-                return person == null ? null : _mapper.Map<PersonDto>(person);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex,"Get By Id feild for {Id}",id);
-                throw;
-            }            
-        }
-
-        public async Task UpdateAsync(PersonUpdateDto dto)
-        {
-            try
-            {
-                var existing = _uow.PersonRepository.Find(dto.Id);
-                if (existing == null) throw new KeyNotFoundException(ExceptionMessage.PersonNotFound);
-                // Map only allowed feilds (or use mapper)
-                existing.FirstName = dto.FirstName ?? existing.FirstName;
-                existing.LastName = dto.LastName ?? existing.LastName;
-                existing.Email = dto.Email ?? existing.Email;
-                existing.PhoneNumber = dto.PhoneNumber ?? existing.PhoneNumber;
-                existing.BirthDate = dto.BirthDate ?? existing.BirthDate;
-
-                _uow.PersonRepository.Update(existing);
-                await _uow.CommitAsync();
-                _cache.Remove(PERSON_CACHE_KEY);
-            }
-            catch (Exception)
-            {
-
-            }
-        }
-
-        public async Task<string?> LoginAsync(PersonLoginDto Dto)
-        {
-            try
-            {
-                var person = _uow.PersonRepository.GetAll()
-                    .FirstOrDefault(
-                        p =>
-                        (!string.IsNullOrEmpty(p.Username) && p.Username == Dto.Identifier) ||
-                        (!string.IsNullOrEmpty(p.Email) && p.Email == Dto.Identifier) ||
-                        (!string.IsNullOrEmpty(p.PhoneNumber) && p.PhoneNumber == Dto.Identifier)
-                    );
-                if (person == null) return null;
-                
-                var verified = BCrypt.Net.BCrypt.Verify(Dto.Password,person.PasswordHash);
-                if (!verified) return null;
-
-                // تولید توکن اگر نخواستیم میتونیم فقط Ok برگردونیم
-                var token = _jwtService.GenerateTokenForPerson(person);
-                return token;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex,"LoginAsync faild for {@Dto}",Dto);
-                throw;
-            }
-        }
-
-        public async Task ChangePasswordAsync(int personId, string currentPassword, string newPassword)
-        {
-            try
-            {
-                var person = _uow.PersonRepository.Find(personId);
-                if (person == null) throw new KeyNotFoundException(ExceptionMessage.PersonNotFound);
-
-                if(!BCrypt.Net.BCrypt.Verify(currentPassword,person.PasswordHash))
-                    throw new UnauthorizedAccessException(ExceptionMessage.CurrentPasswordIsIncorrect);
-
-                person.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
-                await _uow.CommitAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ExceptionMessage.ChengePasswordFeildForPersonId,personId);
-                throw;
-            }
-        }
-
-        public async Task SetPrimaryPictureAsync(int personId, int pictureId)
-        {
-            try
-            {
-                // ساده: از PersonPictureRepository استفاده می‌کنیم
-
-                var pics = _uow.PersonPictureRepository.GetByPersonId(personId);
-                if (!pics.Any(p => p.Id == pictureId))
-                    throw new KeyNotFoundException(ExceptionMessage.PicNotFound);
-
-                foreach (var p in pics)
-                    p.IsPrimary = p.Id == pictureId;
-
-                // چون PersonPictureRepository.SetPrimaryPicture داشتید، می‌توانیم از آن استفاده کنیم:
-                // _uow.PersonPictureRepository.SetPrimaryPicture(personId, pictureId);
-                await _uow.CommitAsync(); // اگر تغییراتی ذخیره نشده بود در repo بالا SaveChanges انجام می‌شود
-
-
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex,ExceptionMessage.SetPrimaryPictureAsyncFeildForPersonId+ personId,personId);
-                throw;
-            }
+            throw new NotImplementedException();
         }
     }
 }

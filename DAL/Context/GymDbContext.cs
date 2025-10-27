@@ -58,6 +58,7 @@ namespace DAL.Context
         public DbSet<WorkoutMedia> WorkoutMedias { get; set; }        
         public DbSet<RolePermission> RolePermissions{ get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<VerificationCode> VerificationCodes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

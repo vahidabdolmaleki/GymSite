@@ -6,7 +6,6 @@
         {
             Data = new TDto();
         }
-
         public TDto Data { get; set; }
     }
 
