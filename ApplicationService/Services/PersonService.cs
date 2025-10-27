@@ -48,5 +48,20 @@ namespace ApplicationService.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task<ServiceResult<string>> LoginAsync(string username, string password, string deviceToken, string deviceType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ServiceResult<bool>> UpdateAsync(PersonUpdateDto dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ServiceResult<bool>> DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

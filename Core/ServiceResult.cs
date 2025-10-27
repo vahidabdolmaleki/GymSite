@@ -1,12 +1,9 @@
 ﻿namespace Core
 {
-    public class ServiceResult<TDto> : BaseServiceResult where TDto : class, new()
+    // ServiceResult.cs
+    public class ServiceResult<TDto> : BaseServiceResult
     {
-        public ServiceResult()
-        {
-            Data = new TDto();
-        }
-        public TDto Data { get; set; }
+        public TDto? Data { get; set; }
     }
 
 }

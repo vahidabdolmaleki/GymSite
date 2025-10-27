@@ -9,7 +9,7 @@ namespace Core
     public abstract class BaseServiceResult
     {
         public bool IsSuccess { get; set; }
-        public string Message { get; set; }
+        public string? Message { get; set; }
     }
 
 }
