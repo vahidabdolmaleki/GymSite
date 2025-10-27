@@ -1,4 +1,6 @@
-﻿using DAL.Context;
+﻿using ApplicationService.Interfaces;
+using ApplicationService.Services;
+using DAL.Context;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,7 @@ builder.Services.AddDbContext<GymDbContext>(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 
 var app = builder.Build();

@@ -11,6 +11,12 @@
         public const string GetAllAsyncFailed ="بازیابی کل اشخاص با خطا مواجه شد";
         public const string CreateAsyncFailedFor = "اطلاعات شخص مورد نظر ذخیره نشد";
         public const string DeleteAsyncFeild = "DeleteAsync feild for Id: ";
+        public const string CurrentPasswordIsIncorrect = "رمز عبور فعلی وارد شده اشتباه است!";
+        public const string ChengePasswordFeildForPersonId = "تغییر رمز عبور برای کاربر با خطا مواجه شد. شماره کاربر:";
+        public const string PicNotFound= "Picture not found";
+        public const string SetPrimaryPictureAsyncFeildForPersonId= "SetPrimaryPictureAsync Feild For PersonId";
+        public const string InvalidDatetime = "تاریخ را به  درستی وارد نمایید";
+
         public const string Test = "";
     }
 }

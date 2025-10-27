@@ -1,4 +1,5 @@
 ﻿using ApplicationService.DTOs;
+using ApplicationService.DTOs.Person;
 using AutoMapper;
 using Entities;
 using System;
@@ -11,7 +12,10 @@ namespace ApplicationService
 {
     public class MappingProfile : Profile
     {
-        //CreateMap<Person, PersonDto>().ReverseMap();
+        public MappingProfile()
+        {
+            CreateMap<Person, PersonDto>().ReverseMap();            
+        }
 
     }
 }

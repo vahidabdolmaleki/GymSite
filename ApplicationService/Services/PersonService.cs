@@ -165,21 +165,50 @@ namespace ApplicationService.Services
             }
         }
 
-        public Task ChangePasswordAsync(int personId, string currentPassword, string newPassword)
+        public async Task ChangePasswordAsync(int personId, string currentPassword, string newPassword)
         {
             try
             {
-                 var person = _uow   
-            }
-            catch (Exception)
-            {
+                var person = _uow.PersonRepository.Find(personId);
+                if (person == null) throw new KeyNotFoundException(ExceptionMessage.PersonNotFound);
 
+                if(!BCrypt.Net.BCrypt.Verify(currentPassword,person.PasswordHash))
+                    throw new UnauthorizedAccessException(ExceptionMessage.CurrentPasswordIsIncorrect);
+
+                person.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
+                await _uow.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ExceptionMessage.ChengePasswordFeildForPersonId,personId);
+                throw;
             }
         }
 
-        public Task SetPrimaryPictureAsync(int personId, int pictureId)
+        public async Task SetPrimaryPictureAsync(int personId, int pictureId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // ساده: از PersonPictureRepository استفاده می‌کنیم
+
+                var pics = _uow.PersonPictureRepository.GetByPersonId(personId);
+                if (!pics.Any(p => p.Id == pictureId))
+                    throw new KeyNotFoundException(ExceptionMessage.PicNotFound);
+
+                foreach (var p in pics)
+                    p.IsPrimary = p.Id == pictureId;
+
+                // چون PersonPictureRepository.SetPrimaryPicture داشتید، می‌توانیم از آن استفاده کنیم:
+                // _uow.PersonPictureRepository.SetPrimaryPicture(personId, pictureId);
+                await _uow.CommitAsync(); // اگر تغییراتی ذخیره نشده بود در repo بالا SaveChanges انجام می‌شود
+
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex,ExceptionMessage.SetPrimaryPictureAsyncFeildForPersonId+ personId,personId);
+                throw;
+            }
         }
     }
 }
