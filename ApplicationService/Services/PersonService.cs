@@ -34,34 +34,135 @@ namespace ApplicationService.Services
             _jwtService = jwtService;
         }
 
-        public Task<ServiceResults<PersonDto>> GetAllAsync()
+        // 📋 دریافت تمام کاربران
+        public async Task<ServiceResults<PersonDto>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            const string cacheKey = "persons_all";
+
+            if (_cache.TryGetValue(cacheKey, out IEnumerable<PersonDto>? cached))
+            {
+                return new ServiceResults<PersonDto>
+                {
+                    IsSuccess = true,
+                    Data = cached,
+                    Message = "داده‌ها از کش خوانده شدند."
+                };
+            }
+
+            var persons = await _uow.PersonRepository.GetAllAsync();
+            var dtos = _mapper.Map<IEnumerable<PersonDto>>(persons);
+
+            _cache.Set(cacheKey, dtos, TimeSpan.FromMinutes(10));
+
+            return new ServiceResults<PersonDto>
+            {
+                IsSuccess = true,
+                Data = dtos,
+                Message = "داده‌ها با موفقیت بازیابی شدند."
+            };
         }
 
-        public Task<ServiceResult<PersonDto>> GetByIdAsync(int id)
+        // 👤 دریافت کاربر بر اساس ID
+        public async Task<ServiceResult<PersonDto>> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var person = await _uow.PersonRepository.FindByIdAsync(id);
+            if (person == null)
+                return new ServiceResult<PersonDto> { IsSuccess = false, Message = "کاربر یافت نشد." };
+
+            var dto = _mapper.Map<PersonDto>(person);
+            return new ServiceResult<PersonDto> { IsSuccess = true, Data = dto };
         }
 
-        public Task<ServiceResult<PersonDto>> RegisterAsync(PersonCreateDto dto)
+        // 🧾 ثبت‌نام کاربر
+        public async Task<ServiceResult<PersonDto>> RegisterAsync(PersonCreateDto dto)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(dto.Password))
+                return new ServiceResult<PersonDto> { IsSuccess = false, Message = "رمز عبور نمی‌تواند خالی باشد." };
+
+            var hash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+            var person = _mapper.Map<Person>(dto);
+            person.PasswordHash = hash;
+
+            await _uow.PersonRepository.SaveAsync(person);
+            await _uow.CommitAsync();
+
+            return new ServiceResult<PersonDto>
+            {
+                IsSuccess = true,
+                Message = "ثبت‌نام با موفقیت انجام شد.",
+                Data = _mapper.Map<PersonDto>(person)
+            };
         }
 
-        public Task<ServiceResult<string>> LoginAsync(string username, string password, string deviceToken, string deviceType)
+        // 🔐 ورود کاربر و ثبت دستگاه
+        public async Task<ServiceResult<string>> LoginAsync(string username, string password, string deviceToken, string deviceType)
         {
-            throw new NotImplementedException();
+            var person = await _uow.PersonRepository.FindByUsernameAsync(username);
+            if (person == null || !BCrypt.Net.BCrypt.Verify(password, person.PasswordHash))
+                return new ServiceResult<string> { IsSuccess = false, Message = "نام کاربری یا رمز عبور اشتباه است." };
+
+            // ثبت یا به‌روزرسانی دستگاه
+            var existingDevice = person.Devices.FirstOrDefault(d => d.PushNotificationId == deviceToken);
+            if (existingDevice == null)
+            {
+                person.Devices.Add(new Device
+                {
+                    PushNotificationId = deviceToken,
+                    DeviceType = deviceType,
+                    PersonId = person.Id,
+                    LastSeenAt = DateTime.UtcNow,
+                    IsActive = true
+                });
+            }
+            else
+            {
+                existingDevice.LastSeenAt = DateTime.UtcNow;
+                existingDevice.IsActive = true;
+            }
+
+            await _uow.CommitAsync();
+
+            // صدور توکن JWT
+            var token = _jwtService.GenerateTokenForPerson(person);
+
+            return new ServiceResult<string>
+            {
+                IsSuccess = true,
+                Message = "ورود موفقیت‌آمیز.",
+                Data = token
+            };
         }
 
-        public Task<ServiceResult<bool>> UpdateAsync(PersonUpdateDto dto)
+        // ✏️ ویرایش کاربر
+        public async Task<ServiceResult<bool>> UpdateAsync(PersonUpdateDto dto)
         {
-            throw new NotImplementedException();
+            var person = await _uow.PersonRepository.FindByIdAsync(dto.Id);
+            if (person == null)
+                return new ServiceResult<bool> { IsSuccess = false, Message = ExceptionMessage.DontFindUser, Data = false };
+
+            if (!string.IsNullOrEmpty(dto.FirstName)) person.FirstName = dto.FirstName;
+            if (!string.IsNullOrEmpty(dto.LastName)) person.LastName = dto.LastName;
+            if (!string.IsNullOrEmpty(dto.Email)) person.Email = dto.Email;
+            if (!string.IsNullOrEmpty(dto.PhoneNumber)) person.PhoneNumber = dto.PhoneNumber;
+            person.IsActive = dto.IsActive;
+
+            _uow.PersonRepository.Update(person);
+            await _uow.CommitAsync();
+
+            return new ServiceResult<bool> { IsSuccess = true, Message =ExceptionMessage.UpdateSuccessFully, Data = true };
         }
 
-        public Task<ServiceResult<bool>> DeleteAsync(int id)
+        // 🗑️ حذف کاربر
+        public async Task<ServiceResult<bool>> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var person = await _uow.PersonRepository.FindByIdAsync(id);
+            if (person == null)
+                return new ServiceResult<bool> { IsSuccess = false, Message =ExceptionMessage.DontFindUser, Data = false };
+
+            _uow.PersonRepository.Remove(person.Id);
+            await _uow.CommitAsync();
+
+            return new ServiceResult<bool> { IsSuccess = true, Message = ExceptionMessage.DeleteSuccessFully, Data = true };
         }
     }
 }

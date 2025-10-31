@@ -8,5 +8,6 @@
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public DateTime? BirthDate { get; set; }
+        public bool  IsActive { get; set; }
     }
 }
