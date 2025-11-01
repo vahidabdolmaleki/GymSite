@@ -76,26 +76,7 @@ namespace ApplicationService.Services
             return new ServiceResult<PersonDto> { IsSuccess = true, Data = dto };
         }
 
-        // 🧾 ثبت‌نام کاربر
-        public async Task<ServiceResult<PersonDto>> RegisterAsync(PersonCreateDto dto)
-        {
-            if (string.IsNullOrWhiteSpace(dto.Password))
-                return new ServiceResult<PersonDto> { IsSuccess = false, Message = "رمز عبور نمی‌تواند خالی باشد." };
 
-            var hash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
-            var person = _mapper.Map<Person>(dto);
-            person.PasswordHash = hash;
-
-            await _uow.PersonRepository.SaveAsync(person);
-            await _uow.CommitAsync();
-
-            return new ServiceResult<PersonDto>
-            {
-                IsSuccess = true,
-                Message = "ثبت‌نام با موفقیت انجام شد.",
-                Data = _mapper.Map<PersonDto>(person)
-            };
-        }
 
         // 🔐 ورود کاربر و ثبت دستگاه
         public async Task<ServiceResult<string>> LoginAsync(string username, string password, string deviceToken, string deviceType)
