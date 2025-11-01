@@ -16,5 +16,7 @@ namespace ApplicationService.Interfaces
         Task<ServiceResult<string>> LoginAsync(string username, string password, string deviceToken, string deviceType);
         Task<ServiceResult<bool>> UpdateAsync(PersonUpdateDto dto);
         Task<ServiceResult<bool>> DeleteAsync(int id);
+        Task<ServiceResult<string>> RegisterAsync(PersonRegisterDto dto);
+
     }
 }

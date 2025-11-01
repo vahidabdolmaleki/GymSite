@@ -649,7 +649,7 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PersonTypeId")
+                    b.Property<int>("PersonTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("PhoneNumber")
@@ -737,6 +737,9 @@ namespace DAL.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -747,6 +750,56 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PersonTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مدیر سیستم",
+                            IsActive = true,
+                            Title = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "کاربر سیستم",
+                            IsActive = true,
+                            Title = "User"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مربی باشگاه",
+                            IsActive = true,
+                            Title = "Coach"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "حسابدار",
+                            IsActive = true,
+                            Title = "Accountant"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "ورزشکار یا کاربر معمولی",
+                            IsActive = true,
+                            Title = "Athlete"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "ورزشکار حرفه ای یا کاربر VIP",
+                            IsActive = true,
+                            Title = "ProfessionalAthlete"
+                        });
                 });
 
             modelBuilder.Entity("Entities.Product", b =>
@@ -1503,9 +1556,13 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Entities.Person", b =>
                 {
-                    b.HasOne("Entities.PersonType", null)
+                    b.HasOne("Entities.PersonType", "PersonType")
                         .WithMany("People")
-                        .HasForeignKey("PersonTypeId");
+                        .HasForeignKey("PersonTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("PersonType");
                 });
 
             modelBuilder.Entity("Entities.PersonPicture", b =>

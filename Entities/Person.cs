@@ -28,6 +28,9 @@
         public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
         public ICollection<UserMembership> Memberships { get; set; } = new List<UserMembership>();
         public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+        // ارتباط با نوع شخص
+        public int PersonTypeId { get; set; }     // کلید خارجی
+        public PersonType? PersonType { get; set; } // ناوبری به نوع شخص
 
 
         // اگر بخوای جدای Coach/Student داشته باشی:
@@ -37,6 +40,7 @@
     public class PersonType : BaseEntity
     {
         public string Title { get; set; } // مثلا "مربی"، "شاگرد"، "ادمین"
+        public string? Description { get; set; }
         public ICollection<Person> People { get; set; }
     }
 

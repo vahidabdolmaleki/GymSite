@@ -25,5 +25,10 @@ namespace ApplicationService.DTOs.Person
         public string? PhoneNumber { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
+        public int PersonTypeId { get; set; }
     }
+    
+
+
+
 }

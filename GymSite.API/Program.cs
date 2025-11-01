@@ -20,6 +20,8 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 // 🔹 MemoryCache
 builder.Services.AddMemoryCache();
+// 🔹 httpContextAccessor
+builder.Services.AddHttpContextAccessor();
 // 🔹 Swagger & Controller
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

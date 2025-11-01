@@ -55,8 +55,8 @@ namespace DAL.Context
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<UserMembership> UserMemberships { get; set; }
         public DbSet<WorkoutHistory> WorkoutHistories { get; set; }
-        public DbSet<WorkoutMedia> WorkoutMedias { get; set; }        
-        public DbSet<RolePermission> RolePermissions{ get; set; }
+        public DbSet<WorkoutMedia> WorkoutMedias { get; set; }
+        public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<VerificationCode> VerificationCodes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -97,7 +97,20 @@ namespace DAL.Context
             modelBuilder.Entity<UserRole>()
                 .HasIndex(ur => new { ur.PersonId, ur.RoleId })
                 .IsUnique();
-
+            modelBuilder.Entity<Person>()
+                .HasOne(p => p.PersonType)
+                .WithMany(pt => pt.People)
+                .HasForeignKey(p => p.PersonTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+            // Seed Data برای PersonType
+            modelBuilder.Entity<PersonType>().HasData(
+                new PersonType { Id = 1, Title = "Admin", Description = "مدیر سیستم",CreatedDate = new DateTime(2024, 01, 01), IsActive=true },
+                new PersonType { Id = 2, Title = "User", Description = "کاربر سیستم", CreatedDate = new DateTime(2024, 01, 01), IsActive = true },
+                new PersonType { Id = 3, Title = "Coach", Description = "مربی باشگاه", CreatedDate = new DateTime(2024, 01, 01), IsActive = true },
+                new PersonType { Id = 4, Title = "Accountant", Description = "حسابدار", CreatedDate = new DateTime(2024, 01, 01), IsActive = true },
+                new PersonType { Id = 5, Title = "Athlete", Description = "ورزشکار یا کاربر معمولی", CreatedDate = new DateTime(2024, 01, 01), IsActive = true },
+                new PersonType { Id = 6, Title = "ProfessionalAthlete", Description = "ورزشکار حرفه ای یا کاربر VIP", CreatedDate = new DateTime(2024, 01, 01), IsActive = true }
+            );
         }
 
     }

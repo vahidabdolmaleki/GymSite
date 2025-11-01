@@ -9,12 +9,12 @@ namespace GymSite.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PersonController: ControllerBase
+    public class PersonController : ControllerBase
     {
         private readonly IPersonService _personService;
         private readonly ILogger<PersonController> _logger;
 
-        public PersonController(IPersonService personService,ILogger<PersonController> logger)
+        public PersonController(IPersonService personService, ILogger<PersonController> logger)
         {
             _personService = personService;
             _logger = logger;
@@ -77,6 +77,19 @@ namespace GymSite.API.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _personService.DeleteAsync(id);
+            if (!result.IsSuccess)
+                return BadRequest(result.Message);
+
+            return Ok(result);
+        }
+        // ✅ ثبت کاربر
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register([FromBody] PersonRegisterDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _personService.RegisterAsync(dto);
             if (!result.IsSuccess)
                 return BadRequest(result.Message);
 

@@ -4,6 +4,7 @@ using AutoMapper;
 using Core;
 using DAL.UnitOfWork;
 using Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using Microsoft.Extensions.Caching.Memory;
@@ -23,15 +24,17 @@ namespace ApplicationService.Services
         private readonly IMemoryCache _cache;
         private readonly ILogger<PersonService> _logger;
         private readonly IJwtService _jwtService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private const string PERSON_CACHE_KEY = "persons_all";
 
-        public PersonService(IUnitOfWork unitOfWork,IMapper mapper,IMemoryCache cache,ILogger<PersonService> logger, IJwtService jwtService)
+        public PersonService(IUnitOfWork unitOfWork,IMapper mapper,IMemoryCache cache,ILogger<PersonService> logger, IJwtService jwtService,IHttpContextAccessor httpContextAccessor)
         {
             _uow = unitOfWork;
             _mapper = mapper;
             _cache = cache;
             _logger = logger;
             _jwtService = jwtService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         // 📋 دریافت تمام کاربران
@@ -111,7 +114,8 @@ namespace ApplicationService.Services
                     DeviceType = deviceType,
                     PersonId = person.Id,
                     LastSeenAt = DateTime.UtcNow,
-                    IsActive = true
+                    IsActive = true,
+                    IP = _httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString()
                 });
             }
             else
@@ -164,5 +168,83 @@ namespace ApplicationService.Services
 
             return new ServiceResult<bool> { IsSuccess = true, Message = ExceptionMessage.DeleteSuccessFully, Data = true };
         }
+        // ثبت کاربر
+        public async Task<ServiceResult<string>> RegisterAsync(PersonRegisterDto dto)
+        {
+            var result = new ServiceResult<string>();
+
+            try
+            {
+                // 1️⃣ بررسی تکراری بودن نام کاربری
+                var existing = await _uow.PersonRepository.FindByUsernameAsync(dto.Username);
+                if (existing != null)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "نام کاربری از قبل وجود دارد.";
+                    return result;
+                }
+
+                // 2️⃣ هش کردن رمز عبور
+                var hashedPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+
+                // 3️⃣ ساخت کاربر جدید
+                var person = new Person
+                {
+                    FirstName = dto.FirstName,
+                    LastName = dto.LastName,
+                    FatherName = dto.FatherName,
+                    NationalCode = dto.NationalCode,
+                    BirthDate = dto.BirthDate,
+                    Username = dto.Username,
+                    PasswordHash = hashedPassword,
+                    Email = dto.Email,
+                    PhoneNumber = dto.PhoneNumber,
+                    Education = dto.Education,
+                    Bio = dto.Bio,
+                    CreatedDate = DateTime.UtcNow,                    
+                    IsActive = true,
+                    PersonTypeId = dto.PersonTypeId
+                };
+
+                // 4️⃣ ثبت دستگاه کاربر (با IP)
+                var device = new Device
+                {
+                    PushNotificationId = dto.PushNotificationId,
+                    DeviceType = dto.DeviceType,
+                    LastSeenAt = DateTime.UtcNow,
+                    IP = dto.IP ?? _httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString(),
+                    IsActive = true
+                };
+
+                person.Devices.Add(device);
+
+                // 5️⃣ ذخیره در دیتابیس
+                await _uow.PersonRepository.SaveAsync(person);
+                await _uow.CommitAsync();
+
+                // 6️⃣ پاسخ موفق
+                return new ServiceResult<string> 
+                {
+                    IsSuccess = true,
+                    Message = "ثبت‌نام با موفقیت انجام شد.",
+                    Data = person.Username
+                
+                };
+            }
+            catch (Exception ex)
+            {
+                // 6️⃣ پاسخ خطا
+                return new ServiceResult<string>
+                {
+                    IsSuccess = false,
+                    Message = $"خطا در ثبت‌نام: {ex.Message}",
+                    Data = null
+                };                
+            }
+
+            
+        }
+
+
     }
 }

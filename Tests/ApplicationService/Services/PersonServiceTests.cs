@@ -8,6 +8,7 @@ using DAL.UnitOfWork;
 using Entities;
 using FluentAssertions;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -62,14 +63,14 @@ namespace Tests._َApplicationService.Services
             var mockLogger = new Mock<ILogger<PersonService>>();
             var mockValidator = new Mock<IValidator<PersonDto>>();
             var mockCatch = new Mock<IMemoryCache>();
-
+            var mockIhttpContextAccessor = new Mock<IHttpContextAccessor>();
             object dummy;
             mockCatch.Setup(c => c.TryGetValue(It.IsAny<object>(),out dummy)).Returns(false);
             mockCatch.Setup(c => c.CreateEntry(It.IsAny<object>())).Returns(Mock.Of<ICacheEntry>());
 
 
 
-            var service = new PersonService(mockUnit.Object, _mapper, mockCatch.Object, mockLogger.Object, mockJwt.Object);
+            var service = new PersonService(mockUnit.Object, _mapper, mockCatch.Object, mockLogger.Object, mockJwt.Object, mockIhttpContextAccessor.Object);
 
             //Act
             var result = await service.GetAllAsync();
