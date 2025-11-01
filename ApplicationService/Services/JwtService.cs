@@ -23,27 +23,36 @@ namespace ApplicationService.Services
         public string GenerateTokenForPerson(Person person)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
-            var cerds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
+            // اگر شخص نقش دارد، اسم نقش را استخراج کن
+            var roleNames = person.PersonRoles?.Select(r => r.Role?.RoleName).Where(r => r != null).ToList() ?? new List<string>();
+
+            var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub,person.Id.ToString()),
-                new Claim("FullName",$"{person.FirstName} {person.LastName}"),
-                new Claim("Email",person.Email ?? ""),
-                new Claim("Phone",person.PhoneNumber ?? ""),
-                new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
+                    new Claim(JwtRegisteredClaimNames.Sub, person.Id.ToString()),
+                    new Claim("FullName", $"{person.FirstName} {person.LastName}"),
+                    new Claim("Email", person.Email ?? ""),
+                    new Claim("Phone", person.PhoneNumber ?? ""),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
+            // اضافه کردن نقش‌ها
+            foreach (var roleName in roleNames)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, roleName!));
+            }
+
             var token = new JwtSecurityToken(
-                issuer : _config["Jwt:Issuer"],
-                audience : _config["Jwt:Audience"],
-                claims : claims,
-                //Todo در اینجا و  برای آینده میتونیم یه موودیت تعریف و زمان اعتبار هر توکن رو بفهمم
-                expires : DateTime.UtcNow.AddHours(3),
-                signingCredentials : cerds
-                );
+                issuer: _config["Jwt:Issuer"],
+                audience: _config["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(3),
+                signingCredentials: creds
+            );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
     }
 }
