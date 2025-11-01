@@ -157,11 +157,12 @@ namespace ApplicationService.Services
             try
             {
                 // 1️⃣ بررسی تکراری بودن نام کاربری
-                var existing = await _uow.PersonRepository.FindByUsernameAsync(dto.Username);
+                var existing = _uow.PersonRepository.GetAll().FirstOrDefault(p => p.Username == dto.Username || p.Email == dto.Email);
                 if (existing != null)
                 {
                     result.IsSuccess = false;
                     result.Message = "نام کاربری از قبل وجود دارد.";
+                    result.Data = null;
                     return result;
                 }
 
@@ -208,8 +209,7 @@ namespace ApplicationService.Services
                 {
                     IsSuccess = true,
                     Message = "ثبت‌نام با موفقیت انجام شد.",
-                    Data = person.Username
-                
+                    Data = person.Username                
                 };
             }
             catch (Exception ex)
