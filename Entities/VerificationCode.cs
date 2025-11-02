@@ -8,10 +8,13 @@ namespace Entities
 {
     public class VerificationCode : BaseEntity
     {
-        public string Target { get; set; } = null!; // شماره موبایل یا ایمیل
+        public int PersonId { get; set; }
         public string Code { get; set; } = null!;
-        public DateTime Expiration { get; set; }
+        public DateTime ExpireAt { get; set; }
         public bool IsUsed { get; set; } = false;
 
+        // Navigation Property
+        public Person Person { get; set; } = null!;
     }
+
 }

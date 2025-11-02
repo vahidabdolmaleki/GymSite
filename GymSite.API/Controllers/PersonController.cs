@@ -95,5 +95,29 @@ namespace GymSite.API.Controllers
 
             return Ok(result);
         }
+        [HttpPost("forgot-password")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
+        {
+            var result = await _personService.ForgotPasswordAsync(dto);
+            return Ok(result);
+        }
+
+        [HttpPost("verify-code")]
+        [AllowAnonymous]
+        public async Task<IActionResult> VerifyCode([FromBody] VerifyCodeDto dto)
+        {
+            var result = await _personService.VerifyCodeAsync(dto);
+            return Ok(result);
+        }
+
+        [HttpPost("reset-password")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
+        {
+            var result = await _personService.ResetPasswordAsync(dto);
+            return Ok(result);
+        }
+
     }
 }

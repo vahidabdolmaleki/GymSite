@@ -1,4 +1,5 @@
 ﻿using DAL.Context;
+using DAL.Repositories;
 using DAL.Repositories.Implementations;
 using DAL.Repositories.Interfaces;
 using DAL.Repository;
@@ -23,6 +24,8 @@ namespace DAL.UnitOfWork
         {
             _configuration = configuration;
             _gymDbContext = gymDbContext;
+            VerificationCodes = new VerificationCodeRepository(gymDbContext);
+
         }
 
         // --- Repositoryها ---
@@ -63,6 +66,8 @@ namespace DAL.UnitOfWork
 
 
         private IProductRepository? _productRepository;
+        public IVerificationCodeRepository VerificationCodes { get; }
+
 
         public IProductRepository ProductRepository
         {

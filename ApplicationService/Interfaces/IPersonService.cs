@@ -16,5 +16,11 @@ namespace ApplicationService.Interfaces
         Task<ServiceResult<bool>> UpdateAsync(PersonUpdateDto dto);
         Task<ServiceResult<bool>> DeleteAsync(int id);
         Task<ServiceResult<string>> RegisterAsync(PersonRegisterDto dto);
+
+        // Password service's
+        Task<ServiceResult<bool>> ForgotPasswordAsync(ForgotPasswordDto dto);
+        Task<ServiceResult<bool>> VerifyCodeAsync(VerifyCodeDto dto);
+        Task<ServiceResult<bool>> ResetPasswordAsync(ResetPasswordDto dto);
+
     }
 }

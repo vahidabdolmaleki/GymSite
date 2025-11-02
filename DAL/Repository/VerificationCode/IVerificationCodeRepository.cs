@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DAL.Repository.GenericRepository;
+using Entities;
 
-namespace DAL.Repository.VerificationCode
+namespace DAL.Repositories
 {
-    //todo Compelete this Interface repostiory for use
-    public interface IVerificationCodeRepository
+    public interface IVerificationCodeRepository : IGenericRepository<VerificationCode>
     {
+        Task<VerificationCode?> GetActiveCodeAsync(int personId, string code);
+        Task<IEnumerable<VerificationCode>> GetAllActiveByPersonAsync(int personId);
     }
 }

@@ -14,6 +14,7 @@ using DAL.Repository.SupplementRepository;
 using DAL.Repository.LogRepository;
 using DAL.Context;
 using Microsoft.EntityFrameworkCore;
+using DAL.Repositories;
 
 namespace DAL.UnitOfWork
 {
@@ -54,6 +55,8 @@ namespace DAL.UnitOfWork
         IOrderItemRepository OrderItemRepository { get; }
         IPersonPictureRepository PersonPictureRepository { get; }
         IUnitCityRepository UnitCityRepository { get; }
+        IVerificationCodeRepository VerificationCodes { get; }
+
 
         //---- GenericRepository
 

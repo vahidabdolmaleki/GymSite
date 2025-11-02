@@ -226,6 +226,126 @@ namespace ApplicationService.Services
             
         }
 
+        public async Task<ServiceResult<bool>> ForgotPasswordAsync(ForgotPasswordDto dto)
+        {
+            try
+            {
+                var Result = new ServiceResult<bool>();
+                var person = await _uow.PersonRepository.FindByUsernameAsync(dto.UsernameOrPhone);
+                if (person == null)
+                {
+                    Result.IsSuccess = false;
+                    Result.Message = ExceptionMessage.DontFindUser;
+                    return Result;
+                }
+                // تولید کد
+                var code = new Random().Next(100000,999999).ToString();
+
+                var verification = new VerificationCode
+                {
+                    PersonId = person.Id,
+                    Code = code,
+                    ExpireAt = DateTime.UtcNow.AddMinutes(5),
+                    IsUsed = false,
+                    IsActive = true
+                };
+
+                await _uow.VerificationCodes.SaveAsync(verification);
+                await _uow.CommitAsync();
+
+                // TODO: impiliment Send Email or SMS Service
+
+                return new ServiceResult<bool> 
+                {
+                    IsSuccess = true,
+                    Data = true,
+                    Message = ExceptionMessage.SendVerificationCodeCompelete
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult<bool>
+                {
+                    IsSuccess = false,
+                    Message = ExceptionMessage.ForgotPasswrodFeild + ex.Message,
+                    Data = false
+
+                };
+            }
+        }
+
+        public async Task<ServiceResult<bool>> VerifyCodeAsync(VerifyCodeDto dto)
+        {
+            try
+            {
+                var person = await _uow.PersonRepository.FindByUsernameAsync(dto.UsernameOrPhone);
+                if (person == null) 
+                {
+                    return new ServiceResult<bool> { IsSuccess = false, Data = false ,Message= ExceptionMessage.DontFindUser};
+                }
+                var code = await _uow.VerificationCodes.GetActiveCodeAsync(person.Id,dto.Code);
+
+                if (code == null)
+                {
+                    return new ServiceResult<bool> { IsSuccess = false, Data=false,Message = ExceptionMessage.CodeExpiredOrNotValid};
+                }
+
+                code.IsUsed = true;
+                code.IsActive = false;
+                await _uow.CommitAsync();
+
+                return new ServiceResult<bool> 
+                {
+                    IsSuccess = true,
+                    Data = true,
+                    Message = ExceptionMessage.codeVrified
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult<bool> 
+                {
+                    Data = false, IsSuccess = false,
+                    Message = ExceptionMessage.VerifyCodeError + " "+ ex.Message
+                };
+            }
+        }
+        //ToDo: گام بعدی رو هم بریم (ارسال واقعی SMS یا Email برای کد تأیید، مثلاً با Kavenegar یا SMTP) یا فعلاً بمونیم روی ساختار پایه API‌ها؟
+        public async Task<ServiceResult<bool>> ResetPasswordAsync(ResetPasswordDto dto)
+        {
+            var result = new ServiceResult<bool>();
+
+            var person = await _uow.PersonRepository
+                .FindByUsernameOrPhoneAsync(dto.UsernameOrPhone);
+
+            if (person == null)
+            {
+                result.IsSuccess = false;
+                result.Message = "کاربر یافت نشد.";
+                return result;
+            }
+
+            var code = await _uow.VerificationCodes
+                .GetActiveCodeAsync(person.Id, dto.Code);
+
+            if (code == null || code.IsUsed || code.ExpireAt < DateTime.UtcNow)
+            {
+                result.IsSuccess = false;
+                result.Message = "کد معتبر نیست یا منقضی شده.";
+                return result;
+            }
+
+            // تغییر رمز
+            person.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+
+            code.IsUsed = true;
+            await _uow.CommitAsync();
+
+            result.IsSuccess = true;
+            result.Data = true;
+            result.Message = "رمز عبور با موفقیت تغییر یافت.";
+            return result;
+        }
 
     }
 }

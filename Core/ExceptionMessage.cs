@@ -20,6 +20,11 @@
         public const string UpdateSuccessFully = "اطلاعات مورد نظر با موفقیت بروزرسانی شد";
         public const string DeleteSuccessFully= "اطلاعات مورد نظر با موفقیت حذف شد";
         public const string UserIdDoesNotMatch = "شناسه کاربر مطابقت ندارد.";
+        public const string ForgotPasswrodFeild= "عملیات فراموشی کلمه عبور با خطا مواجه شد کد خطا:";
+        public const string SendVerificationCodeCompelete= "ارسال کد فعال سازی با موفقیت انجام شد خلاص شدیم رفت ";
+        public const string CodeExpiredOrNotValid= " کد منقضی شده و با معتبر نمی‌باشد باباجان دقت کن دیگه";
+        public const string codeVrified ="کد تاپید شد عزیزم";
+        public const string VerifyCodeError ="عملیات تایید کد با خطا مواجه شده کد خطا اینه :";
 
 
         public const string Test = "";
