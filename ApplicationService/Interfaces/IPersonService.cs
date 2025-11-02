@@ -19,8 +19,11 @@ namespace ApplicationService.Interfaces
 
         // Password service's
         Task<ServiceResult<bool>> ForgotPasswordAsync(ForgotPasswordDto dto);
-        Task<ServiceResult<bool>> VerifyCodeAsync(VerifyCodeDto dto);
         Task<ServiceResult<bool>> ResetPasswordAsync(ResetPasswordDto dto);
+        // Verify Service's
+        Task<ServiceResult<bool>> VerifyCodeAsync(VerifyCodeDto dto);
+        
+
 
     }
 }

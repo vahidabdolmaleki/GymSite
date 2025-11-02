@@ -107,7 +107,14 @@ namespace GymSite.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> VerifyCode([FromBody] VerifyCodeDto dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var result = await _personService.VerifyCodeAsync(dto);
+
+            if (!result.IsSuccess)
+                return BadRequest(result.Message);
+
             return Ok(result);
         }
 

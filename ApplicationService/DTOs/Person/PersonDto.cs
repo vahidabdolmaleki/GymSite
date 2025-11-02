@@ -27,5 +27,4 @@ namespace ApplicationService.DTOs.Person
         public DateTime CreatedDate { get; set; }
         public int PersonTypeId { get; set; }
     }
-
 }

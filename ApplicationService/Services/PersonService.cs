@@ -156,13 +156,17 @@ namespace ApplicationService.Services
 
             try
             {
-                // 1️⃣ بررسی تکراری بودن نام کاربری
-                var existing = _uow.PersonRepository.GetAll().FirstOrDefault(p => p.Username == dto.Username || p.Email == dto.Email);
-                if (existing != null)
+                // 1️⃣ بررسی تکراری بودن کاربر
+                var existingUser = _uow.PersonRepository.GetAll()
+                    .FirstOrDefault(p =>
+                        p.Username == dto.Username ||
+                        p.Email == dto.Email ||
+                        p.PhoneNumber == dto.PhoneNumber);
+
+                if (existingUser != null)
                 {
                     result.IsSuccess = false;
-                    result.Message = "نام کاربری از قبل وجود دارد.";
-                    result.Data = null;
+                    result.Message = "کاربری با این اطلاعات از قبل وجود دارد.";
                     return result;
                 }
 
@@ -183,12 +187,12 @@ namespace ApplicationService.Services
                     PhoneNumber = dto.PhoneNumber,
                     Education = dto.Education,
                     Bio = dto.Bio,
-                    CreatedDate = DateTime.UtcNow,                    
-                    IsActive = true,
+                    CreatedDate = DateTime.UtcNow,
+                    IsActive = false, // تا وقتی تأیید نشده
                     PersonTypeId = dto.PersonTypeId
                 };
 
-                // 4️⃣ ثبت دستگاه کاربر (با IP)
+                // 4️⃣ ثبت دستگاه کاربر
                 var device = new Device
                 {
                     PushNotificationId = dto.PushNotificationId,
@@ -204,27 +208,32 @@ namespace ApplicationService.Services
                 await _uow.PersonRepository.SaveAsync(person);
                 await _uow.CommitAsync();
 
-                // 6️⃣ پاسخ موفق
-                return new ServiceResult<string> 
+                // 6️⃣ ساخت کد تأیید
+                var verificationCode = new VerificationCode
                 {
-                    IsSuccess = true,
-                    Message = "ثبت‌نام با موفقیت انجام شد.",
-                    Data = person.Username                
+                    PersonId = person.Id,
+                    Code = new Random().Next(100000, 999999).ToString(),
+                    ExpireAt = DateTime.UtcNow.AddMinutes(5)
                 };
+
+                await _uow.VerificationCodes.SaveAsync(verificationCode);
+                await _uow.CommitAsync();
+
+                // 7️⃣ پاسخ موفق
+                result.IsSuccess = true;
+                result.Message = "ثبت‌نام با موفقیت انجام شد. لطفاً کد ارسال‌شده را تأیید کنید.";
+                result.Data = person.Username;
+
+                return result;
             }
             catch (Exception ex)
             {
-                // 6️⃣ پاسخ خطا
-                return new ServiceResult<string>
-                {
-                    IsSuccess = false,
-                    Message = $"خطا در ثبت‌نام: {ex.Message}",
-                    Data = null
-                };                
+                result.IsSuccess = false;
+                result.Message = $"خطا در ثبت‌نام: {ex.Message}";
+                return result;
             }
-
-            
         }
+
 
         public async Task<ServiceResult<bool>> ForgotPasswordAsync(ForgotPasswordDto dto)
         {
@@ -278,11 +287,14 @@ namespace ApplicationService.Services
         {
             try
             {
+                // 1. پیدا کردن کاربر بر اساس username یا phone
                 var person = await _uow.PersonRepository.FindByUsernameAsync(dto.UsernameOrPhone);
                 if (person == null) 
                 {
                     return new ServiceResult<bool> { IsSuccess = false, Data = false ,Message= ExceptionMessage.DontFindUser};
                 }
+                // 2. پیدا کردن کد فعال برای شخص
+
                 var code = await _uow.VerificationCodes.GetActiveCodeAsync(person.Id,dto.Code);
 
                 if (code == null)
@@ -290,8 +302,22 @@ namespace ApplicationService.Services
                     return new ServiceResult<bool> { IsSuccess = false, Data=false,Message = ExceptionMessage.CodeExpiredOrNotValid};
                 }
 
+                // 3. علامت‌گذاری کد به عنوان استفاده‌شده
                 code.IsUsed = true;
-                code.IsActive = false;
+                // (در صورت تمایل می‌توان تاریخ استفاده/لاگ هم ثبت کرد)
+
+                // 4. فعال کردن حساب کاربری
+                person.IsActive = true;
+
+                // 5. در صورت نیاز: حذف یا غیرفعال‌سازی بقیه کدهای فعال قدیمی
+                var otherCodes = (await _uow.VerificationCodes
+                    .GetAllActiveByPersonAsync(person.Id))
+                    .Where(v => v.Id != code.Id);
+
+                foreach (var c in otherCodes)
+                {
+                    c.IsUsed = true;
+                }
                 await _uow.CommitAsync();
 
                 return new ServiceResult<bool> 
