@@ -132,6 +132,14 @@ namespace GymSite.API.Controllers
             var result = await _personService.ResetPasswordAsync(dto);
             return Ok(result);
         }
+        [Authorize]
+        [HttpPost("Logout")]
+        public async Task<IActionResult> Logout([FromBody] LogoutRequestDto dto)
+        {
+            var result = await _personService.LogoutAsync(dto.AccessToken);
+            return Ok(result);
+        }
+
 
     }
 }

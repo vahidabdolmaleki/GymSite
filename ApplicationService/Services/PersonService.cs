@@ -12,6 +12,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -446,6 +447,55 @@ namespace ApplicationService.Services
             }
 
             return result;
+        }
+        public async Task<ServiceResult<bool>> LogoutAsync(string accessToken)
+        {
+            var result = new ServiceResult<bool>();
+
+            try
+            {
+                // ۱️⃣ استخراج اطلاعات کاربر از JWT
+                var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(accessToken);
+                var personIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
+
+                if (string.IsNullOrEmpty(personIdClaim) || !int.TryParse(personIdClaim, out int personId))
+                {
+                    result.IsSuccess = false;
+                    result.Message = "توکن نامعتبر است.";
+                    return result;
+                }
+
+                // ۲️⃣ پیدا کردن دستگاه مرتبط
+                var device = _uow.DeviceRepository.GetAll()
+                    .FirstOrDefault(d => d.PersonId == personId && d.IsActive);
+
+                if (device == null)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "دستگاهی برای خروج یافت نشد.";
+                    return result;
+                }
+
+                // ۳️⃣ باطل‌سازی RefreshToken و غیرفعال کردن دستگاه
+                device.IsActive = false;
+                device.RefreshToken = null;
+                device.LastSeenAt = DateTime.UtcNow;
+
+                _uow.DeviceRepository.Update(device);
+                await _uow.CommitAsync();
+
+                result.IsSuccess = true;
+                result.Message = "خروج با موفقیت انجام شد.";
+                result.Data = true;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = $"خطا در خروج: {ex.Message}";
+                return result;
+            }
         }
 
 

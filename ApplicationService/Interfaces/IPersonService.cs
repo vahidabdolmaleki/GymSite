@@ -13,7 +13,7 @@ namespace ApplicationService.Interfaces
     {
         Task<ServiceResults<PersonDto>> GetAllAsync();
         Task<ServiceResult<PersonDto>> GetByIdAsync(int id);
-        Task<ServiceResult<TokenResponseDto>> LoginAsync(LoginRequestDto dto);
+
         Task<ServiceResult<bool>> UpdateAsync(PersonUpdateDto dto);
         Task<ServiceResult<bool>> DeleteAsync(int id);
         Task<ServiceResult<string>> RegisterAsync(PersonRegisterDto dto);
@@ -25,6 +25,9 @@ namespace ApplicationService.Interfaces
         Task<ServiceResult<bool>> VerifyCodeAsync(VerifyCodeDto dto);
         // Token
         Task<ServiceResult<TokenResponseDto>> RefreshTokenAsync(RefreshTokenDto dto);
+        // Login Logout
+        Task<ServiceResult<TokenResponseDto>> LoginAsync(LoginRequestDto dto);
+        Task<ServiceResult<bool>> LogoutAsync(string accessToken);
 
     }
 }
