@@ -1,4 +1,5 @@
 ﻿using ApplicationService.DTOs.Person;
+using ApplicationService.DTOs.Token;
 using Core;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace ApplicationService.Interfaces
     {
         Task<ServiceResults<PersonDto>> GetAllAsync();
         Task<ServiceResult<PersonDto>> GetByIdAsync(int id);
-        Task<ServiceResult<string>> LoginAsync(string username, string password, string deviceToken, string deviceType);
+        Task<ServiceResult<TokenResponseDto>> LoginAsync(LoginRequestDto dto);
         Task<ServiceResult<bool>> UpdateAsync(PersonUpdateDto dto);
         Task<ServiceResult<bool>> DeleteAsync(int id);
         Task<ServiceResult<string>> RegisterAsync(PersonRegisterDto dto);
@@ -22,8 +23,8 @@ namespace ApplicationService.Interfaces
         Task<ServiceResult<bool>> ResetPasswordAsync(ResetPasswordDto dto);
         // Verify Service's
         Task<ServiceResult<bool>> VerifyCodeAsync(VerifyCodeDto dto);
-        
-
+        // Token
+        Task<ServiceResult<TokenResponseDto>> RefreshTokenAsync(RefreshTokenDto dto);
 
     }
 }

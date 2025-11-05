@@ -33,6 +33,8 @@ namespace DAL.Repository
         public async Task<Person?> FindByIdAsync(int Id) => await _dbSet.FirstOrDefaultAsync(p => p.Id == Id);
         public async Task<Person?> FindByUsernameOrPhoneAsync(string usernameOrPhone)=>
             await _dbSet.FirstOrDefaultAsync(p =>p.Username == usernameOrPhone ||p.PhoneNumber == usernameOrPhone);
+
+        public IQueryable<Person> GetAllWithDevices() => _context.People.Include(p => p.Devices);
     }
 
 }

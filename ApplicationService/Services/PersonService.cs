@@ -1,4 +1,5 @@
 ﻿using ApplicationService.DTOs.Person;
+using ApplicationService.DTOs.Token;
 using ApplicationService.Interfaces;
 using AutoMapper;
 using Core;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -79,44 +81,63 @@ namespace ApplicationService.Services
 
 
         // 🔐 ورود کاربر و ثبت دستگاه
-        public async Task<ServiceResult<string>> LoginAsync(string username, string password, string deviceToken, string deviceType)
+    public async Task<ServiceResult<TokenResponseDto>> LoginAsync(LoginRequestDto dto)
+{
+    var result = new ServiceResult<TokenResponseDto>();
+
+    var person = _uow.PersonRepository
+    .GetAllWithDevices()
+    .FirstOrDefault(p => p.Username == dto.UsernameOrIdentifier || p.PhoneNumber == dto.UsernameOrIdentifier);
+
+
+    if (person == null || !BCrypt.Net.BCrypt.Verify(dto.Password, person.PasswordHash))
+    {
+        result.IsSuccess = false;
+        result.Message = "نام کاربری یا رمز عبور اشتباه است.";
+        return result;
+    }
+
+    // تولید Access و Refresh Token
+    var accessToken = _jwtService.GenerateTokenForPerson(person);
+    var refreshToken = _jwtService.GenerateRefreshToken();
+
+    // ذخیره در Device
+    var device = person.Devices.FirstOrDefault(d => d.PushNotificationId == dto.PushNotificationId);
+    if (device == null)
+    {
+        device = new Device
         {
-            var person = await _uow.PersonRepository.FindByUsernameAsync(username);
-            if (person == null || !BCrypt.Net.BCrypt.Verify(password, person.PasswordHash))
-                return new ServiceResult<string> { IsSuccess = false, Message = "نام کاربری یا رمز عبور اشتباه است." };
+            PushNotificationId = dto.PushNotificationId,
+            DeviceType = dto.DeviceType,
+            IP = _httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString(),
+            LastSeenAt = DateTime.UtcNow,
+            IsActive = true,
+            RefreshToken = refreshToken,
+            RefreshTokenExpiry = DateTime.UtcNow.AddDays(7),
+            PersonId = person.Id
+        };
+        await _uow.DeviceRepository.SaveAsync(device);
+    }
+    else
+    {
+        device.RefreshToken = refreshToken;
+        device.RefreshTokenExpiry = DateTime.UtcNow.AddDays(7);
+        device.LastSeenAt = DateTime.UtcNow;
+        await _uow.DeviceRepository.UpdateAsync(device);
+    }
 
-            // ثبت یا به‌روزرسانی دستگاه
-            var existingDevice = person.Devices.FirstOrDefault(d => d.PushNotificationId == deviceToken);
-            if (existingDevice == null)
-            {
-                person.Devices.Add(new Device
-                {
-                    PushNotificationId = deviceToken,
-                    DeviceType = deviceType,
-                    PersonId = person.Id,
-                    LastSeenAt = DateTime.UtcNow,
-                    IsActive = true,
-                    IP = _httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString()
-                });
-            }
-            else
-            {
-                existingDevice.LastSeenAt = DateTime.UtcNow;
-                existingDevice.IsActive = true;
-            }
+    await _uow.CommitAsync();
 
-            await _uow.CommitAsync();
+    result.IsSuccess = true;
+    result.Data = new TokenResponseDto
+    {
+        AccessToken = accessToken,
+        RefreshToken = refreshToken
+    };
+    result.Message = "ورود موفقیت‌آمیز بود.";
 
-            // صدور توکن JWT
-            var token = _jwtService.GenerateTokenForPerson(person);
-
-            return new ServiceResult<string>
-            {
-                IsSuccess = true,
-                Message = "ورود موفقیت‌آمیز.",
-                Data = token
-            };
-        }
+    return result;
+}
 
         // ✏️ ویرایش کاربر
         public async Task<ServiceResult<bool>> UpdateAsync(PersonUpdateDto dto)
@@ -372,6 +393,61 @@ namespace ApplicationService.Services
             result.Message = "رمز عبور با موفقیت تغییر یافت.";
             return result;
         }
+        public async Task<ServiceResult<TokenResponseDto>> RefreshTokenAsync(RefreshTokenDto dto)
+        {
+            var result = new ServiceResult<TokenResponseDto>();
+
+            try
+            {
+                var principal = _jwtService.GetPrincipalFromExpiredToken(dto.AccessToken);
+                if (principal == null)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "توکن نامعتبر است.";
+                    return result;
+                }
+
+                var personId = int.Parse(principal.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+
+                var device = _uow.DeviceRepository
+                    .GetAll()
+                    .FirstOrDefault(d => d.PersonId == personId && d.RefreshToken == dto.RefreshToken);
+
+                if (device == null || device.RefreshTokenExpiry < DateTime.UtcNow)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "رفرش توکن منقضی یا نامعتبر است.";
+                    return result;
+                }
+
+                // تولید توکن جدید
+                var person = _uow.PersonRepository.Find(personId);
+                var newAccessToken = _jwtService.GenerateTokenForPerson(person);
+                var newRefreshToken = _jwtService.GenerateRefreshToken();
+
+                // ذخیره Refresh Token جدید
+                device.RefreshToken = newRefreshToken;
+                device.RefreshTokenExpiry = DateTime.UtcNow.AddDays(7);
+                await _uow.DeviceRepository.UpdateAsync(device);
+                await _uow.CommitAsync();
+
+                result.IsSuccess = true;
+                result.Data = new TokenResponseDto
+                {
+                    AccessToken = newAccessToken,
+                    RefreshToken = newRefreshToken
+                };
+                result.Message = "توکن جدید صادر شد.";
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = $"خطا در بروزرسانی توکن: {ex.Message}";
+            }
+
+            return result;
+        }
+
 
     }
 }

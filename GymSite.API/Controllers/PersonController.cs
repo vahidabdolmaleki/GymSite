@@ -1,5 +1,6 @@
 ﻿
 using ApplicationService.DTOs.Person;
+using ApplicationService.DTOs.Token;
 using ApplicationService.Interfaces;
 using Core;
 using Microsoft.AspNetCore.Authorization;
@@ -41,19 +42,25 @@ namespace GymSite.API.Controllers
 
             return Ok(result);
         }
+        [HttpPost("RefreshToken")]
+        [AllowAnonymous]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto dto)
+        {
+            var result = await _personService.RefreshTokenAsync(dto);
+            if (!result.IsSuccess)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
 
         //✅ (Login) ورود کاربر
         [HttpPost("Login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto dto)
         {
-            if (dto == null || string.IsNullOrEmpty(dto.UsernameOrIdentifier) || string.IsNullOrEmpty(dto.Password))
-                return BadRequest("اطلاعات ورود ناقص است.");
-
-            var result = await _personService.LoginAsync(dto.UsernameOrIdentifier, dto.Password, dto.PushNotificationId, dto.DeviceType);
-
+            var result = await _personService.LoginAsync(dto);
             if (!result.IsSuccess)
-                return Unauthorized(result.Message);
+                return BadRequest(result);
 
             return Ok(result);
         }

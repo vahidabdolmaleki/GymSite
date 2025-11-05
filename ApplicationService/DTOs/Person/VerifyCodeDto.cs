@@ -7,5 +7,4 @@
         public string Code { get; set; } = null!;
     }
 
-
 }
