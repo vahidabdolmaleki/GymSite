@@ -19,6 +19,7 @@ builder.Services.AddScoped<GymDbContext>(_ => new GymDbContext(new DbContextOpti
 // 🔹 Dependency Injection (DI)
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPersonService, PersonService>();
+builder.Services.AddScoped<ICoachService, CoachService>();
 
 // 🔹 AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));

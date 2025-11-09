@@ -38,7 +38,7 @@ namespace DAL.Repository
                 .Include(c => c.Person)
                 .Where(c => c.Person.FirstName.Contains(keyword)
                          || c.Person.LastName.Contains(keyword)
-                         || (c.Specialty ?? "").Contains(keyword))
+                         || (c.Specialization ?? "").Contains(keyword))
                 .ToList();
 
         public async Task<List<Coach>> SearchAsync(string keyword) =>
@@ -46,7 +46,7 @@ namespace DAL.Repository
                 .Include(c => c.Person)
                 .Where(c => c.Person.FirstName.Contains(keyword)
                          || c.Person.LastName.Contains(keyword)
-                         || (c.Specialty ?? "").Contains(keyword))
+                         || (c.Specialization ?? "").Contains(keyword))
                 .ToListAsync();
 
         public List<GymClass> GetCoachClasses(int coachId) =>
@@ -72,5 +72,13 @@ namespace DAL.Repository
             await _gymDbContext.ClassEnrollments
                 .Include(e => e.GymClass)
                 .CountAsync(e => e.GymClass.CoachId == coachId);
+        public async Task<Entities.Coach?> GetCoachWithStudentsAsync(int coachId)
+        {
+            return await _context.Coaches
+                .Include(c => c.Person)
+                .Include(c => c.Students)
+                    .ThenInclude(s => s.Person)
+                .FirstOrDefaultAsync(c => c.Id == coachId);
+        }
     }
 }

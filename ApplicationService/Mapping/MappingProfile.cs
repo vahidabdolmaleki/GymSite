@@ -15,6 +15,7 @@ namespace ApplicationService
         public MappingProfile()
         {
             CreateMap<Person, PersonDto>().ReverseMap();            
+            CreateMap<Coach, CoachDto>().ReverseMap();            
         }
 
     }

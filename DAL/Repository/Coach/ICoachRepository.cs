@@ -25,5 +25,8 @@ namespace DAL.Repository
         // 📊 تعداد شاگردهای زیر نظر مربی
         int GetStudentCount(int coachId);
         Task<int> GetStudentCountAsync(int coachId);
+        // 👨‍🏫 دریافت مربی به همراه شاگردها
+        Task<Coach?> GetCoachWithStudentsAsync(int coachId);
+
     }
 }
