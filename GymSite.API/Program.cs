@@ -20,6 +20,7 @@ builder.Services.AddScoped<GymDbContext>(_ => new GymDbContext(new DbContextOpti
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<ICoachService, CoachService>();
+builder.Services.AddScoped<IStudentService, StudentService>();
 
 // 🔹 AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));

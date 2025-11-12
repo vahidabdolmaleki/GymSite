@@ -39,13 +39,24 @@ namespace GymSite.API.Controllers
 
             return Ok(result);
         }
+        /// <summary>
+        /// 🔍 جستجو اطلاعات یک مربی بر اساس نام و یا مهارت(تخصص)
+        /// </summary>
+        [HttpGet("Search")]
+        public async Task<IActionResult> Search([FromQuery] string? name,[FromQuery] string? specialization,[FromQuery] int page = 1,[FromQuery] int pageSize = 10)
+        {
+            var result = await _coachService.SearchAsync(name, specialization, page, pageSize);
+            return Ok(result);
+        }
+
 
         /// <summary>
         /// ➕ افزودن مربی جدید
         /// </summary>
         [HttpPost("Create")]
-        //[Authorize(Roles = "Admin")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
+        //For test comment Authoize and use AllowAnonymous
+        //[AllowAnonymous]
         public async Task<IActionResult> Create([FromBody] CoachCreateDto dto)
         {
             var result = await _coachService.CreateAsync(dto);
@@ -56,8 +67,9 @@ namespace GymSite.API.Controllers
         /// ✏️ ویرایش اطلاعات مربی
         /// </summary>
         [HttpPut("Update")]
-        //[Authorize(Roles = "Admin")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
+        //For test comment Authoize and use AllowAnonymous
+        //[AllowAnonymous]
         public async Task<IActionResult> Update([FromBody] CoachUpdateDto dto)
         {
             var result = await _coachService.UpdateAsync(dto);
@@ -68,8 +80,9 @@ namespace GymSite.API.Controllers
         /// ❌ حذف مربی
         /// </summary>
         [HttpDelete("Delete/{id}")]
-        //[Authorize(Roles = "Admin")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
+        //For test comment Authoize and use AllowAnonymous
+        //[AllowAnonymous]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _coachService.DeleteAsync(id);
@@ -77,3 +90,5 @@ namespace GymSite.API.Controllers
         }
     }
 }
+
+

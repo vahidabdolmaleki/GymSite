@@ -1,10 +1,12 @@
 ﻿using ApplicationService.DTOs;
+using ApplicationService.DTOs.Common;
 using ApplicationService.Interfaces;
 using AutoMapper;
 using Core;
 using DAL.UnitOfWork;
 using Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace ApplicationService.Services
 {
@@ -29,7 +31,7 @@ namespace ApplicationService.Services
                 var coaches = await _uow.CoachRepository.GetAllQueryable()
                     .Include(c => c.Person)
                     .ToListAsync();
-
+                //List<CoachDto> coachDtos = FillCoaches(coaches);
                 result.Data = _mapper.Map<IEnumerable<CoachDto>>(coaches);
                 result.IsSuccess = true;
                 result.Message = "لیست مربی‌ها با موفقیت دریافت شد.";
@@ -41,6 +43,26 @@ namespace ApplicationService.Services
             }
 
             return result;
+        }
+
+        private static List<CoachDto> FillCoaches(List<Coach> coaches)
+        {
+            List<CoachDto> coachDtos = new List<CoachDto>();
+            for (int i = 0; i < coaches.Count; i++)
+            {
+                CoachDto coachDto = new CoachDto()
+                {
+                    Id = coaches[i].Id,
+                    CertificateNumber = coaches[i].CertificateNumber,
+                    ExperinceYears = coaches[i].ExperienceYears,
+                    FullName = coaches[i].Person.FirstName + " " + coaches[i].Person.LastName,
+                    Specilization = coaches[i].CertificateNumber,
+                    IsActive = coaches[i].IsActive,
+                };
+                coachDtos.Add(coachDto);
+            }
+
+            return coachDtos;
         }
 
         // 🔍 دریافت مربی با شناسه
@@ -57,7 +79,17 @@ namespace ApplicationService.Services
                     result.Message = "مربی یافت نشد.";
                     return result;
                 }
-
+                
+                    //CoachDto coachDto = new CoachDto()
+                    //{
+                    //    Id = coach.Id,
+                    //    CertificateNumber = coach.CertificateNumber,
+                    //    ExperinceYears = coach.ExperienceYears,
+                    //    FullName = coach.Person.FirstName + " " + coach.Person.LastName,
+                    //    Specilization = coach.CertificateNumber,
+                    //    IsActive = coach.IsActive,
+                    //};
+                
                 result.Data = _mapper.Map<CoachDto>(coach);
                 result.IsSuccess = true;
                 result.Message = "اطلاعات مربی با موفقیت دریافت شد.";
@@ -67,7 +99,6 @@ namespace ApplicationService.Services
                 result.IsSuccess = false;
                 result.Message = $"خطا در دریافت اطلاعات مربی: {ex.Message}";
             }
-
             return result;
         }
 
@@ -216,7 +247,7 @@ namespace ApplicationService.Services
                         Id = coach.Id,
                         FullName = $"{coach.Person.FirstName} {coach.Person.LastName}",
                         Specilization = coach.Specialization,
-                        ExperinceYears = coach.ExperienceYears.ToString(),
+                        ExperinceYears = coach.ExperienceYears,
                         IsActive = coach.IsActive
                     }
                 };
@@ -233,6 +264,61 @@ namespace ApplicationService.Services
             return result;
         }
 
-       
+        public async Task<ServiceResult<PagedResultDto<CoachDto>>> SearchAsync(string? name,string? specialization,int page = 1,int pageSize = 10)
+        {
+            var result = new ServiceResult<PagedResultDto<CoachDto>>();
+
+            try
+            {
+                var query = _uow.CoachRepository.GetAllQueryable()
+                    .Include(c => c.Person)
+                    .AsQueryable();
+
+                // فیلتر بر اساس نام
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    query = query.Where(c =>
+                        c.Person.FirstName.Contains(name) ||
+                        c.Person.LastName.Contains(name));
+                }
+
+                // فیلتر بر اساس تخصص
+                if (!string.IsNullOrWhiteSpace(specialization))
+                {
+                    query = query.Where(c => c.Specialization.Contains(specialization));
+                }
+
+                // محاسبه صفحه‌بندی
+                var totalCount = await query.CountAsync();
+                var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+                var items = await query
+                    .OrderBy(c => c.Person.FirstName)
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                result.IsSuccess = true;
+                result.Message = "جستجو با موفقیت انجام شد.";
+
+                result.Data = new PagedResultDto<CoachDto>
+                {
+                    CurrentPage = page,
+                    TotalPages = totalPages,
+                    PageSize = pageSize,
+                    TotalCount = totalCount,
+                    Items = _mapper.Map<IEnumerable<CoachDto>>(items)
+                };
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = $"خطا در جستجو: {ex.Message}";
+            }
+
+            return result;
+        }
+
+
     }
 }

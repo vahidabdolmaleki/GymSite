@@ -15,7 +15,18 @@ namespace ApplicationService
         public MappingProfile()
         {
             CreateMap<Person, PersonDto>().ReverseMap();            
-            CreateMap<Coach, CoachDto>().ReverseMap();            
+            // Coach -> CoachDto
+            CreateMap<Coach, CoachDto>()
+                .ForMember(dest => dest.FullName,
+                           opt => opt.MapFrom(src => src.Person.FirstName + " " + src.Person.LastName))
+                .ForMember(dest => dest.ExperinceYears,
+                           opt => opt.MapFrom(src => src.ExperienceYears))
+                .ForMember(dest => dest.Specilization,
+                           opt => opt.MapFrom(src => src.Specialization))
+                .ForMember(dest => dest.CertificateNumber,
+                           opt => opt.MapFrom(src => src.CertificateNumber))
+                .ForMember(dest => dest.IsActive,
+                           opt => opt.MapFrom(src => src.IsActive));
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using ApplicationService.DTOs;
+using ApplicationService.DTOs.Common;
 using Core;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,6 @@ namespace ApplicationService.Interfaces
         Task<ServiceResult<bool>> UpdateAsync(CoachUpdateDto dto);
         Task<ServiceResult<bool>> DeleteAsync(int id);
         Task<ServiceResults<CoachDto>> GetStudentAsync(int coachId);
+        Task<ServiceResult<PagedResultDto<CoachDto>>> SearchAsync(string? name, string? specialization, int page, int pageSize);
     }
 }

@@ -96,5 +96,22 @@ namespace DAL.Repository
 
         public async Task<int> GetTotalEnrollmentsAsync(int studentId) =>
             await _context.ClassEnrollments.CountAsync(e => e.StudentId == studentId);
+
+        public async Task<List<Student>> GetByCoachIdAsync(int coachId)
+        {
+            return await _context.Students
+                .Include(s => s.Person)
+                .Where(s => s.CoachId == coachId)
+                .ToListAsync();
+        }
+
+        public async Task<Student?> GetFullByIdAsync(int studentId)
+        {
+            return await _context.Students
+                .Include(s => s.Person)
+                .Include(s => s.Coach)
+                    .ThenInclude(c => c.Person)
+                .FirstOrDefaultAsync(s => s.Id == studentId);
+        }
     }
 }

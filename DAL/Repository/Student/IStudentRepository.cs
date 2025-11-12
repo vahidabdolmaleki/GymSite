@@ -29,5 +29,9 @@ namespace DAL.Repository
         // 📈 دریافت تعداد کل کلاس‌هایی که شرکت کرده
         int GetTotalEnrollments(int studentId);
         Task<int> GetTotalEnrollmentsAsync(int studentId);
+
+        // 🧑‍🏫 جستجوی تمام دانش آموزان براساس کد مربی
+        Task<List<Student>> GetByCoachIdAsync(int CoachId);
+        Task<Student?> GetFullByIdAsync(int studentId);
     }
 }
