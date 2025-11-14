@@ -27,6 +27,17 @@ namespace ApplicationService
                            opt => opt.MapFrom(src => src.CertificateNumber))
                 .ForMember(dest => dest.IsActive,
                            opt => opt.MapFrom(src => src.IsActive));
+
+            // Workout Mapping
+            CreateMap<Workout, WorkoutDto>()
+            .ForMember(dest => dest.SubCategoryName, opt => opt.MapFrom(src => src.WorkoutSubCategory.Name))
+            .ForMember(dest => dest.Media, opt => opt.MapFrom(src => src.Media));
+
+            CreateMap<WorkoutCreateDto, Workout>();
+            CreateMap<WorkoutUpdateDto, Workout>();
+
+            CreateMap<WorkoutMedia, WorkoutMediaDto>();
+
         }
 
     }
