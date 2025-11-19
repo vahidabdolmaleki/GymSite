@@ -30,7 +30,7 @@ namespace ApplicationService.Services
                 await _uow.CommitAsync();
 
                 result.IsSuccess = true;
-                result.Message = "تمرین با موفقیت ایجاد شد.";
+                result.Message = ExceptionMessage.CreateWorkoutSuccessFully;
                 result.Data = _mapper.Map<WorkoutDto>(workout);
             }
             catch (Exception ex)
@@ -50,7 +50,7 @@ namespace ApplicationService.Services
             if (workout == null)
             {
                 result.IsSuccess = false;
-                result.Message = "تمرین یافت نشد.";
+                result.Message = ExceptionMessage.WorkourNotFound;
                 return result;
             }
 
@@ -60,7 +60,7 @@ namespace ApplicationService.Services
             await _uow.CommitAsync();
 
             result.IsSuccess = true;
-            result.Message = "تمرین بروزرسانی شد.";
+            result.Message = ExceptionMessage.WorkoutUpdatedSuccessfully;
             result.Data = _mapper.Map<WorkoutDto>(workout);
             return result;
         }
@@ -93,7 +93,7 @@ namespace ApplicationService.Services
             if (workout == null)
             {
                 result.IsSuccess = false;
-                result.Message = "تمرین یافت نشد.";
+                result.Message = ExceptionMessage.WorkOutNotFound;
                 return result;
             }
 
@@ -110,7 +110,7 @@ namespace ApplicationService.Services
             if (workout == null)
             {
                 result.IsSuccess = false;
-                result.Message = "تمرین یافت نشد.";
+                result.Message = ExceptionMessage.WorkOutNotFound;
                 return result;
             }
 

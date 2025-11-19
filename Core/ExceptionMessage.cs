@@ -16,7 +16,7 @@
         public const string PicNotFound = "Picture not found";
         public const string SetPrimaryPictureAsyncFeildForPersonId = "SetPrimaryPictureAsync Feild For PersonId";
         public const string InvalidDatetime = "تاریخ را به  درستی وارد نمایید";
-        public const string DontFindUser = "کاربر یافت نشد.";
+        public const string DontFindUser = "کاربر مورد نظر یافت نشد.";
         public const string UpdateSuccessFully = "اطلاعات مورد نظر با موفقیت بروزرسانی شد";
         public const string DeleteSuccessFully= "اطلاعات مورد نظر با موفقیت حذف شد";
         public const string UserIdDoesNotMatch = "شناسه کاربر مطابقت ندارد.";
@@ -25,6 +25,19 @@
         public const string CodeExpiredOrNotValid= " کد منقضی شده و با معتبر نمی‌باشد باباجان دقت کن دیگه";
         public const string codeVrified ="کد تاپید شد عزیزم";
         public const string VerifyCodeError ="عملیات تایید کد با خطا مواجه شده کد خطا اینه :";
+        public const string CreateWorkoutSuccessFully= "تمرین با موفقیت ایجاد شد.";
+        public const string WorkourNotFound= "تمرین یافت نشد.";
+        public const string WorkoutUpdatedSuccessfully= "تمرین بروزرسانی شد.";
+        public const string WorkOutNotFound ="تمرین یافت نشد.";
+        public const string CreateStudentSuccessfully="شاگرد مورد نظر با موفقیت ایجاد شد";
+        public const string CreateStudentFeild = "خطا در ثبت شاگرد";
+        public const string DontFindStudent = " شاگرد یافت نشد.";
+        public const string UpdateStudentSuccessfully = "اطلاعات شاگرد با موفقیت به‌روزرسانی شد.";
+        public const string UpdateStudentFeild = "خطا در ویرایش شاگرد";
+        public const string ListStudentSuccessfullyRetrieved= "لیست شاگردان بازیابی شد";
+        public const string FeildListStudentRetrieved= "لیست شاگردان بازیابی شد";
+        public const string StudentSuccessfullyDeactived = "شاگرد با موفقیت غیرفعال شد.";
+        public const string DeleteStudentFeild = "خطا در حذف شاگرد";
 
 
         public const string Test = "";

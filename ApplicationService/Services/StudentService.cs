@@ -26,8 +26,8 @@ namespace ApplicationService.Services
                     return new ServiceResult<string>()
                     {
                         IsSuccess = false,
-                        Data = "کاربر مورد نظر یافت نشد.",
-                        Message = "کاربر مورد نظر یافت نشد."
+                        Data = ExceptionMessage.DontFindUser,
+                        Message = ExceptionMessage.DontFindUser
                     };
 
                 var student = new Student
@@ -47,7 +47,7 @@ namespace ApplicationService.Services
                 { 
                     IsSuccess = true,
                     Data = student.Id.ToString(),
-                    Message = "شاگرد با موفقیت ثبت شد."
+                    Message = ExceptionMessage.CreateStudentSuccessfully
                 };
             }
             catch (Exception ex)
@@ -55,7 +55,7 @@ namespace ApplicationService.Services
                 return new ServiceResult<string>()
                 { 
                     IsSuccess =false,
-                    Data = $"خطا در ثبت شاگرد",
+                    Data = ExceptionMessage.CreateStudentFeild,
                     Message = ex.Message
                 };
             }
@@ -71,7 +71,7 @@ namespace ApplicationService.Services
                     return new ServiceResult<string>()
                     {
                         IsSuccess = false,
-                        Message = "شاگرد یافت نشد.",
+                        Message =ExceptionMessage.DontFindStudent,
                         Data = null
                     };
 
@@ -87,7 +87,7 @@ namespace ApplicationService.Services
                 { 
                     IsSuccess = true,
                     Data =student.Id.ToString(),
-                    Message = "اطلاعات شاگرد با موفقیت به‌روزرسانی شد."
+                    Message = ExceptionMessage.UpdateStudentSuccessfully
                 };
             }
             catch (Exception ex)
@@ -96,7 +96,7 @@ namespace ApplicationService.Services
                 {
                     IsSuccess = false,
                     Message = ex.Message,
-                    Data = "خطا در ویرایش شاگرد"
+                    Data = ExceptionMessage.UpdateStudentFeild
                 };
             }
         }
@@ -130,7 +130,7 @@ namespace ApplicationService.Services
                 return new ServiceResult<List<StudentDto>>()
                 { 
                     Data= dtoList,
-                    Message = "لیست شاگردان بازیابی شد",
+                    Message = ExceptionMessage.ListStudentSuccessfullyRetrieved,
                     IsSuccess = false
                 };
             }
@@ -140,7 +140,7 @@ namespace ApplicationService.Services
                 { 
                     IsSuccess = false,
                     Data = null,
-                    Message =$"خطا در دریافت لیست شاگردان: {ex.Message}"
+                    Message =$"{ExceptionMessage.FeildListStudentRetrieved}: {ex.Message}"
                 };
             }
         }
@@ -156,7 +156,7 @@ namespace ApplicationService.Services
                     {
                         IsSuccess = false,
                         Data = null,
-                        Message = "شاگرد یافت نشد."
+                        Message = ExceptionMessage.DontFindStudent
                     };
 
                 student.IsActive = false;
@@ -166,7 +166,7 @@ namespace ApplicationService.Services
                 return new ServiceResult<string>() 
                 {
                     IsSuccess = true,
-                    Message = "شاگرد با موفقیت غیرفعال شد.",
+                    Message = ExceptionMessage.StudentSuccessfullyDeactived,
                     Data = student.Id.ToString()
                 };
             }
@@ -176,7 +176,7 @@ namespace ApplicationService.Services
                 { 
                     Data = ex.Message ,
                     IsSuccess = false,
-                    Message = $"خطا در حذف شاگرد"
+                    Message = ExceptionMessage.DeleteStudentFeild
                 };
             }
         }
