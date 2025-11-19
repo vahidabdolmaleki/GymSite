@@ -2,7 +2,8 @@
 {
     public class WorkoutCategory : BaseEntity
     {
-        public string Name { get; set; } // مثلا "گروه عضلانی"
+        public string? Title { get; set; } // مثلا "گروه عضلانی"
+        public string? Description { get; set; }
         public ICollection<WorkoutSubCategory> SubCategories { get; set; }
     }
 }

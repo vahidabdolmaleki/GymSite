@@ -23,7 +23,7 @@ namespace DAL.Repository
         {
             return _gymDbContext.WorkoutSubCategories
                 .Where(sc => sc.WorkoutCategoryId == categoryId)
-                .OrderBy(sc => sc.Name)
+                .OrderBy(sc => sc.Title)
                 .ToList();
         }
 
@@ -31,7 +31,7 @@ namespace DAL.Repository
         {
             return await _gymDbContext.WorkoutSubCategories
                 .Where(sc => sc.WorkoutCategoryId == categoryId)
-                .OrderBy(sc => sc.Name)
+                .OrderBy(sc => sc.Title)
                 .ToListAsync();
         }
 
@@ -39,14 +39,14 @@ namespace DAL.Repository
         {
             return _gymDbContext.WorkoutCategories
                 .Include(c => c.SubCategories)
-                .FirstOrDefault(c => c.Name.ToLower() == name.ToLower());
+                .FirstOrDefault(c => c.Title.ToLower() == name.ToLower());
         }
 
         public async Task<WorkoutCategory?> GetByNameAsync(string name)
         {
             return await _gymDbContext.WorkoutCategories
                 .Include(c => c.SubCategories)
-                .FirstOrDefaultAsync(c => c.Name.ToLower() == name.ToLower());
+                .FirstOrDefaultAsync(c => c.Title.ToLower() == name.ToLower());
         }
     }
 }

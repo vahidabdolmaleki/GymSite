@@ -30,7 +30,7 @@ namespace ApplicationService
 
             // Workout Mapping
             CreateMap<Workout, WorkoutDto>()
-            .ForMember(dest => dest.SubCategoryName, opt => opt.MapFrom(src => src.WorkoutSubCategory.Name))
+            .ForMember(dest => dest.SubCategoryName, opt => opt.MapFrom(src => src.WorkoutSubCategory.Title))
             .ForMember(dest => dest.Media, opt => opt.MapFrom(src => src.Media));
 
             CreateMap<WorkoutCreateDto, Workout>();
