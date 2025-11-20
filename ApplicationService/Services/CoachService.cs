@@ -34,12 +34,12 @@ namespace ApplicationService.Services
                 //List<CoachDto> coachDtos = FillCoaches(coaches);
                 result.Data = _mapper.Map<IEnumerable<CoachDto>>(coaches);
                 result.IsSuccess = true;
-                result.Message = "لیست مربی‌ها با موفقیت دریافت شد.";
+                result.Message = ExceptionMessage.MasterListSuccessfullyRetrieved;
             }
             catch (Exception ex)
             {
                 result.IsSuccess = false;
-                result.Message = $"خطا در دریافت لیست مربی‌ها: {ex.Message}";
+                result.Message = $"{ExceptionMessage.MasterListFeild} {ex.Message}";
             }
 
             return result;
@@ -76,7 +76,7 @@ namespace ApplicationService.Services
                 if (coach == null)
                 {
                     result.IsSuccess = false;
-                    result.Message = "مربی یافت نشد.";
+                    result.Message = ExceptionMessage.CoachNotFound;
                     return result;
                 }
                 
@@ -92,12 +92,12 @@ namespace ApplicationService.Services
                 
                 result.Data = _mapper.Map<CoachDto>(coach);
                 result.IsSuccess = true;
-                result.Message = "اطلاعات مربی با موفقیت دریافت شد.";
+                result.Message = ExceptionMessage.CoachInformationSuccessfullyRetieved;
             }
             catch (Exception ex)
             {
                 result.IsSuccess = false;
-                result.Message = $"خطا در دریافت اطلاعات مربی: {ex.Message}";
+                result.Message = $"{ExceptionMessage.CoachInformationFeild}{ex.Message}";
             }
             return result;
         }
@@ -236,7 +236,7 @@ namespace ApplicationService.Services
                 if (coach == null)
                 {
                     result.IsSuccess = false;
-                    result.Message = "مربی یافت نشد.";
+                    result.Message = ExceptionMessage.CoachNotFound;
                     return result;
                 }
 
@@ -258,7 +258,7 @@ namespace ApplicationService.Services
             catch (Exception ex)
             {
                 result.IsSuccess = false;
-                result.Message = $"خطا در دریافت شاگردها: {ex.Message}";
+                result.Message = $"{ExceptionMessage.GetStudentFeild}{ex.Message}";
             }
 
             return result;
@@ -299,7 +299,7 @@ namespace ApplicationService.Services
                     .ToListAsync();
 
                 result.IsSuccess = true;
-                result.Message = "جستجو با موفقیت انجام شد.";
+                result.Message = ExceptionMessage.SerachSuccessfully;
 
                 result.Data = new PagedResultDto<CoachDto>
                 {
@@ -313,7 +313,7 @@ namespace ApplicationService.Services
             catch (Exception ex)
             {
                 result.IsSuccess = false;
-                result.Message = $"خطا در جستجو: {ex.Message}";
+                result.Message = $"{ExceptionMessage.SerachFeild} {ex.Message}";
             }
 
             return result;

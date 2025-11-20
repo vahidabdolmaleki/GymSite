@@ -487,14 +487,14 @@ namespace ApplicationService.Services
                 await _uow.CommitAsync();
 
                 result.IsSuccess = true;
-                result.Message = "خروج با موفقیت انجام شد.";
+                result.Message = ExceptionMessage.ExitSuccessfully;
                 result.Data = true;
                 return result;
             }
             catch (Exception ex)
             {
                 result.IsSuccess = false;
-                result.Message = $"خطا در خروج: {ex.Message}";
+                result.Message = $"{ExceptionMessage.ExitFeild} {ex.Message}";
                 return result;
             }
         }

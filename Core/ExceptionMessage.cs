@@ -52,6 +52,16 @@
         public const string NewTokenCreated = "توکن جدید صادر شد.";
         public const string FeildUpdatetoken = "خطا در بروزرسانی توکن:";
         public const string DontFindDeviceForExit = "دستگاهی برای خروج یافت نشد.";
+        public const string ExitSuccessfully= "خروج با موفقیت انجام شد.";
+        public const string ExitFeild= "خطا در خروج:";
+        public const string MasterListSuccessfullyRetrieved = "لیست مربی‌ها با موفقیت دریافت شد.";
+        public const string MasterListFeild= "خطا در دریافت لیست مربی‌ها:";
+        public const string CoachNotFound = "مربی یافت نشد.";
+        public const string CoachInformationSuccessfullyRetieved= "اطلاعات مربی با موفقیت دریافت شد.";
+        public const string CoachInformationFeild= "خطا در دریافت اطلاعات مربی: ";
+        public const string SerachSuccessfully= "جستجو با موفقیت انجام شد.";
+        public const string SerachFeild = "خطا در جستجو:";
+        public const string GetStudentFeild= "خطا در دریافت شاگردها: ";
 
         public const string Test = "";
     }
