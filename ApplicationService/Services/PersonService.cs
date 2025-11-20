@@ -51,7 +51,7 @@ namespace ApplicationService.Services
                 {
                     IsSuccess = true,
                     Data = cached,
-                    Message = "داده‌ها از کش خوانده شدند."
+                    Message = ExceptionMessage.DataCouldNotBeReadFromCache
                 };
             }
 
@@ -64,7 +64,7 @@ namespace ApplicationService.Services
             {
                 IsSuccess = true,
                 Data = dtos,
-                Message = "داده‌ها با موفقیت بازیابی شدند."
+                Message = ExceptionMessage.DataWasSuccessfullyRecoverd
             };
         }
 
@@ -73,7 +73,7 @@ namespace ApplicationService.Services
         {
             var person = await _uow.PersonRepository.FindByIdAsync(id);
             if (person == null)
-                return new ServiceResult<PersonDto> { IsSuccess = false, Message = "کاربر یافت نشد." };
+                return new ServiceResult<PersonDto> { IsSuccess = false, Message = ExceptionMessage.DontFindUser };
 
             var dto = _mapper.Map<PersonDto>(person);
             return new ServiceResult<PersonDto> { IsSuccess = true, Data = dto };
@@ -94,7 +94,7 @@ namespace ApplicationService.Services
     if (person == null || !BCrypt.Net.BCrypt.Verify(dto.Password, person.PasswordHash))
     {
         result.IsSuccess = false;
-        result.Message = "نام کاربری یا رمز عبور اشتباه است.";
+                result.Message = ExceptionMessage.UsernameOrPasswordIsInvalid;
         return result;
     }
 
@@ -135,7 +135,7 @@ namespace ApplicationService.Services
         AccessToken = accessToken,
         RefreshToken = refreshToken
     };
-    result.Message = "ورود موفقیت‌آمیز بود.";
+    result.Message = ExceptionMessage.LoginSuccessFully;
 
     return result;
 }
@@ -188,7 +188,7 @@ namespace ApplicationService.Services
                 if (existingUser != null)
                 {
                     result.IsSuccess = false;
-                    result.Message = "کاربری با این اطلاعات از قبل وجود دارد.";
+                    result.Message = ExceptionMessage.YouCantInsertDuplicateUser ;
                     return result;
                 }
 
@@ -243,7 +243,7 @@ namespace ApplicationService.Services
 
                 // 7️⃣ پاسخ موفق
                 result.IsSuccess = true;
-                result.Message = "ثبت‌نام با موفقیت انجام شد. لطفاً کد ارسال‌شده را تأیید کنید.";
+                result.Message = ExceptionMessage.RegisterSuccessfullyDoPleaseInsertComfirmCode;
                 result.Data = person.Username;
 
                 return result;
@@ -251,7 +251,7 @@ namespace ApplicationService.Services
             catch (Exception ex)
             {
                 result.IsSuccess = false;
-                result.Message = $"خطا در ثبت‌نام: {ex.Message}";
+                result.Message = $"{ExceptionMessage.RegisterFeild}{ex.Message}";
                 return result;
             }
         }
@@ -369,7 +369,7 @@ namespace ApplicationService.Services
             if (person == null)
             {
                 result.IsSuccess = false;
-                result.Message = "کاربر یافت نشد.";
+                result.Message = ExceptionMessage.DontFindUser;
                 return result;
             }
 
@@ -379,7 +379,7 @@ namespace ApplicationService.Services
             if (code == null || code.IsUsed || code.ExpireAt < DateTime.UtcNow)
             {
                 result.IsSuccess = false;
-                result.Message = "کد معتبر نیست یا منقضی شده.";
+                result.Message = ExceptionMessage.CodeIsNotValid;
                 return result;
             }
 
@@ -391,7 +391,7 @@ namespace ApplicationService.Services
 
             result.IsSuccess = true;
             result.Data = true;
-            result.Message = "رمز عبور با موفقیت تغییر یافت.";
+            result.Message = ExceptionMessage.PasswordSuccessfullyChanged;
             return result;
         }
         public async Task<ServiceResult<TokenResponseDto>> RefreshTokenAsync(RefreshTokenDto dto)
@@ -404,7 +404,7 @@ namespace ApplicationService.Services
                 if (principal == null)
                 {
                     result.IsSuccess = false;
-                    result.Message = "توکن نامعتبر است.";
+                    result.Message =ExceptionMessage.TokenIsNotValid;
                     return result;
                 }
 
@@ -417,7 +417,7 @@ namespace ApplicationService.Services
                 if (device == null || device.RefreshTokenExpiry < DateTime.UtcNow)
                 {
                     result.IsSuccess = false;
-                    result.Message = "رفرش توکن منقضی یا نامعتبر است.";
+                    result.Message = ExceptionMessage.RefeshTokenOrExpiredToken;
                     return result;
                 }
 
@@ -438,12 +438,12 @@ namespace ApplicationService.Services
                     AccessToken = newAccessToken,
                     RefreshToken = newRefreshToken
                 };
-                result.Message = "توکن جدید صادر شد.";
+                result.Message = ExceptionMessage.NewTokenCreated;
             }
             catch (Exception ex)
             {
                 result.IsSuccess = false;
-                result.Message = $"خطا در بروزرسانی توکن: {ex.Message}";
+                result.Message = $"{ExceptionMessage.FeildUpdatetoken} {ex.Message}";
             }
 
             return result;
@@ -463,7 +463,7 @@ namespace ApplicationService.Services
                 if (string.IsNullOrEmpty(personIdClaim) || !int.TryParse(personIdClaim, out int personId))
                 {
                     result.IsSuccess = false;
-                    result.Message = "توکن نامعتبر است.";
+                    result.Message = ExceptionMessage.TokenIsNotValid;
                     return result;
                 }
 
@@ -474,7 +474,7 @@ namespace ApplicationService.Services
                 if (device == null)
                 {
                     result.IsSuccess = false;
-                    result.Message = "دستگاهی برای خروج یافت نشد.";
+                    result.Message = ExceptionMessage.DontFindDeviceForExit;
                     return result;
                 }
 

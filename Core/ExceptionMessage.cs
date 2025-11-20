@@ -38,7 +38,20 @@
         public const string FeildListStudentRetrieved= "لیست شاگردان بازیابی شد";
         public const string StudentSuccessfullyDeactived = "شاگرد با موفقیت غیرفعال شد.";
         public const string DeleteStudentFeild = "خطا در حذف شاگرد";
-
+        public const string DataCouldNotBeReadFromCache= "داده‌ها از کش خوانده شدند.";
+        public const string DataWasSuccessfullyRecoverd = "داده‌ها با موفقیت بازیابی شدند.";
+        public const string UsernameOrPasswordIsInvalid= "نام کاربری یا رمز عبور اشتباه است.";
+        public const string LoginSuccessFully= "ورود موفقیت‌آمیز بود.";
+        public const string YouCantInsertDuplicateUser= "کاربری با این اطلاعات از قبل وجود دارد.";
+        public const string RegisterSuccessfullyDoPleaseInsertComfirmCode= "ثبت‌نام با موفقیت انجام شد. لطفاً کد ارسال‌شده را تأیید کنید.";
+        public const string RegisterFeild= "خطا در ثبت‌نام: ";
+        public const string CodeIsNotValid= "کد معتبر نیست یا منقضی شده.";
+        public const string PasswordSuccessfullyChanged= "رمز عبور با موفقیت تغییر یافت.";
+        public const string TokenIsNotValid = "توکن نامعتبر است.";
+        public const string RefeshTokenOrExpiredToken = "رفرش توکن منقضی یا نامعتبر است.";
+        public const string NewTokenCreated = "توکن جدید صادر شد.";
+        public const string FeildUpdatetoken = "خطا در بروزرسانی توکن:";
+        public const string DontFindDeviceForExit = "دستگاهی برای خروج یافت نشد.";
 
         public const string Test = "";
     }
