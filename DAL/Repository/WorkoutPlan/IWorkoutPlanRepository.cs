@@ -21,5 +21,8 @@ namespace DAL.Repository
         // دریافت آخرین برنامه تمرینی یک شخص
         WorkoutPlan? GetLatestPlan(int personId);
         Task<WorkoutPlan?> GetLatestPlanAsync(int personId);
+
+        Task<WorkoutPlan?> GetPlanWithItemsAsync(int id);
+        IQueryable<WorkoutPlan> GetPlansForPerson(int personId);
     }
 }

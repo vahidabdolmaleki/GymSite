@@ -8,6 +8,7 @@ using DAL.Repository.LogRepository;
 using DAL.Repository.MembershipType;
 using DAL.Repository.NotificationRepository;
 using DAL.Repository.SupplementRepository;
+using DAL.Repository.WorkoutPlanItemRepo;
 using DAL.Repository.WorkoutRepository;
 using Entities;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +26,7 @@ namespace DAL.UnitOfWork
             _configuration = configuration;
             _gymDbContext = gymDbContext;
             VerificationCodes = new VerificationCodeRepository(gymDbContext);
+            
 
         }
 
@@ -52,7 +54,7 @@ namespace DAL.UnitOfWork
         public IPersonRoleRepostiory PersonRoleRepostiory => new PersonRoleRepository(_gymDbContext);
         public IUserRoleRepository UserRoleRepository => new UserRoleRepository(_gymDbContext);
         public IUserMembershipRepository UserMembershipRepository => new UserMembershipRepository(_gymDbContext);
-        public IWorkoutPlanRepository WorkoutPlanRepository => new WorkoutPlanRepository(_gymDbContext);
+        public IWorkoutPlanRepository WorkoutPlanRepository => new WorkoutPlanRepository(_gymDbContext);        
         public IWorkoutLogRepository WorkoutLogRepository => new WorkoutLogRepository(_gymDbContext);
         public IWorkoutHistoryRepository WorkoutHistoryRepository =>  new  WorkoutHistoryRepository(_gymDbContext);
         public IWorkoutCategoryRepository WorkoutCategoryRepository => new WorkoutCategoryRepository(_gymDbContext);
@@ -79,7 +81,9 @@ namespace DAL.UnitOfWork
 
         // --- Generic Repository's
         
-        public IGenericRepository<User> UserRepository =>   new GenericRepository<User>(_gymDbContext);        
+        public IGenericRepository<User> UserRepository =>   new GenericRepository<User>(_gymDbContext);
+
+        public IWorkoutPlanItemRepository WorkoutPlanItemRepository => new WorkoutPlanItemRepository(_gymDbContext);
 
         public void Commit()
         {

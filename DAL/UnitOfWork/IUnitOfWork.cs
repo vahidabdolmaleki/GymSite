@@ -15,6 +15,7 @@ using DAL.Repository.LogRepository;
 using DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using DAL.Repositories;
+using DAL.Repository.WorkoutPlanItemRepo;
 
 namespace DAL.UnitOfWork
 {
@@ -45,6 +46,7 @@ namespace DAL.UnitOfWork
         IUserRoleRepository UserRoleRepository { get; }
         IUserMembershipRepository UserMembershipRepository { get; }
         IWorkoutPlanRepository WorkoutPlanRepository { get; }
+        IWorkoutPlanItemRepository WorkoutPlanItemRepository { get; }
         IWorkoutLogRepository WorkoutLogRepository { get; }
         IWorkoutHistoryRepository WorkoutHistoryRepository { get; }
         IWorkoutCategoryRepository WorkoutCategoryRepository { get; }

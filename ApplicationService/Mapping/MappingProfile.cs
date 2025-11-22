@@ -1,5 +1,6 @@
 ﻿using ApplicationService.DTOs;
 using ApplicationService.DTOs.Person;
+using ApplicationService.DTOs.WorkoutPlan;
 using AutoMapper;
 using Entities;
 using System;
@@ -37,6 +38,33 @@ namespace ApplicationService
             CreateMap<WorkoutUpdateDto, Workout>();
 
             CreateMap<WorkoutMedia, WorkoutMediaDto>();
+
+            // ============================
+            //       WorkoutPlan → DTO
+            // ============================
+            CreateMap<WorkoutPlan, WorkoutPlanDto>()
+                .ForMember(dest => dest.Items,
+                    opt => opt.MapFrom(src => src.Items));
+
+            // ============================
+            //    WorkoutPlanItem → DTO
+            // ============================
+            CreateMap<WorkoutPlanItem, WorkoutPlanItemDto>()
+                .ForMember(dest => dest.WorkoutName,
+                    opt => opt.MapFrom(src => src.Workout.Name));
+
+            // ============================
+            //     DTO → WorkoutPlan
+            // ============================
+            CreateMap<WorkoutPlanCreateDto, WorkoutPlan>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore()); // در DB ساخته می‌شود
+
+            // ============================
+            //   DTO → WorkoutPlanItem
+            // ============================
+            CreateMap<WorkoutPlanItemCreateDto, WorkoutPlanItem>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.WorkoutPlanId, opt => opt.Ignore());
 
         }
 

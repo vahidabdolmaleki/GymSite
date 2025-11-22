@@ -10,5 +10,4 @@ namespace ApplicationService.Interfaces
         Task<ServiceResults<WorkoutDto>> GetAllAsync();
         Task<ServiceResult<bool>> DeleteAsync(int id);
     }
-
 }

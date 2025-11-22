@@ -22,7 +22,6 @@ namespace DAL.Repository
         public List<WorkoutPlan> GetByPersonId(int personId)
         {
             return _context.WorkoutPlans
-                .Include(wp => wp.Workout)
                 .Where(wp => wp.PersonId == personId)
                 .OrderByDescending(wp => wp.StartDate)
                 .ToList();
@@ -31,7 +30,6 @@ namespace DAL.Repository
         public async Task<List<WorkoutPlan>> GetByPersonIdAsync(int personId)
         {
             return await _context.WorkoutPlans
-                .Include(wp => wp.Workout)
                 .Where(wp => wp.PersonId == personId)
                 .OrderByDescending(wp => wp.StartDate)
                 .ToListAsync();
@@ -40,7 +38,6 @@ namespace DAL.Repository
         public List<WorkoutPlan> GetActivePlans(int personId)
         {
             return _context.WorkoutPlans
-                .Include(wp => wp.Workout)
                 .Where(wp => wp.PersonId == personId && (wp.EndDate == null || wp.EndDate > DateTime.UtcNow))
                 .ToList();
         }
@@ -48,7 +45,6 @@ namespace DAL.Repository
         public async Task<List<WorkoutPlan>> GetActivePlansAsync(int personId)
         {
             return await _context.WorkoutPlans
-                .Include(wp => wp.Workout)
                 .Where(wp => wp.PersonId == personId && (wp.EndDate == null || wp.EndDate > DateTime.UtcNow))
                 .ToListAsync();
         }
@@ -56,7 +52,6 @@ namespace DAL.Repository
         public WorkoutPlan? GetLatestPlan(int personId)
         {
             return _context.WorkoutPlans
-                .Include(wp => wp.Workout)
                 .Where(wp => wp.PersonId == personId)
                 .OrderByDescending(wp => wp.StartDate)
                 .FirstOrDefault();
@@ -65,10 +60,25 @@ namespace DAL.Repository
         public async Task<WorkoutPlan?> GetLatestPlanAsync(int personId)
         {
             return await _context.WorkoutPlans
-                .Include(wp => wp.Workout)
                 .Where(wp => wp.PersonId == personId)
                 .OrderByDescending(wp => wp.StartDate)
                 .FirstOrDefaultAsync();
+        }
+
+
+        public async Task<WorkoutPlan?> GetPlanWithItemsAsync(int id)
+        {
+            return await _context.WorkoutPlans
+                .Include(p => p.Items)
+                .Include(p => p.Person)
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public IQueryable<WorkoutPlan> GetPlansForPerson(int personId)
+        {
+            return _context.WorkoutPlans
+                .Where(p => p.PersonId == personId)
+                .Include(p => p.Items);
         }
     }
 }
