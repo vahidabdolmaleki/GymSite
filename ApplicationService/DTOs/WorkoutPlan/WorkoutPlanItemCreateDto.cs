@@ -3,6 +3,7 @@
     public class WorkoutPlanItemCreateDto
     {
         public int DayOfWeek { get; set; }    // 1=شنبه
+        public int WorkoutPlanId { get; set; }
         public int WorkoutId { get; set; }
         public int? Sets { get; set; }
         public int? Reps { get; set; }

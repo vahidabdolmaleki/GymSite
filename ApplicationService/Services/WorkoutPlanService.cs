@@ -64,7 +64,7 @@ namespace ApplicationService.Services
             {
                 var item = new WorkoutPlanItem
                 {
-                    WorkoutPlanId = dto.WorkoutId,
+                    WorkoutPlanId = dto.WorkoutPlanId,
                     WorkoutId = dto.WorkoutId,
                     Sets = dto.Sets,
                     Reps = dto.Reps,
