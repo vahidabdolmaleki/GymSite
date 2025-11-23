@@ -1370,6 +1370,9 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CoachId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -1381,9 +1384,6 @@ namespace DAL.Migrations
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
-
-                    b.Property<int>("PersonId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -1397,7 +1397,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonId");
+                    b.HasIndex("CoachId");
 
                     b.HasIndex("StudentId");
 
@@ -1890,17 +1890,17 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Entities.WorkoutPlan", b =>
                 {
-                    b.HasOne("Entities.Person", "Person")
+                    b.HasOne("Entities.Coach", "Coach")
                         .WithMany()
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CoachId");
 
-                    b.HasOne("Entities.Student", null)
+                    b.HasOne("Entities.Student", "Student")
                         .WithMany("WorkoutPlans")
                         .HasForeignKey("StudentId");
 
-                    b.Navigation("Person");
+                    b.Navigation("Coach");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Entities.WorkoutPlanItem", b =>

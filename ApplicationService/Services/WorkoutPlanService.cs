@@ -29,7 +29,8 @@ namespace ApplicationService.Services
             {
                 var plan = new WorkoutPlan
                 {
-                    PersonId = dto.PersonId,
+                    StudentId = dto.StudentId,
+                    CoachId = dto.CoachId,
                     StartDate = dto.StartDate,
                     EndDate = dto.EndDate,
                     Description = dto.Description,
@@ -68,7 +69,9 @@ namespace ApplicationService.Services
                     Sets = dto.Sets,
                     Reps = dto.Reps,
                     DayNumber = dto.DayOfWeek,
-                    Notes = dto.Notes
+                    Notes = dto.Notes,
+                    DurationMinutes = dto.DurationMinutes,
+                    Weight = dto.Weight
                 };
 
                 await _uow.WorkoutPlanItemRepository.SaveAsync(item);

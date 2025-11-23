@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class init20251101 : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -170,30 +170,13 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "VerificationCodes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Target = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Expiration = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsUsed = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_VerificationCodes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "WorkoutCategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -298,7 +281,8 @@ namespace DAL.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     WorkoutCategoryId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -320,9 +304,11 @@ namespace DAL.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PersonId = table.Column<int>(type: "int", nullable: false),
-                    Specialty = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    Specialization = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExperienceYears = table.Column<int>(type: "int", nullable: false),
+                    CertificateNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -341,11 +327,13 @@ namespace DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PersonId = table.Column<int>(type: "int", nullable: false),
-                    IP = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DeviceType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PushNotificationId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PushNotificationId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DeviceType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IP = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastSeenAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshTokenExpiry = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PersonId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -516,64 +504,6 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Students",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PersonId = table.Column<int>(type: "int", nullable: false),
-                    RegisteredAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Students", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Students_People_PersonId",
-                        column: x => x.PersonId,
-                        principalTable: "People",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserMemberships",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    MembershipId = table.Column<int>(type: "int", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PersonId = table.Column<int>(type: "int", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserMemberships", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserMemberships_Memberships_MembershipId",
-                        column: x => x.MembershipId,
-                        principalTable: "Memberships",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserMemberships_People_PersonId",
-                        column: x => x.PersonId,
-                        principalTable: "People",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_UserMemberships_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserRoles",
                 columns: table => new
                 {
@@ -614,6 +544,30 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "VerificationCodes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PersonId = table.Column<int>(type: "int", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExpireAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsUsed = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VerificationCodes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_VerificationCodes_People_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "People",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Addresses",
                 columns: table => new
                 {
@@ -639,32 +593,6 @@ namespace DAL.Migrations
                         name: "FK_Addresses_People_PersonId",
                         column: x => x.PersonId,
                         principalTable: "People",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Workouts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    WorkoutSubCategoryId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Reps = table.Column<int>(type: "int", nullable: true),
-                    Sets = table.Column<int>(type: "int", nullable: true),
-                    DurationMinutes = table.Column<int>(type: "int", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Workouts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Workouts_WorkoutSubCategories_WorkoutSubCategoryId",
-                        column: x => x.WorkoutSubCategoryId,
-                        principalTable: "WorkoutSubCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -698,6 +626,80 @@ namespace DAL.Migrations
                         name: "FK_GymClasses_Coaches_CoachId",
                         column: x => x.CoachId,
                         principalTable: "Coaches",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Students",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PersonId = table.Column<int>(type: "int", nullable: false),
+                    CoachId = table.Column<int>(type: "int", nullable: true),
+                    RegisteredAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Level = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Goal = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Students", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Students_Coaches_CoachId",
+                        column: x => x.CoachId,
+                        principalTable: "Coaches",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Students_People_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "People",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Workouts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    WorkoutCategoryId = table.Column<int>(type: "int", nullable: false),
+                    WorkoutSubCategoryId = table.Column<int>(type: "int", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Reps = table.Column<int>(type: "int", nullable: true),
+                    Sets = table.Column<int>(type: "int", nullable: true),
+                    DurationMinutes = table.Column<int>(type: "int", nullable: true),
+                    WeightKg = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Intensity = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedByCoachId = table.Column<int>(type: "int", nullable: true),
+                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    PrimaryMuscleGroup = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Equipment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PopularityScore = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Workouts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Workouts_Coaches_CreatedByCoachId",
+                        column: x => x.CreatedByCoachId,
+                        principalTable: "Coaches",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Workouts_WorkoutCategories_WorkoutCategoryId",
+                        column: x => x.WorkoutCategoryId,
+                        principalTable: "WorkoutCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Workouts_WorkoutSubCategories_WorkoutSubCategoryId",
+                        column: x => x.WorkoutSubCategoryId,
+                        principalTable: "WorkoutSubCategories",
                         principalColumn: "Id");
                 });
 
@@ -800,6 +802,108 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ClassEnrollments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StudentId = table.Column<int>(type: "int", nullable: false),
+                    GymClassId = table.Column<int>(type: "int", nullable: false),
+                    EnrolledAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsPaid = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClassEnrollments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ClassEnrollments_GymClasses_GymClassId",
+                        column: x => x.GymClassId,
+                        principalTable: "GymClasses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ClassEnrollments_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserMemberships",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    MembershipId = table.Column<int>(type: "int", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PersonId = table.Column<int>(type: "int", nullable: true),
+                    StudentId = table.Column<int>(type: "int", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserMemberships", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserMemberships_Memberships_MembershipId",
+                        column: x => x.MembershipId,
+                        principalTable: "Memberships",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserMemberships_People_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "People",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserMemberships_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserMemberships_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkoutPlans",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StudentId = table.Column<int>(type: "int", nullable: true),
+                    CoachId = table.Column<int>(type: "int", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkoutPlans", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkoutPlans_Coaches_CoachId",
+                        column: x => x.CoachId,
+                        principalTable: "Coaches",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_WorkoutPlans_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "WorkoutLogs",
                 columns: table => new
                 {
@@ -839,7 +943,10 @@ namespace DAL.Migrations
                     FileUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ThumbnailUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MimeType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsPrimary = table.Column<bool>(type: "bit", nullable: false),
+                    DurationSeconds = table.Column<int>(type: "int", nullable: true),
+                    Caption = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -850,69 +957,6 @@ namespace DAL.Migrations
                         name: "FK_WorkoutMedias_Workouts_WorkoutId",
                         column: x => x.WorkoutId,
                         principalTable: "Workouts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WorkoutPlans",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PersonId = table.Column<int>(type: "int", nullable: false),
-                    WorkoutId = table.Column<int>(type: "int", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Sets = table.Column<int>(type: "int", nullable: true),
-                    Reps = table.Column<int>(type: "int", nullable: true),
-                    Weight = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorkoutPlans", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WorkoutPlans_People_PersonId",
-                        column: x => x.PersonId,
-                        principalTable: "People",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_WorkoutPlans_Workouts_WorkoutId",
-                        column: x => x.WorkoutId,
-                        principalTable: "Workouts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ClassEnrollments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StudentId = table.Column<int>(type: "int", nullable: false),
-                    GymClassId = table.Column<int>(type: "int", nullable: false),
-                    EnrolledAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsPaid = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ClassEnrollments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ClassEnrollments_GymClasses_GymClassId",
-                        column: x => x.GymClassId,
-                        principalTable: "GymClasses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ClassEnrollments_Students_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Students",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -937,6 +981,40 @@ namespace DAL.Migrations
                         name: "FK_WorkoutHistories_WorkoutPlans_WorkoutPlanId",
                         column: x => x.WorkoutPlanId,
                         principalTable: "WorkoutPlans",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkoutPlanItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    WorkoutPlanId = table.Column<int>(type: "int", nullable: false),
+                    WorkoutId = table.Column<int>(type: "int", nullable: false),
+                    DayNumber = table.Column<int>(type: "int", nullable: false),
+                    Sets = table.Column<int>(type: "int", nullable: true),
+                    Reps = table.Column<int>(type: "int", nullable: true),
+                    Weight = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    DurationMinutes = table.Column<int>(type: "int", nullable: true),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkoutPlanItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkoutPlanItems_WorkoutPlans_WorkoutPlanId",
+                        column: x => x.WorkoutPlanId,
+                        principalTable: "WorkoutPlans",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_WorkoutPlanItems_Workouts_WorkoutId",
+                        column: x => x.WorkoutId,
+                        principalTable: "Workouts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1081,6 +1159,11 @@ namespace DAL.Migrations
                 column: "PermissionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Students_CoachId",
+                table: "Students",
+                column: "CoachId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Students_PersonId",
                 table: "Students",
                 column: "PersonId",
@@ -1100,6 +1183,11 @@ namespace DAL.Migrations
                 name: "IX_UserMemberships_PersonId",
                 table: "UserMemberships",
                 column: "PersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserMemberships_StudentId",
+                table: "UserMemberships",
+                column: "StudentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserMemberships_UserId",
@@ -1128,6 +1216,11 @@ namespace DAL.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_VerificationCodes_PersonId",
+                table: "VerificationCodes",
+                column: "PersonId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_WorkoutHistories_WorkoutPlanId",
                 table: "WorkoutHistories",
                 column: "WorkoutPlanId");
@@ -1148,14 +1241,34 @@ namespace DAL.Migrations
                 column: "WorkoutId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkoutPlans_PersonId",
-                table: "WorkoutPlans",
-                column: "PersonId");
+                name: "IX_WorkoutPlanItems_WorkoutId",
+                table: "WorkoutPlanItems",
+                column: "WorkoutId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkoutPlans_WorkoutId",
+                name: "IX_WorkoutPlanItems_WorkoutPlanId",
+                table: "WorkoutPlanItems",
+                column: "WorkoutPlanId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkoutPlans_CoachId",
                 table: "WorkoutPlans",
-                column: "WorkoutId");
+                column: "CoachId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkoutPlans_StudentId",
+                table: "WorkoutPlans",
+                column: "StudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Workouts_CreatedByCoachId",
+                table: "Workouts",
+                column: "CreatedByCoachId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Workouts_WorkoutCategoryId",
+                table: "Workouts",
+                column: "WorkoutCategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Workouts_WorkoutSubCategoryId",
@@ -1226,13 +1339,13 @@ namespace DAL.Migrations
                 name: "WorkoutMedias");
 
             migrationBuilder.DropTable(
+                name: "WorkoutPlanItems");
+
+            migrationBuilder.DropTable(
                 name: "AddressDetails");
 
             migrationBuilder.DropTable(
                 name: "GymClasses");
-
-            migrationBuilder.DropTable(
-                name: "Students");
 
             migrationBuilder.DropTable(
                 name: "Devices");
@@ -1259,28 +1372,31 @@ namespace DAL.Migrations
                 name: "WorkoutPlans");
 
             migrationBuilder.DropTable(
+                name: "Workouts");
+
+            migrationBuilder.DropTable(
                 name: "UnitCities");
 
             migrationBuilder.DropTable(
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Coaches");
-
-            migrationBuilder.DropTable(
-                name: "Workouts");
-
-            migrationBuilder.DropTable(
-                name: "People");
+                name: "Students");
 
             migrationBuilder.DropTable(
                 name: "WorkoutSubCategories");
 
             migrationBuilder.DropTable(
-                name: "PersonTypes");
+                name: "Coaches");
 
             migrationBuilder.DropTable(
                 name: "WorkoutCategories");
+
+            migrationBuilder.DropTable(
+                name: "People");
+
+            migrationBuilder.DropTable(
+                name: "PersonTypes");
         }
     }
 }

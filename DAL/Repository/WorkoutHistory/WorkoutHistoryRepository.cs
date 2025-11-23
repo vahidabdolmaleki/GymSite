@@ -23,7 +23,7 @@ namespace DAL.Repository
         {
             return _gymDbContext.WorkoutHistories
                 .Include(wh => wh.WorkoutPlan)
-                .Where(wh => wh.WorkoutPlan.PersonId == personId)
+                .Where(wh => wh.WorkoutPlan.StudentId == personId)
                 .OrderByDescending(wh => wh.DoneAt)
                 .ToList();
         }
@@ -32,7 +32,7 @@ namespace DAL.Repository
         {
             return await _gymDbContext.WorkoutHistories
                 .Include(wh => wh.WorkoutPlan)
-                .Where(wh => wh.WorkoutPlan.PersonId == personId)
+                .Where(wh => wh.WorkoutPlan.StudentId == personId)
                 .OrderByDescending(wh => wh.DoneAt)
                 .ToListAsync();
         }
@@ -59,7 +59,7 @@ namespace DAL.Repository
         {
             return _gymDbContext.WorkoutHistories
                 .Include(wh => wh.WorkoutPlan)
-                .Where(wh => wh.WorkoutPlan.PersonId == personId)
+                .Where(wh => wh.WorkoutPlan.StudentId == personId)
                 .OrderByDescending(wh => wh.DoneAt)
                 .FirstOrDefault();
         }
@@ -68,7 +68,7 @@ namespace DAL.Repository
         {
             return await _gymDbContext.WorkoutHistories
                 .Include(wh => wh.WorkoutPlan)
-                .Where(wh => wh.WorkoutPlan.PersonId == personId)
+                .Where(wh => wh.WorkoutPlan.StudentId == personId)
                 .OrderByDescending(wh => wh.DoneAt)
                 .FirstOrDefaultAsync();
         }

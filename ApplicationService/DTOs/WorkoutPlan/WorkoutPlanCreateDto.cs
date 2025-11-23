@@ -2,12 +2,12 @@
 {
     public class WorkoutPlanCreateDto
     {
-        public int PersonId { get; set; }
+        public int CoachId { get; set; }
         public string Title { get; set; } = null!;
         public string? Description { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public int Studentid { get; set; }
+        public int StudentId { get; set; }
         public List<WorkoutPlanItemCreateDto> Items { get; set; } = new();
     }
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(GymDbContext))]
-    [Migration("20251102053812_changeVerificationCodeTable")]
-    partial class changeVerificationCodeTable
+    [Migration("20251123113605_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -170,8 +170,14 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("CertificateNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("ExperienceYears")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -179,7 +185,8 @@ namespace DAL.Migrations
                     b.Property<int>("PersonId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Specialty")
+                    b.Property<string>("Specialization")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -202,9 +209,11 @@ namespace DAL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeviceType")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IP")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
@@ -217,7 +226,14 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("PushNotificationId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RefreshTokenExpiry")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -895,11 +911,20 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CoachId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Goal")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Level")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PersonId")
                         .HasColumnType("int");
@@ -908,6 +933,8 @@ namespace DAL.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CoachId");
 
                     b.HasIndex("PersonId")
                         .IsUnique();
@@ -1038,6 +1065,9 @@ namespace DAL.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("StudentId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -1046,6 +1076,8 @@ namespace DAL.Migrations
                     b.HasIndex("MembershipId");
 
                     b.HasIndex("PersonId");
+
+                    b.HasIndex("StudentId");
 
                     b.HasIndex("UserId");
 
@@ -1134,21 +1166,38 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CreatedByCoachId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("DurationMinutes")
                         .HasColumnType("int");
 
+                    b.Property<string>("Equipment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Intensity")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PopularityScore")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PrimaryMuscleGroup")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Reps")
@@ -1157,10 +1206,20 @@ namespace DAL.Migrations
                     b.Property<int?>("Sets")
                         .HasColumnType("int");
 
-                    b.Property<int>("WorkoutSubCategoryId")
+                    b.Property<decimal?>("WeightKg")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("WorkoutCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkoutSubCategoryId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedByCoachId");
+
+                    b.HasIndex("WorkoutCategoryId");
 
                     b.HasIndex("WorkoutSubCategoryId");
 
@@ -1178,11 +1237,13 @@ namespace DAL.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
+                    b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -1266,11 +1327,14 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Caption")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("DurationSeconds")
+                        .HasColumnType("int");
 
                     b.Property<string>("FileUrl")
                         .IsRequired()
@@ -1278,6 +1342,12 @@ namespace DAL.Migrations
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
+
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MimeType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ThumbnailUrl")
                         .HasColumnType("nvarchar(max)");
@@ -1303,8 +1373,14 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CoachId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
@@ -1312,8 +1388,47 @@ namespace DAL.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int>("PersonId")
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("StudentId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CoachId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("WorkoutPlans");
+                });
+
+            modelBuilder.Entity("Entities.WorkoutPlanItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DayNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DurationMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Reps")
                         .HasColumnType("int");
@@ -1321,22 +1436,22 @@ namespace DAL.Migrations
                     b.Property<int?>("Sets")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<decimal?>("Weight")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("WorkoutId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<int>("WorkoutPlanId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("PersonId");
+                    b.HasKey("Id");
 
                     b.HasIndex("WorkoutId");
 
-                    b.ToTable("WorkoutPlans");
+                    b.HasIndex("WorkoutPlanId");
+
+                    b.ToTable("WorkoutPlanItems");
                 });
 
             modelBuilder.Entity("Entities.WorkoutSubCategory", b =>
@@ -1350,10 +1465,13 @@ namespace DAL.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1620,11 +1738,17 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Entities.Student", b =>
                 {
+                    b.HasOne("Entities.Coach", "Coach")
+                        .WithMany("Students")
+                        .HasForeignKey("CoachId");
+
                     b.HasOne("Entities.Person", "Person")
                         .WithOne("StudentProfile")
                         .HasForeignKey("Entities.Student", "PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Coach");
 
                     b.Navigation("Person");
                 });
@@ -1647,6 +1771,10 @@ namespace DAL.Migrations
                     b.HasOne("Entities.Person", null)
                         .WithMany("Memberships")
                         .HasForeignKey("PersonId");
+
+                    b.HasOne("Entities.Student", null)
+                        .WithMany("Memberships")
+                        .HasForeignKey("StudentId");
 
                     b.HasOne("Entities.User", "User")
                         .WithMany()
@@ -1701,11 +1829,23 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Entities.Workout", b =>
                 {
-                    b.HasOne("Entities.WorkoutSubCategory", "WorkoutSubCategory")
-                        .WithMany("Workouts")
-                        .HasForeignKey("WorkoutSubCategoryId")
+                    b.HasOne("Entities.Coach", "CreatedByCoach")
+                        .WithMany()
+                        .HasForeignKey("CreatedByCoachId");
+
+                    b.HasOne("Entities.WorkoutCategory", "WorkoutCategory")
+                        .WithMany()
+                        .HasForeignKey("WorkoutCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Entities.WorkoutSubCategory", "WorkoutSubCategory")
+                        .WithMany("Workouts")
+                        .HasForeignKey("WorkoutSubCategoryId");
+
+                    b.Navigation("CreatedByCoach");
+
+                    b.Navigation("WorkoutCategory");
 
                     b.Navigation("WorkoutSubCategory");
                 });
@@ -1743,7 +1883,7 @@ namespace DAL.Migrations
             modelBuilder.Entity("Entities.WorkoutMedia", b =>
                 {
                     b.HasOne("Entities.Workout", "Workout")
-                        .WithMany()
+                        .WithMany("Media")
                         .HasForeignKey("WorkoutId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1753,21 +1893,36 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Entities.WorkoutPlan", b =>
                 {
-                    b.HasOne("Entities.Person", "Person")
+                    b.HasOne("Entities.Coach", "Coach")
                         .WithMany()
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CoachId");
 
+                    b.HasOne("Entities.Student", "Student")
+                        .WithMany("WorkoutPlans")
+                        .HasForeignKey("StudentId");
+
+                    b.Navigation("Coach");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("Entities.WorkoutPlanItem", b =>
+                {
                     b.HasOne("Entities.Workout", "Workout")
                         .WithMany()
                         .HasForeignKey("WorkoutId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Person");
+                    b.HasOne("Entities.WorkoutPlan", "WorkoutPlan")
+                        .WithMany("Items")
+                        .HasForeignKey("WorkoutPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Workout");
+
+                    b.Navigation("WorkoutPlan");
                 });
 
             modelBuilder.Entity("Entities.WorkoutSubCategory", b =>
@@ -1789,6 +1944,8 @@ namespace DAL.Migrations
             modelBuilder.Entity("Entities.Coach", b =>
                 {
                     b.Navigation("Classes");
+
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("Entities.GymClass", b =>
@@ -1851,6 +2008,10 @@ namespace DAL.Migrations
             modelBuilder.Entity("Entities.Student", b =>
                 {
                     b.Navigation("Enrollments");
+
+                    b.Navigation("Memberships");
+
+                    b.Navigation("WorkoutPlans");
                 });
 
             modelBuilder.Entity("Entities.UnitCity", b =>
@@ -1867,12 +2028,19 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Entities.Workout", b =>
                 {
+                    b.Navigation("Media");
+
                     b.Navigation("WorkoutLogs");
                 });
 
             modelBuilder.Entity("Entities.WorkoutCategory", b =>
                 {
                     b.Navigation("SubCategories");
+                });
+
+            modelBuilder.Entity("Entities.WorkoutPlan", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("Entities.WorkoutSubCategory", b =>
