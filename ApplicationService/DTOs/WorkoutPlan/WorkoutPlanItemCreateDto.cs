@@ -8,6 +8,7 @@
         public int? Reps { get; set; }
         public decimal? Weight { get; set; }
         public int? DurationMinutes { get; set; }
+        public string? Notes { get; set; }
     }
 
 }

@@ -4,171 +4,218 @@ using AutoMapper;
 using Core;
 using DAL.UnitOfWork;
 using Entities;
-using Microsoft.EntityFrameworkCore;
 
-public class WorkoutPlanService : IWorkoutPlanService
+namespace ApplicationService.Services
 {
-    private readonly IUnitOfWork _uow;
-    private readonly IMapper _mapper;
-
-    public WorkoutPlanService(IUnitOfWork uow, IMapper mapper)
+    public class WorkoutPlanService : IWorkoutPlanService
     {
-        _uow = uow;
-        _mapper = mapper;
-    }
+        private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-    // =============== Create ===================
-    public async Task<ServiceResult<int>> CreateAsync(WorkoutPlanCreateDto dto)
-    {
-        var result = new ServiceResult<int>();
-
-        try
+        public WorkoutPlanService(IUnitOfWork uow, IMapper mapper)
         {
-            var plan = new WorkoutPlan
-            {
-                PersonId = dto.PersonId,
-                Title = dto.Title,
-                Description = dto.Description
-            };
+            _uow = uow;
+            _mapper = mapper;
+        }
 
-            await _uow.WorkoutPlanRepository.SaveAsync(plan);
-            await _uow.CommitAsync();
+        // ============================================================
+        // ✔ ایجاد برنامه تمرینی
+        // ============================================================
+        public async Task<ServiceResult<int>> CreateWorkoutPlanAsync(WorkoutPlanCreateDto dto)
+        {
+            var result = new ServiceResult<int>();
 
-            // افزودن آیتم‌ها
-            foreach (var item in dto.Items)
+            try
             {
-                var entity = new WorkoutPlanItem
+                var plan = new WorkoutPlan
                 {
-                    WorkoutPlanId = plan.Id,
-                    DayNumber = item.DayOfWeek,
-                    WorkoutId = item.WorkoutId,
-                    Sets = item.Sets,
-                    Reps = item.Reps,
-                    Weight = item.Weight,
-                    DurationMinutes = item.DurationMinutes
+                    PersonId = dto.PersonId,
+                    StartDate = dto.StartDate,
+                    EndDate = dto.EndDate,
+                    Description = dto.Description,
+                    Title = dto.Title                   
                 };
 
-                await _uow.WorkoutPlanItemRepository.SaveAsync(entity);
+                await _uow.WorkoutPlanRepository.SaveAsync(plan);
+                await _uow.CommitAsync();
+
+                result.IsSuccess = true;
+                result.Data = plan.Id;
+                result.Message = "برنامه با موفقیت ایجاد شد.";
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = "خطا در ایجاد برنامه: " + ex.Message;
             }
 
-            await _uow.CommitAsync();
-
-            result.IsSuccess = true;
-            result.Data = plan.Id;
-            result.Message = "برنامه تمرینی با موفقیت ساخته شد.";
-            return result;
-        }
-        catch (Exception ex)
-        {
-            result.IsSuccess = false;
-            result.Message = "خطا در ساخت برنامه: " + ex.Message;
-            return result;
-        }
-    }
-
-    // =============== GetById ===================
-    public async Task<ServiceResult<WorkoutPlanDto>> GetByIdAsync(int id)
-    {
-        var result = new ServiceResult<WorkoutPlanDto>();
-
-        var plan = await _uow.WorkoutPlanRepository.GetPlanWithItemsAsync(id);
-
-        if (plan == null)
-        {
-            result.IsSuccess = false;
-            result.Message = "برنامه پیدا نشد.";
             return result;
         }
 
-        var dto = _mapper.Map<WorkoutPlanDto>(plan);
-
-        result.IsSuccess = true;
-        result.Data = dto;
-        return result;
-    }
-
-    // =============== GetForPerson ===================
-    public async Task<ServiceResults<WorkoutPlanDto>> GetForPersonAsync(int personId)
-    {
-        var result = new ServiceResults<WorkoutPlanDto>();
-
-        var list = await _uow.WorkoutPlanRepository
-            .GetPlansForPerson(personId)
-            .ToListAsync();
-
-        result.Data = _mapper.Map<List<WorkoutPlanDto>>(list);
-        result.IsSuccess = true;
-
-        return result;
-    }
-
-    // =============== Update ===================
-    public async Task<ServiceResult<bool>> UpdateAsync(int id, WorkoutPlanCreateDto dto)
-    {
-        var result = new ServiceResult<bool>();
-
-        var plan = await _uow.WorkoutPlanRepository.GetPlanWithItemsAsync(id);
-
-        if (plan == null)
+        // ============================================================
+        // ✔ اضافه کردن آیتم تمرینی به برنامه
+        // ============================================================
+        public async Task<ServiceResult<int>> AddItemAsync(WorkoutPlanItemCreateDto dto)
         {
-            result.IsSuccess = false;
-            result.Message = "برنامه یافت نشد.";
-            return result;
-        }
+            var result = new ServiceResult<int>();
 
-        // بروزرسانی اطلاعات اصلی
-        plan.Title = dto.Title;
-        plan.Description = dto.Description;
-
-        // حذف آیتم‌های قبلی
-        foreach (var old in plan.Items.ToList())
-        {
-            await _uow.WorkoutPlanItemRepository.RemoveAsync(old.Id);
-        }
-
-        // افزودن آیتم‌های جدید
-        foreach (var item in dto.Items)
-        {
-            await _uow.WorkoutPlanItemRepository.SaveAsync(new WorkoutPlanItem
+            try
             {
-                WorkoutPlanId = plan.Id,
-                DayNumber = item.DayOfWeek,
-                WorkoutId = item.WorkoutId,
-                Sets = item.Sets,
-                Reps = item.Reps,
-                Weight = item.Weight,
-                DurationMinutes = item.DurationMinutes
-            });
-        }
+                var item = new WorkoutPlanItem
+                {
+                    WorkoutPlanId = dto.WorkoutId,
+                    WorkoutId = dto.WorkoutId,
+                    Sets = dto.Sets,
+                    Reps = dto.Reps,
+                    DayNumber = dto.DayOfWeek,
+                    Notes = dto.Notes
+                };
 
-        await _uow.CommitAsync();
+                await _uow.WorkoutPlanItemRepository.SaveAsync(item);
+                await _uow.CommitAsync();
 
-        result.IsSuccess = true;
-        result.Data = true;
-        result.Message = "بروزرسانی با موفقیت انجام شد.";
-        return result;
-    }
+                result.IsSuccess = true;
+                result.Data = item.Id;
+                result.Message = "آیتم با موفقیت اضافه شد.";
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = "خطا در افزودن آیتم: " + ex.Message;
+            }
 
-    // =============== Delete ===================
-    public async Task<ServiceResult<bool>> DeleteAsync(int id)
-    {
-        var result = new ServiceResult<bool>();
-
-        var plan = await _uow.WorkoutPlanRepository.FindAsync(id);
-
-        if (plan == null)
-        {
-            result.IsSuccess = false;
-            result.Message = "برنامه یافت نشد.";
             return result;
         }
 
-        await _uow.WorkoutPlanRepository.RemoveAsync(plan.Id);
-        await _uow.CommitAsync();
+        // ============================================================
+        // ✔ حذف آیتم برنامه
+        // ============================================================
+        public async Task<ServiceResult<bool>> RemoveItemAsync(int itemId)
+        {
+            var result = new ServiceResult<bool>();
 
-        result.IsSuccess = true;
-        result.Data = true;
-        result.Message = "برنامه حذف شد.";
-        return result;
+            try
+            {
+                var item = await _uow.WorkoutPlanItemRepository.FindAsync(itemId);
+                if (item == null)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "آیتم یافت نشد.";
+                    return result;
+                }
+
+                _uow.WorkoutPlanItemRepository.Remove(item.Id);
+                await _uow.CommitAsync();
+
+                result.IsSuccess = true;
+                result.Data = true;
+                result.Message = "آیتم با موفقیت حذف شد.";
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = "خطا در حذف آیتم: " + ex.Message;
+            }
+
+            return result;
+        }
+
+        // ============================================================
+        // ✔ حذف کامل برنامه
+        // ============================================================
+        public async Task<ServiceResult<bool>> DeleteWorkoutPlanAsync(int planId)
+        {
+            var result = new ServiceResult<bool>();
+
+            try
+            {
+                var plan = await _uow.WorkoutPlanRepository.GetFullPlanAsync(planId);
+                if (plan == null)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "برنامه یافت نشد.";
+                    return result;
+                }
+
+                // اول همه آیتم‌ها حذف شوند
+                foreach (var item in plan.Items.ToList())
+                {
+                    _uow.WorkoutPlanItemRepository.Remove(item.Id);
+                }
+
+                // حذف خود برنامه
+                _uow.WorkoutPlanRepository.Remove(plan.Id);
+                await _uow.CommitAsync();
+
+                result.IsSuccess = true;
+                result.Data = true;
+                result.Message = "برنامه کامل حذف شد.";
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = "خطا در حذف برنامه: " + ex.Message;
+            }
+
+            return result;
+        }
+
+        // ============================================================
+        // ✔ دریافت برنامه‌های یک دانشجو
+        // ============================================================
+        public async Task<ServiceResults<WorkoutPlanDto>> GetWorkoutPlansByStudentAsync(int studentId)
+        {
+            var result = new ServiceResults<WorkoutPlanDto>();
+
+            try
+            {
+                var plans = await _uow.WorkoutPlanRepository.GetByStudentIdAsync(studentId);
+
+                var mapped = _mapper.Map<List<WorkoutPlanDto>>(plans);
+
+                result.IsSuccess = true;
+                result.Data = mapped;
+                result.Message = "لیست برنامه‌ها با موفقیت دریافت شد.";
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = "خطا در دریافت برنامه‌ها: " + ex.Message;
+            }
+
+            return result;
+        }
+
+        // ============================================================
+        // ✔ دریافت جزئیات کامل یک برنامه
+        // ============================================================
+        public async Task<ServiceResult<WorkoutPlanDto>> GetByIdAsync(int id)
+        {
+            var result = new ServiceResult<WorkoutPlanDto>();
+
+            try
+            {
+                var plan = await _uow.WorkoutPlanRepository.GetFullPlanAsync(id);
+                if (plan == null)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "برنامه یافت نشد.";
+                    return result;
+                }
+
+                var mapped = _mapper.Map<WorkoutPlanDto>(plan);
+
+                result.IsSuccess = true;
+                result.Data = mapped;
+                result.Message = "برنامه با موفقیت دریافت شد.";
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = "خطا در دریافت برنامه: " + ex.Message;
+            }
+
+            return result;
+        }
     }
 }

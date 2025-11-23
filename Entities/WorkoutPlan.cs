@@ -10,7 +10,6 @@
 
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-
         public ICollection<WorkoutPlanItem> Items { get; set; } = new List<WorkoutPlanItem>();
     }
 }

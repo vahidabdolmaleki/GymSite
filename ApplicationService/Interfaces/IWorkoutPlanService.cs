@@ -5,11 +5,22 @@ namespace ApplicationService.Interfaces
 {
     public interface IWorkoutPlanService
     {
-        Task<ServiceResult<int>> CreateAsync(WorkoutPlanCreateDto dto);
-        Task<ServiceResult<WorkoutPlanDto>> GetByIdAsync(int id);
-        Task<ServiceResults<WorkoutPlanDto>> GetForPersonAsync(int personId);
-        Task<ServiceResult<bool>> UpdateAsync(int id, WorkoutPlanCreateDto dto);
-        Task<ServiceResult<bool>> DeleteAsync(int id);
-    }
+        // ✔ ایجاد برنامه‌ی تمرینی جدید
+        Task<ServiceResult<int>> CreateWorkoutPlanAsync(WorkoutPlanCreateDto dto);
 
+        // ✔ اضافه کردن آیتم (تمرین) به برنامه
+        Task<ServiceResult<int>> AddItemAsync(WorkoutPlanItemCreateDto dto);
+
+        // ✔ حذف آیتم از برنامه
+        Task<ServiceResult<bool>> RemoveItemAsync(int itemId);
+
+        // ✔ حذف کامل یک برنامه تمرینی
+        Task<ServiceResult<bool>> DeleteWorkoutPlanAsync(int planId);
+
+        // ✔ دریافت لیست برنامه‌های یک دانشجو
+        Task<ServiceResults<WorkoutPlanDto>> GetWorkoutPlansByStudentAsync(int studentId);
+
+        // ✔ دریافت جزئیات کامل یک برنامه (با آیتم‌ها)
+        Task<ServiceResult<WorkoutPlanDto>> GetByIdAsync(int id);
+    }
 }

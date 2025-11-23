@@ -8,6 +8,7 @@ using ApplicationService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using DAL.Repository.WorkoutPlanItemRepo;
 
 
 
@@ -22,7 +23,7 @@ builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<ICoachService, CoachService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IWorkoutService, WorkoutService>();
-
+builder.Services.AddScoped<IWorkoutPlanService, WorkoutPlanService>();
 // 🔹 AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 

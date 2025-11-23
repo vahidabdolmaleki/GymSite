@@ -80,5 +80,23 @@ namespace DAL.Repository
                 .Where(p => p.PersonId == personId)
                 .Include(p => p.Items);
         }
+        // دریافت برنامه + تمامی آیتم‌ها + تمرین‌ها + مربی + دانشجو
+        public async Task<WorkoutPlan?> GetFullPlanAsync(int id)
+        {
+            return await _context.WorkoutPlans
+                .Include(p => p.Person)                
+                .Include(p => p.Items)
+                    .ThenInclude(i => i.Workout)
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        // دریافت همه برنامه‌های یک دانشجو
+        public async Task<List<WorkoutPlan>> GetByStudentIdAsync(int studentId)
+        {
+            return await _context.WorkoutPlans
+                .Include(p => p.Items)
+                .Where(p => p.PersonId == studentId)
+                .ToListAsync();
+        }
     }
 }

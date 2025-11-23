@@ -24,5 +24,8 @@ namespace DAL.Repository
 
         Task<WorkoutPlan?> GetPlanWithItemsAsync(int id);
         IQueryable<WorkoutPlan> GetPlansForPerson(int personId);
+
+        Task<WorkoutPlan?> GetFullPlanAsync(int id);
+        Task<List<WorkoutPlan>> GetByStudentIdAsync(int studentId);
     }
 }

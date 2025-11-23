@@ -46,6 +46,7 @@ namespace DAL.Context
         public DbSet<Student> Students { get; set; }
         public DbSet<Workout> Workouts { get; set; }
         public DbSet<WorkoutPlan> WorkoutPlans { get; set; }
+        public DbSet<WorkoutPlanItem> WorkoutPlanItems { get; set; }
         public DbSet<WorkoutLog> WorkoutLogs { get; set; }
         public DbSet<HealthRecord> HealthRecords { get; set; }
         public DbSet<Payment> Payments { get; set; }
