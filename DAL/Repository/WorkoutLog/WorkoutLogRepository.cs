@@ -24,7 +24,7 @@ namespace DAL.Repository
             return _context.WorkoutLogs
                 .Include(wl => wl.Workout)
                 .Where(wl => wl.PersonId == personId)
-                .OrderByDescending(wl => wl.Date)
+                .OrderByDescending(wl => wl.PerformedAt)
                 .ToList();
         }
 
@@ -33,7 +33,7 @@ namespace DAL.Repository
             return await _context.WorkoutLogs
                 .Include(wl => wl.Workout)
                 .Where(wl => wl.PersonId == personId)
-                .OrderByDescending(wl => wl.Date)
+                .OrderByDescending(wl => wl.PerformedAt)
                 .ToListAsync();
         }
 
@@ -42,7 +42,7 @@ namespace DAL.Repository
             return _context.WorkoutLogs
                 .Include(wl => wl.Person)
                 .Where(wl => wl.WorkoutId == workoutId)
-                .OrderByDescending(wl => wl.Date)
+                .OrderByDescending(wl => wl.PerformedAt)
                 .ToList();
         }
 
@@ -51,20 +51,20 @@ namespace DAL.Repository
             return await _context.WorkoutLogs
                 .Include(wl => wl.Person)
                 .Where(wl => wl.WorkoutId == workoutId)
-                .OrderByDescending(wl => wl.Date)
+                .OrderByDescending(wl => wl.PerformedAt)
                 .ToListAsync();
         }
 
         public bool HasCompletedWorkout(int personId, int workoutId, DateTime date)
         {
             return _context.WorkoutLogs
-                .Any(wl => wl.PersonId == personId && wl.WorkoutId == workoutId && wl.Date.Date == date.Date && wl.Completed);
+                .Any(wl => wl.PersonId == personId && wl.WorkoutId == workoutId && wl.PerformedAt.Date == date.Date && wl.IsCompleted);
         }
 
         public async Task<bool> HasCompletedWorkoutAsync(int personId, int workoutId, DateTime date)
         {
             return await _context.WorkoutLogs
-                .AnyAsync(wl => wl.PersonId == personId && wl.WorkoutId == workoutId && wl.Date.Date == date.Date && wl.Completed);
+                .AnyAsync(wl => wl.PersonId == personId && wl.WorkoutId == workoutId && wl.PerformedAt.Date == date.Date && wl.IsCompleted);
         }
     }
 }
