@@ -29,4 +29,5 @@ namespace ApplicationService.Interfaces
         Task<ServiceResult<TokenResponseDto>> LoginAsync(LoginRequestDto dto);
         Task<ServiceResult<bool>> LogoutAsync(string accessToken);
     }
+
 }
