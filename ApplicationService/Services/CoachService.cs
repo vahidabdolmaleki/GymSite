@@ -3,6 +3,8 @@ using ApplicationService.DTOs.Common;
 using ApplicationService.Interfaces;
 using AutoMapper;
 using Core;
+using DAL.Context;
+using DAL.Repository.GenericRepository;
 using DAL.UnitOfWork;
 using Entities;
 using Microsoft.EntityFrameworkCore;
@@ -321,4 +323,6 @@ namespace ApplicationService.Services
 
 
     }
+    
+
 }

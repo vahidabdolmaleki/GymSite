@@ -66,5 +66,14 @@ namespace DAL.Repository
             return await _context.WorkoutLogs
                 .AnyAsync(wl => wl.PersonId == personId && wl.WorkoutId == workoutId && wl.PerformedAt.Date == date.Date && wl.IsCompleted);
         }
+        public async Task<List<WorkoutLog>> GetByPersonAsync(int personId)
+        {
+            return await _context.WorkoutLogs
+                .Include(x => x.Person)
+                .Include(x => x.Workout)
+                .Where(x => x.PersonId == personId)
+                .OrderByDescending(x => x.PerformedAt)
+                .ToListAsync();
+        }
     }
 }

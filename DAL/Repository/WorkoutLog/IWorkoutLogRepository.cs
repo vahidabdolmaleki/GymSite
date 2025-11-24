@@ -21,5 +21,7 @@ namespace DAL.Repository
         // بررسی اینکه آیا شخص تمرین خاصی را در یک تاریخ انجام داده است
         bool HasCompletedWorkout(int personId, int workoutId, DateTime date);
         Task<bool> HasCompletedWorkoutAsync(int personId, int workoutId, DateTime date);
+        Task<List<WorkoutLog>> GetByPersonAsync(int personId);
+
     }
 }
