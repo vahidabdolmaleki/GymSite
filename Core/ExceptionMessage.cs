@@ -62,6 +62,7 @@
         public const string SerachSuccessfully= "جستجو با موفقیت انجام شد.";
         public const string SerachFeild = "خطا در جستجو:";
         public const string GetStudentFeild= "خطا در دریافت شاگردها: ";
+        public const string GetWorkoutLogAsyncSuccess = "بازیابی گزارش تمرین با موفقیت انجام شد";
 
         public const string Test = "";
     }
