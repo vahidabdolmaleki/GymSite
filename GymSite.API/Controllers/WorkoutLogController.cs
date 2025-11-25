@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 [Route("api/[controller]")]
 [ApiController]
 public class WorkoutLogController : ControllerBase
-{
+{    
     private readonly IWorkoutLogService _service;
 
     public WorkoutLogController(IWorkoutLogService service)
