@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -837,11 +837,11 @@ namespace DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    PersonId = table.Column<int>(type: "int", nullable: false),
                     MembershipId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PersonId = table.Column<int>(type: "int", nullable: true),
                     StudentId = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
@@ -859,7 +859,8 @@ namespace DAL.Migrations
                         name: "FK_UserMemberships_People_PersonId",
                         column: x => x.PersonId,
                         principalTable: "People",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserMemberships_Students_StudentId",
                         column: x => x.StudentId,
@@ -909,10 +910,15 @@ namespace DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    WorkoutId = table.Column<int>(type: "int", nullable: false),
                     PersonId = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Completed = table.Column<bool>(type: "bit", nullable: false),
+                    WorkoutId = table.Column<int>(type: "int", nullable: false),
+                    PerformedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Sets = table.Column<int>(type: "int", nullable: true),
+                    Reps = table.Column<int>(type: "int", nullable: true),
+                    Weight = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    DurationMinutes = table.Column<int>(type: "int", nullable: true),
+                    IsCompleted = table.Column<bool>(type: "bit", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },

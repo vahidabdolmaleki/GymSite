@@ -1062,9 +1062,6 @@ namespace DAL.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("StudentId")
-                        .HasColumnType("int");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -1073,8 +1070,6 @@ namespace DAL.Migrations
                     b.HasIndex("MembershipId");
 
                     b.HasIndex("PersonId");
-
-                    b.HasIndex("StudentId");
 
                     b.HasIndex("UserId");
 
@@ -1786,10 +1781,6 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Student", null)
-                        .WithMany("Memberships")
-                        .HasForeignKey("StudentId");
-
                     b.HasOne("Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -2024,8 +2015,6 @@ namespace DAL.Migrations
             modelBuilder.Entity("Entities.Student", b =>
                 {
                     b.Navigation("Enrollments");
-
-                    b.Navigation("Memberships");
 
                     b.Navigation("WorkoutPlans");
                 });

@@ -1,68 +1,83 @@
-﻿using DAL.Context;
-using DAL.Repository.GenericRepository;
+﻿using DAL.Repository.GenericRepository;
+using DAL.Repository;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DAL.Repository
+using DAL.Context;
+public class UserMembershipRepository
+    : GenericRepository<UserMembership>, IUserMembershipRepository
 {
-    public class UserMembershipRepository : GenericRepository<UserMembership>, IUserMembershipRepository
+    public UserMembershipRepository(GymDbContext context) : base(context) { }
+
+    // 📅 بررسی اشتراک فعال
+    public bool HasActiveMembership(int personId)
     {
-        private readonly GymDbContext _gymDbContext;
+        return _dbSet.Any(x =>
+            x.PersonId == personId &&
+            x.EndDate >= DateTime.UtcNow);
+    }
 
-        public UserMembershipRepository(GymDbContext gymDbContext) : base(gymDbContext)
-        {
-            _gymDbContext = gymDbContext;
-        }
+    public async Task<bool> HasActiveMembershipAsync(int personId)
+    {
+        return await _dbSet.AnyAsync(x =>
+            x.PersonId == personId &&
+            x.EndDate >= DateTime.UtcNow);
+    }
 
-        public List<UserMembership> GetActiveMemberships(int userId)
-        {
-            return _gymDbContext.UserMemberships
-                .Include(um => um.Membership)
-                .Where(um => um.UserId == userId && um.EndDate > DateTime.UtcNow)
-                .ToList();
-        }
+    // 🔄 تمدید اشتراک
+    public void ExtendMembership(int personId, int extraDays)
+    {
+        var sub = _dbSet
+            .Where(x => x.PersonId == personId)
+            .OrderByDescending(x => x.EndDate)
+            .FirstOrDefault();
 
-        public async Task<List<UserMembership>> GetActiveMembershipsAsync(int userId)
+        if (sub != null)
         {
-            return await _gymDbContext.UserMemberships
-                .Include(um => um.Membership)
-                .Where(um => um.UserId == userId && um.EndDate > DateTime.UtcNow)
-                .ToListAsync();
+            sub.EndDate = sub.EndDate.AddDays(extraDays);
         }
+    }
 
-        public UserMembership? GetLatestMembership(int userId)
-        {
-            return _gymDbContext.UserMemberships
-                .Include(um => um.Membership)
-                .Where(um => um.UserId == userId)
-                .OrderByDescending(um => um.EndDate)
-                .FirstOrDefault();
-        }
+    public async Task ExtendMembershipAsync(int personId, int extraDays)
+    {
+        var sub = await _dbSet
+            .Where(x => x.PersonId == personId)
+            .OrderByDescending(x => x.EndDate)
+            .FirstOrDefaultAsync();
 
-        public async Task<UserMembership?> GetLatestMembershipAsync(int userId)
+        if (sub != null)
         {
-            return await _gymDbContext.UserMemberships
-                .Include(um => um.Membership)
-                .Where(um => um.UserId == userId)
-                .OrderByDescending(um => um.EndDate)
-                .FirstOrDefaultAsync();
+            sub.EndDate = sub.EndDate.AddDays(extraDays);
         }
+    }
 
-        public bool HasActiveMembership(int userId)
-        {
-            return _gymDbContext.UserMemberships
-                .Any(um => um.UserId == userId && um.EndDate > DateTime.UtcNow);
-        }
+    // 📋 اشتراک‌های منقضی‌شده
+    public List<UserMembership> GetExpiredMemberships()
+    {
+        return _dbSet
+            .Where(x => x.EndDate < DateTime.UtcNow)
+            .ToList();
+    }
 
-        public async Task<bool> HasActiveMembershipAsync(int userId)
-        {
-            return await _gymDbContext.UserMemberships
-                .AnyAsync(um => um.UserId == userId && um.EndDate > DateTime.UtcNow);
-        }
+    public async Task<List<UserMembership>> GetExpiredMembershipsAsync()
+    {
+        return await _dbSet
+            .Where(x => x.EndDate < DateTime.UtcNow)
+            .ToListAsync();
+    }
+
+    // 📆 اشتراک‌های فعال
+    public List<UserMembership> GetActiveMemberships()
+    {
+        return _dbSet
+            .Where(x => x.EndDate >= DateTime.UtcNow)
+            .ToList();
+    }
+
+    public async Task<List<UserMembership>> GetActiveMembershipsAsync()
+    {
+        return await _dbSet
+            .Where(x => x.EndDate >= DateTime.UtcNow)
+            .ToListAsync();
     }
 }

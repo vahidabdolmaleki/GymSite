@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(GymDbContext))]
-    [Migration("20251123113605_init")]
-    partial class init
+    [Migration("20251126051002_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1059,7 +1059,7 @@ namespace DAL.Migrations
                     b.Property<int>("MembershipId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PersonId")
+                    b.Property<int>("PersonId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
@@ -1292,20 +1292,35 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Completed")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<int?>("DurationMinutes")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PerformedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("PersonId")
                         .HasColumnType("int");
+
+                    b.Property<int?>("Reps")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Sets")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("Weight")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("WorkoutId")
                         .HasColumnType("int");
@@ -1768,9 +1783,11 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Person", null)
+                    b.HasOne("Entities.Person", "Person")
                         .WithMany("Memberships")
-                        .HasForeignKey("PersonId");
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Entities.Student", null)
                         .WithMany("Memberships")
@@ -1783,6 +1800,8 @@ namespace DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Membership");
+
+                    b.Navigation("Person");
 
                     b.Navigation("User");
                 });

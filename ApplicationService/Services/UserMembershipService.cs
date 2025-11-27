@@ -35,14 +35,19 @@ namespace ApplicationService.Services
                 {
                     return new ServiceResult<int>
                     { 
-                        
+                        IsSuccess = false,
+                        Message = "اشتراک یافت نشد.",
+                        Data = -1
                     };
                 }
-                if (membership == null || person == null)
+                if (person == null)
                 {
-                    result.IsSuccess = false;
-                    result.Message = "کاربر یا اشتراک یافت نشد.";
-                    return result;
+                    return new ServiceResult<int>
+                    {
+                        IsSuccess = false,
+                        Message = "کاربر یافت نشد.",
+                        Data = -2
+                    };
                 }
 
                 var entity = new UserMembership
