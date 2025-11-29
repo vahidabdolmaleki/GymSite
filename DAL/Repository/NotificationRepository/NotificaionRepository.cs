@@ -34,6 +34,30 @@ namespace DAL.Repository.NotificationRepository
         public List<Notification> GetUnreadByPerson(int personId) => _dbSet.Where(n=> n.PersonId == personId && !n.IsRead).ToList();
 
         public async Task<List<Notification>> GetUnreadByPersonAsync(int personId) => await _dbSet.Where(n => n.PersonId == personId && !n.IsRead).ToListAsync();
+        public async Task<List<Notification>> GetForUserAsync(int personId)
+        {
+            return await _context.Notifications
+                .Where(n => n.PersonId == personId)
+                .OrderByDescending(n => n.SentAt)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetUnreadCountAsync(int personId)
+        {
+            return await _context.Notifications
+                .CountAsync(n => n.PersonId == personId && !n.IsRead);
+        }
+
+        public async Task MarkAsReadAsync(int notificationId)
+        {
+            var item = await _context.Notifications.FindAsync(notificationId);
+            if (item != null)
+            {
+                item.IsRead = true;
+                await _context.SaveChangesAsync();
+            }
+        }
+
 
     }
 }

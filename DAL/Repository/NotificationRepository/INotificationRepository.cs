@@ -22,7 +22,12 @@ namespace DAL.Repository.NotificationRepository
         Task<List<Notification>> GetByStatusAsync(Notification.NotificationStatus status);
         //اعلان های در وضعیت Pending (هنوز ارسال نشده)
         List<Notification> GetPending();
-        Task<List<Notification>> GetPendingAsync();        
+        Task<List<Notification>> GetPendingAsync();
+        //
+        Task<List<Notification>> GetForUserAsync(int personId);
+        Task<int> GetUnreadCountAsync(int personId);
+        Task MarkAsReadAsync(int notificationId);
+
     }
 }
 
