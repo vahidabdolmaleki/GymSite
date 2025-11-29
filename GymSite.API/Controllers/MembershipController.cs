@@ -16,8 +16,8 @@ public class MembershipController : ControllerBase
     }
 
     [HttpPost]
-    [AllowAnonymous]
-    //[Authorize(Roles = "Admin")]
+    //[AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Create([FromBody] UserMembershipCreateDto dto)
     {
         var result = await _service.CreateAsync(dto);
@@ -25,7 +25,7 @@ public class MembershipController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         var result = await _service.DeleteAsync(id);
@@ -33,8 +33,8 @@ public class MembershipController : ControllerBase
     }
 
     [HttpGet("person/{personId}")]
-    [AllowAnonymous]
-    //[Authorize]
+    //[AllowAnonymous]
+    [Authorize]
     public async Task<IActionResult> GetForPerson(int personId)
     {
         var result = await _service.GetForPersonAsync(personId);
@@ -42,8 +42,8 @@ public class MembershipController : ControllerBase
     }
 
     [HttpGet]
-    [AllowAnonymous]
-    //[Authorize(Roles = "Admin")]
+    //[AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAll()
     {
         var result = await _service.GetAllAsync();
