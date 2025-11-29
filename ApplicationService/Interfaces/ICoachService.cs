@@ -19,4 +19,5 @@ namespace ApplicationService.Interfaces
         Task<ServiceResults<CoachDto>> GetStudentAsync(int coachId);
         Task<ServiceResult<PagedResultDto<CoachDto>>> SearchAsync(string? name, string? specialization, int page, int pageSize);
     }
+
 }

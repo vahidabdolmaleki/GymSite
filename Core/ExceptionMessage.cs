@@ -63,7 +63,14 @@
         public const string SerachFeild = "خطا در جستجو:";
         public const string GetStudentFeild= "خطا در دریافت شاگردها: ";
         public const string GetWorkoutLogAsyncSuccess = "بازیابی گزارش تمرین با موفقیت انجام شد";
+        public const string GetNotificationListSuccessfully = "بازیابی اعلان‌های ارسال شده با موفقیت انجام شد";
+        public const string NotficationReadSuccessfull= "اعلان خوانده شد.";
+        public const string RegisterReadForNotficationFeild ="عملیات ثبت خوانده اعلان با مشکل مواجه شد";
+        public const string GetCountNotificationSuccessfully ="تعداد اعلان‌ها با موفقیت بازیابی شد";
+        public const string GetCountNoficationFeild="بازیابی تعداد اعلان‌ها با مشکل مواجه شده است";
 
         public const string Test = "";
+        public const string SendNoficationFeild = "ارسال اعلان با طا مواجه شد";
+        public const string SendNoficationSuccessFully = "اعلان ارسال شد.";
     }
 }
