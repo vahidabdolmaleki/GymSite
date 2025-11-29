@@ -32,13 +32,20 @@
 
         // 🔹 پیوست (اختیاری: مثلا لینک عکس یا ویدیو)
         public string? AttachmentUrl { get; set; }
+        public string? Metadata { get; set; }// JSON برای اطلاعات اضافی مثلا شناسه کاربری
 
         // Enums
         public enum NotificationType
         {
-            Push = 0,
-            Email = 1,
-            SMS = 2
+            General = 0,
+            MembershipExpired = 1,
+            MembershipWillExpireSoon = 2,
+            NewWorkoutPlan = 3,
+            CoachAssign=4,
+            ClassReminder = 5,
+            Push = 6,
+            Email = 7,
+            SMS = 8
         }
 
         public enum NotificationStatus
