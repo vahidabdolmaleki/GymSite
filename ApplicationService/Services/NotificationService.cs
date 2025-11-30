@@ -45,7 +45,7 @@ namespace ApplicationService.Services
                 return new ServiceResult<bool>
                 {
                     IsSuccess = false,
-                    Message = ExceptionMessage.SendNoficationFeild;
+                    Message = ExceptionMessage.SendNoficationFeild
                 };
             }
         }
