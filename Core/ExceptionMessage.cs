@@ -70,7 +70,7 @@
         public const string GetCountNoficationFeild="بازیابی تعداد اعلان‌ها با مشکل مواجه شده است";
 
         public const string Test = "";
-        public const string SendNoficationFeild = "ارسال اعلان با طا مواجه شد";
+        public const string SendNoficationFeild = "ارسال اعلان با خطا مواجه شد";
         public const string SendNoficationSuccessFully = "اعلان ارسال شد.";
     }
 }

@@ -26,6 +26,7 @@ builder.Services.AddScoped<IWorkoutService, WorkoutService>();
 builder.Services.AddScoped<IWorkoutPlanService, WorkoutPlanService>();
 builder.Services.AddScoped<IWorkoutLogService, WorkoutLogService>();
 builder.Services.AddScoped<IUserMembershipService,UserMembershipService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 // 🔹 AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
