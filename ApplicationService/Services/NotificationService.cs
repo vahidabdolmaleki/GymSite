@@ -137,7 +137,6 @@ namespace ApplicationService.Services
                 if (result)
                     return result;
                 return false;
-
             }
             catch (Exception ex)
             {
