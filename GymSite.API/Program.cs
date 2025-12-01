@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using DAL.Repository.WorkoutPlanItemRepo;
+using Microsoft.AspNetCore.Builder.Extensions;
+using FirebaseAdmin;
 
 
 
@@ -27,6 +29,12 @@ builder.Services.AddScoped<IWorkoutPlanService, WorkoutPlanService>();
 builder.Services.AddScoped<IWorkoutLogService, WorkoutLogService>();
 builder.Services.AddScoped<IUserMembershipService,UserMembershipService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+// PushNotification 
+FirebaseApp.Create(new AppOptions
+{
+    Credential = GoogleCredential.FromFile("firebase-adminsdk.json")
+});
+
 // 🔹 AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
