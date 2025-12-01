@@ -4,6 +4,11 @@ using Azure.Core;
 using Core;
 using DAL.UnitOfWork;
 using Entities;
+using FirebaseAdmin.Messaging;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using Microsoft.Extensions.Configuration;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace ApplicationService.Services
 {
@@ -11,9 +16,14 @@ namespace ApplicationService.Services
     {
         private readonly IUnitOfWork _uow;
 
-        public NotificationService(IUnitOfWork uow)
+        public FirebaseNotificationService firebaseNotificationService { get; }
+
+        public NotificationService(IConfiguration config, IUnitOfWork uow)
         {
+           
             _uow = uow;
+            firebaseNotificationService = new FirebaseNotificationService(config, _uow);
+
         }
 
         public async Task<ServiceResult<bool>> SendAsync(NotificationCreateDto dto)
@@ -22,7 +32,7 @@ namespace ApplicationService.Services
             {
                 var result = new ServiceResult<bool>();
 
-                var notification = new Notification
+                var notification = new Entities.Notification
                 {
                     PersonId = dto.PersonId,
                     Title = dto.Title,
@@ -115,6 +125,24 @@ namespace ApplicationService.Services
                     Data = -1,
                     Message = ExceptionMessage.GetCountNoficationFeild
                 };
+            }
+        }
+       
+
+        public async Task<bool> SendPushAsync(string deviceToken, string title, string body)
+        {
+            try
+            {
+                var result = await firebaseNotificationService.SendPushAsync(deviceToken, title, body);
+                if (result)
+                    return result;
+                return false;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
             }
         }
     }

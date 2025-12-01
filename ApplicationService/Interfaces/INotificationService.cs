@@ -9,6 +9,8 @@ namespace ApplicationService.Interfaces
         Task<ServiceResults<NotificationDto>> GetForUserAsync(int personId);
         Task<ServiceResult<bool>> MarkAsReadAsync(int id);
         Task<ServiceResult<int>> GetUnreadCountAsync(int personId);
+        Task<bool> SendPushAsync(string deviceToken, string title, string body);
+
     }
 
 }

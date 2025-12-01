@@ -45,4 +45,11 @@ public class NotificationController : ControllerBase
     {
         return Ok(await _service.MarkAsReadAsync(id));
     }
+    [HttpPost("TestPush")]
+    public async Task<IActionResult> TestPush(string token)
+    {
+        var ok = await _service.SendPushAsync(token, "🔥 سلام", "مزدکار جونم چطوره");
+        return Ok(ok);
+    }
+
 }

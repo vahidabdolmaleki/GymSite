@@ -11,6 +11,7 @@ using System.Text;
 using DAL.Repository.WorkoutPlanItemRepo;
 using Microsoft.AspNetCore.Builder.Extensions;
 using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 
 
 
@@ -29,7 +30,7 @@ builder.Services.AddScoped<IWorkoutPlanService, WorkoutPlanService>();
 builder.Services.AddScoped<IWorkoutLogService, WorkoutLogService>();
 builder.Services.AddScoped<IUserMembershipService,UserMembershipService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
-// PushNotification 
+//// PushNotification 
 FirebaseApp.Create(new AppOptions
 {
     Credential = GoogleCredential.FromFile("firebase-adminsdk.json")
