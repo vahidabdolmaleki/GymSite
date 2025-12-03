@@ -33,7 +33,7 @@ builder.Services.AddScoped<INotificationService, NotificationService>();
 //// PushNotification 
 FirebaseApp.Create(new AppOptions
 {
-    Credential = GoogleCredential.FromFile("firebase-adminsdk.json")
+    Credential = GoogleCredential.FromFile("E:\\Project\\GymSite BackUp\\firebase-adminsdk.json")
 });
 
 // 🔹 AutoMapper
