@@ -15,3 +15,5 @@ obj/
 # Other
 *.dbmdl
 *.jfm
+*.json
+
