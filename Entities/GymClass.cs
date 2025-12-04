@@ -13,6 +13,7 @@
         public Category? Category { get; set; }
         public ICollection<ClassEnrollment> Enrollments { get; set; } = new List<ClassEnrollment>();
     }
+
 }
 
 
